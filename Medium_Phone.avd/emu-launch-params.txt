@@ -1,0 +1,14 @@
+C:\Users\jinny
+C:\Users\jinny\AppData\Local\Android\Sdk\emulator\emulator.exe
+11
+C:\Users\jinny\AppData\Local\Android\Sdk\emulator\emulator.exe
+-netdelay
+none
+-netspeed
+full
+-avd
+Medium_Phone_API_35
+-qt-hide-window
+-grpc-use-token
+-idle-grpc-timeout
+300
