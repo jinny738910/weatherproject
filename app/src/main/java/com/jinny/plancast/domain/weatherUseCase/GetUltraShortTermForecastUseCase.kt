@@ -1,6 +1,6 @@
-package com.fastcampus.part5.chapter01.domain.weatherUseCase
+package com.jinny.plancast.domain.weatherUseCase
 
-import com.fastcampus.part5.chapter01.domain.repository.WeatherRepository
+import com.jinny.plancast.domain.repository.WeatherRepository
 
 /**
  * 초단기 예보 정보를 가져오는 Usecase

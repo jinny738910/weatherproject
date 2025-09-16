@@ -1,4 +1,4 @@
-package com.fastcampus.part5.chapter01.domain.model
+package com.jinny.plancast.domain.model
 
 /**
  * 앱의 UI Layer나 Domain Layer에서 사용할 정제된 날씨 정보 데이터 클래스

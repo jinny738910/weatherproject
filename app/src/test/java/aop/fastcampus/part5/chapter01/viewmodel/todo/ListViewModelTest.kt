@@ -1,11 +1,12 @@
 package aop.fastcampus.part5.chapter01.viewmodel.todo
 
-import aop.fastcampus.part5.chapter01.data.entity.ToDoEntity
-import aop.fastcampus.part5.chapter01.data.entity.WeatherApiService
-import aop.fastcampus.part5.chapter01.domain.todoUseCase.*
-import aop.fastcampus.part5.chapter01.presentation.list.ListViewModel
-import aop.fastcampus.part5.chapter01.presentation.list.ToDoListState
+
 import aop.fastcampus.part5.chapter01.viewmodel.ViewModelTest
+import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
+import com.jinny.plancast.domain.todoUseCase.InsertToDoListUseCase
+import com.jinny.plancast.presentation.todo.list.ListViewModel
+import com.jinny.plancast.presentation.todo.list.ToDoListState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before

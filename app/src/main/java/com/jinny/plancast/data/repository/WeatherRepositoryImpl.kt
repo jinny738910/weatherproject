@@ -1,9 +1,9 @@
-package com.fastcampus.part5.chapter01.data.repository
+package com.jinny.plancast.data.repository
 
-import com.fastcampus.part5.chapter01.data.api.WeatherApiService
-import com.fastcampus.part5.chapter01.data.model.toDomain
-import com.fastcampus.part5.chapter01.domain.model.WeatherInfo
-import com.fastcampus.part5.chapter01.domain.repository.WeatherRepository
+import com.jinny.plancast.domain.model.WeatherInfo
+import com.jinny.plancast.domain.repository.WeatherRepository
+import com.jinny.plancast.data.api.WeatherApiService
+import com.jinny.plancast.data.model.toDomain
 
 /**
  * WeatherRepository의 구현체

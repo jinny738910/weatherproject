@@ -37,11 +37,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="70dp"
         android:contentDescription="addToDoButton"
         android:src="@drawable/ic_plus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:backgroundTint="@color/black"
         app:tint="@color/white" />
+
+    <Button
+        android:id="@+id/weather_details_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="날씨 정보 보러가기"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

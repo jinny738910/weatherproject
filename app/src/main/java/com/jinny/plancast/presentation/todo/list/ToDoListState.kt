@@ -1,6 +1,6 @@
-package com.fastcampus.part5.chapter01.presentation.list
+package com.jinny.plancast.presentation.todo.list
 
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
+import com.jinny.plancast.data.entity.ToDoEntity
 
 sealed class ToDoListState {
 

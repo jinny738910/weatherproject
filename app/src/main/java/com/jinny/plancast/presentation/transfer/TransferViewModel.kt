@@ -1,4 +1,4 @@
-package com.jinny.plancast.presentation.weather
+package com.jinny.plancast.presentation.transfer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,13 +12,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class WeatherViewModel(
-    var weatherMode: WeatherMode?,
+class TransferViewModel(
     var id: Long = -1,
 ) : BaseViewModel() {
 
-    private var _weatherLiveData = MutableLiveData<WeatherState>(WeatherState.UnInitialized)
-    val weatherLiveData: LiveData<WeatherState> = _weatherLiveData
 
     private val _navigationEvent = MutableSharedFlow<Unit>()
     val navigationEvent = _navigationEvent.asSharedFlow()

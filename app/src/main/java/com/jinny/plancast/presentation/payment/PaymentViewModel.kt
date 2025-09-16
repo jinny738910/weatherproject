@@ -1,4 +1,4 @@
-package com.jinny.plancast.presentation.weather
+package com.jinny.plancast.presentation.payment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,20 +8,28 @@ import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
 import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
 import com.jinny.plancast.domain.todoUseCase.UpdateToDoUseCase
 import com.jinny.plancast.presentation.BaseViewModel
+import com.jinny.plancast.presentation.login.LoginState
+import com.jinny.plancast.presentation.login.LoginViewModel
+import com.jinny.plancast.presentation.todo.list.ToDoListState
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class WeatherViewModel(
-    var weatherMode: WeatherMode?,
+class PaymentViewModel(
     var id: Long = -1,
 ) : BaseViewModel() {
 
-    private var _weatherLiveData = MutableLiveData<WeatherState>(WeatherState.UnInitialized)
-    val weatherLiveData: LiveData<WeatherState> = _weatherLiveData
 
-    private val _navigationEvent = MutableSharedFlow<Unit>()
-    val navigationEvent = _navigationEvent.asSharedFlow()
+    private val _uiState = MutableStateFlow(PaymentUiState())
+    val uiState: StateFlow<PaymentUiState> = _uiState
+
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog = _showDialog
+
+    private var _loginLiveData = MutableLiveData<LoginState>(LoginState.Idle)
+    val loginLiveData: LiveData<LoginState> = _loginLiveData
 
 
     override fun fetchData() = viewModelScope.launch {
@@ -46,7 +54,7 @@ class WeatherViewModel(
 
     fun onOpenActivityClick() {
         viewModelScope.launch {
-            _navigationEvent.emit(Unit) // Activity에 신호 보내기
+//            _paymentStateEvent.emit() // Activity에 신호 보내기
         }
     }
 }

@@ -1,11 +1,11 @@
-package com.fastcampus.part5.chapter01.presentation.view
+package com.jinny.plancast.presentation.todo.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jinny.plancast.R
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
+import com.jinny.plancast.data.entity.ToDoEntity
 import com.jinny.plancast.databinding.ViewholderTodoItemBinding
 
 class ToDoAdapter : RecyclerView.Adapter<ToDoAdapter.ToDoItemViewHolder>() {

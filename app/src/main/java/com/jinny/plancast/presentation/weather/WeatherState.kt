@@ -1,6 +1,6 @@
-package com.fastcampus.part5.chapter01.presentation.weather
+package com.jinny.plancast.presentation.weather
 
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
+import com.jinny.plancast.data.entity.ToDoEntity
 
 
 sealed class WeatherState {

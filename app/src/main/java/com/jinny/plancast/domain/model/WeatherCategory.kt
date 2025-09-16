@@ -1,4 +1,4 @@
-package com.fastcampus.part5.chapter01.domain.model
+package com.jinny.plancast.domain.model
 
 
 /**

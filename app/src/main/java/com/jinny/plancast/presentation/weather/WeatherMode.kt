@@ -1,4 +1,4 @@
-package com.fastcampus.part5.chapter01.presentation.weather
+package com.jinny.plancast.presentation.weather
 
 enum class WeatherMode {
     DETAIL, WRITE

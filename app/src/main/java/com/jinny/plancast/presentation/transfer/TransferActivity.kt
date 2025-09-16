@@ -1,4 +1,4 @@
-package com.jinny.plancast.presentation.webView
+package com.jinny.plancast.presentation.transfer
 
 
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jinny.plancast.databinding.ActivityWebviewBinding
 
 
-class WebViewActivity : AppCompatActivity() {
+class TransferActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWebviewBinding
     private lateinit var webView: WebView

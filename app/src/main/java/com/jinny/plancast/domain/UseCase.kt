@@ -1,3 +1,3 @@
-package com.fastcampus.part5.chapter01.domain
+package com.jinny.plancast.domain
 
 internal interface UseCase

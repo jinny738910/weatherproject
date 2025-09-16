@@ -1,7 +1,7 @@
-package com.fastcampus.part5.chapter01
+package com.jinny.plancast
 
 import android.app.Application
-import com.fastcampus.part5.chapter01.di.appModule
+import com.jinny.plancast.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

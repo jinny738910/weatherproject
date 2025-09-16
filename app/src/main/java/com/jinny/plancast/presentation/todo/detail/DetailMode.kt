@@ -1,4 +1,4 @@
-package com.fastcampus.part5.chapter01.presentation.detail
+package com.jinny.plancast.presentation.todo.detail
 
 enum class DetailMode {
     DETAIL, WRITE

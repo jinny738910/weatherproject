@@ -1,4 +1,4 @@
-package com.fastcampus.part5.chapter01.presentation
+package com.jinny.plancast.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

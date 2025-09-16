@@ -1,9 +1,9 @@
-package com.fastcampus.part5.chapter01.presentation
+package com.jinny.plancast.presentation
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Job
 
-internal abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel: ViewModel() {
 
     abstract fun fetchData(): Job
 

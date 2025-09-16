@@ -1,7 +1,7 @@
-package com.fastcampus.part5.chapter01.data.repository
+package com.jinny.plancast.data.repository
 
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
-import com.fastcampus.part5.chapter01.data.local.db.dao.ToDoDao
+import com.jinny.plancast.data.local.db.dao.ToDoDao
+import com.jinny.plancast.data.entity.ToDoEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

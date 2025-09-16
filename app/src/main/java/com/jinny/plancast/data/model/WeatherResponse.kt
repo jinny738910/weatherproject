@@ -1,7 +1,7 @@
-package com.fastcampus.part5.chapter01.data.model
+package com.jinny.plancast.data.model
 
-import com.fastcampus.part5.chapter01.domain.model.WeatherCategory
-import com.fastcampus.part5.chapter01.domain.model.WeatherInfo
+import com.jinny.plancast.domain.model.WeatherCategory
+import com.jinny.plancast.domain.model.WeatherInfo
 import com.google.gson.annotations.SerializedName
 
 /**

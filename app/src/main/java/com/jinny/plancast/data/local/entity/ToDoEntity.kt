@@ -1,4 +1,4 @@
-package com.fastcampus.part5.chapter01.data.entity
+package com.jinny.plancast.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,5 +8,6 @@ data class ToDoEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val title: String,
     val description: String,
-    val hasCompleted: Boolean = false
+    val hasCompleted: Boolean = false,
+    val isLock: Boolean = false
 )

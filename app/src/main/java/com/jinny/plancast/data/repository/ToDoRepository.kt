@@ -1,6 +1,6 @@
-package com.fastcampus.part5.chapter01.data.repository
+package com.jinny.plancast.data.repository
 
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
+import com.jinny.plancast.data.entity.ToDoEntity
 
 interface ToDoRepository {
 

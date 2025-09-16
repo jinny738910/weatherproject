@@ -1,7 +1,7 @@
-package com.fastcampus.part5.chapter01.data.local.db.dao
+package com.jinny.plancast.data.local.db.dao
 
 import androidx.room.*
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
+import com.jinny.plancast.data.entity.ToDoEntity
 
 @Dao
 interface ToDoDao {

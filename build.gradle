@@ -23,7 +23,7 @@
 
 plugins {
     // Android Gradle Plugin for building the application
-    id 'com.android.application' version '8.5.1' apply false
+    id 'com.android.application' version '8.6.0' apply false
 
     // Kotlin plugin for Android
     id 'org.jetbrains.kotlin.android' version '2.0.0' apply false

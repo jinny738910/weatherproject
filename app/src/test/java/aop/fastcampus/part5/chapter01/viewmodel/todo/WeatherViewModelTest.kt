@@ -1,13 +1,13 @@
 package aop.fastcampus.part5.chapter01.viewmodel.todo
 
-import aop.fastcampus.part5.chapter01.data.entity.ToDoEntity
-import aop.fastcampus.part5.chapter01.domain.todoUseCase.*
-import aop.fastcampus.part5.chapter01.presentation.detail.DetailMode
-import aop.fastcampus.part5.chapter01.presentation.list.ListViewModel
-import aop.fastcampus.part5.chapter01.presentation.list.ToDoListState
-import aop.fastcampus.part5.chapter01.presentation.detail.DetailViewModel
-import aop.fastcampus.part5.chapter01.presentation.detail.ToDoDetailState
 import aop.fastcampus.part5.chapter01.viewmodel.ViewModelTest
+import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
+import com.jinny.plancast.presentation.todo.detail.DetailMode
+import com.jinny.plancast.presentation.todo.detail.DetailViewModel
+import com.jinny.plancast.presentation.todo.detail.ToDoDetailState
+import com.jinny.plancast.presentation.todo.list.ListViewModel
+import com.jinny.plancast.presentation.todo.list.ToDoListState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

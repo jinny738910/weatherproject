@@ -1,32 +1,45 @@
-package com.jinny.plancast.presentation.weather
+package com.jinny.plancast.presentation.payment
 
-import SearchScreen
-import WeatherScreen
+import LoginScreen
+import PaymentScreen
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.biometric.BiometricPrompt
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.jinny.plancast.presentation.BaseActivity
+import com.jinny.plancast.presentation.payment.PaymentViewModel
 import com.jinny.plancast.presentation.todo.detail.DetailActivity
 import com.jinny.plancast.presentation.todo.detail.DetailMode
-import com.jinny.plancast.presentation.webView.WebViewActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
-internal class WeatherActivity : BaseActivity<WeatherViewModel>() {
 
-    override val viewModel: WeatherViewModel by viewModel{
-        parametersOf(
-            intent?.getSerializableExtra(DETAIL_MODE_KEY),
-            intent.getLongExtra(TODO_ID_KEY, -1)
-        )
-    }
+
+internal class PaymentActivity : BaseActivity<PaymentViewModel>() {
+
+    override val viewModel: PaymentViewModel by viewModel()
+
+
+    private val listLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // 결과가 돌아왔을 때 이 람다 블록이 실행됩니다.
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 성공적인 결과를 처리합니다.
+                val data: Intent? = result.data
+                val message = data?.getStringExtra("result_key")
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                viewModel.fetchData()
+            }
+        }
+
 
     companion object {
         const val TODO_ID_KEY = "ToDoId"
@@ -48,15 +61,23 @@ internal class WeatherActivity : BaseActivity<WeatherViewModel>() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            LaunchedEffect(Unit) {
-                viewModel.navigationEvent.collect {
-                    val intent = Intent(this@WeatherActivity, WebViewActivity::class.java)
-                    startActivity(intent)
-                }
-            }
+            MaterialTheme {
+                val uiState by viewModel.uiState.collectAsState()
+                val showDialog by viewModel.showDialog.collectAsState()
 
-            WeatherAppNavigation()
+                PaymentScreen(
+                    state = uiState,
+                    onPayClick = { /*TODO*/ },
+                    onMethodChangeClick = {  },
+                    onDismissRequest = { },
+                    onMethodSelected = {
+                    },
+                    showPaymentMethodDialog = showDialog
+                )
+            }
         }
+
+
 
 //        val resultIntent = Intent()
 //        resultIntent.putExtra("result_key", "이것이 결과값입니다!")
@@ -64,26 +85,9 @@ internal class WeatherActivity : BaseActivity<WeatherViewModel>() {
 //        finish()
     }
 
-    @Composable
-    fun WeatherAppNavigation() {
-        // 1. 화면 이동을 제어하는 NavController를 생성합니다.
-        val navController = rememberNavController()
-
-        // 2. NavHost를 사용하여 내비게이션 경로와 화면을 정의합니다.
-        NavHost(navController = navController, startDestination = "search") {
-            // "weather" 경로 요청 시 WeatherScreen을 보여줍니다.
-            composable("weather") {
-                WeatherScreen(navController = navController, viewModel = viewModel)
-            }
-            // "search" 경로 요청 시 SearchScreen을 보여줍니다.
-            composable("search") {
-                SearchScreen(navController = navController)
-            }
-        }
-    }
 
 
-    override fun observeData() = viewModel.weatherLiveData.observe(this@WeatherActivity) {
+    override fun observeData() = viewModel.loginLiveData.observe(this@PaymentActivity) {
 //            when (it) {
 ////            is ToDoDetailState.UnInitialized -> {
 ////                initViews(binding)

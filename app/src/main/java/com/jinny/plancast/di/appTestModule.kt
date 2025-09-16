@@ -1,16 +1,18 @@
-package com.fastcampus.part5.chapter01.di
+package com.jinny.plancast.di
 
 import android.content.Context
 import androidx.room.Room
-import com.fastcampus.part5.chapter01.data.local.db.ToDoDatabase
-import com.fastcampus.part5.chapter01.data.repository.ToDoRepository
-import com.fastcampus.part5.chapter01.data.repository.DefaultToDoRepository
-import com.fastcampus.part5.chapter01.domain.todoUseCase.*
-import com.fastcampus.part5.chapter01.presentation.detail.DetailMode
-import com.fastcampus.part5.chapter01.presentation.list.ListViewModel
-import com.fastcampus.part5.chapter01.presentation.detail.DetailViewModel
-import com.fastcampus.part5.chapter01.presentation.weather.WeatherMode
-import com.fastcampus.part5.chapter01.presentation.weather.WeatherViewModel
+import com.jinny.plancast.data.local.db.ToDoDatabase
+import com.jinny.plancast.data.repository.ToDoRepository
+import com.jinny.plancast.data.repository.DefaultToDoRepository
+import com.jinny.plancast.domain.todoUseCase.*
+import com.jinny.plancast.presentation.login.LoginViewModel
+import com.jinny.plancast.presentation.payment.PaymentViewModel
+import com.jinny.plancast.presentation.weather.WeatherMode
+import com.jinny.plancast.presentation.weather.WeatherViewModel
+import com.jinny.plancast.presentation.todo.detail.DetailMode
+import com.jinny.plancast.presentation.todo.detail.DetailViewModel
+import com.jinny.plancast.presentation.todo.list.ListViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 import org.koin.android.ext.koin.androidApplication
@@ -34,9 +36,12 @@ internal val appModule = module {
     single { provideDB(androidApplication()) }
     single { provideToDoDao(get()) }
 
-    viewModel { ListViewModel(get(), get(), get()) }
+//    viewModel { ListViewModel(get(), get(), get()) }
+    viewModel { LoginViewModel() }
+    viewModel { ListViewModel() }
+    viewModel { PaymentViewModel() }
     viewModel { (detailMode: DetailMode, id: Long) -> DetailViewModel(detailMode, id, get(), get(), get(), get()) }
-    viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id, get(), get(), get(), get()) }
+    viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id) }
 }
 
 internal fun provideDB(context: Context): ToDoDatabase =

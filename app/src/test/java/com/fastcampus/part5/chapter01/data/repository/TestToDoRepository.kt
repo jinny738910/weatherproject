@@ -1,6 +1,8 @@
 package com.fastcampus.part5.chapter01.data.repository
 
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
+import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.repository.ToDoRepository
+
 class TestToDoRepository: ToDoRepository {
 
     private val toDoList: MutableList<ToDoEntity> = mutableListOf()

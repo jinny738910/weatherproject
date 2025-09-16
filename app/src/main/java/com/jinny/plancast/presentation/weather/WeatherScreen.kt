@@ -1,5 +1,5 @@
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -14,7 +15,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,9 +34,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.jinny.plancast.presentation.weather.WeatherMode
+import com.jinny.plancast.presentation.weather.WeatherViewModel
 
 
 // R.drawable.ic_weather_sun, ic_weather_cloudy 등이 필요합니다.
@@ -40,7 +49,10 @@ import androidx.compose.ui.unit.sp
 // import com.example.weatherapp.R
 
 @Composable
-fun WeatherScreen() {
+fun WeatherScreen(
+    navController: NavController,
+    viewModel: WeatherViewModel
+) {
     Scaffold(
         topBar = { LocationBar() }
     ) { paddingValues ->
@@ -52,6 +64,7 @@ fun WeatherScreen() {
                 .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            WebViewSection(navController = navController, viewModel = viewModel)
             Spacer(modifier = Modifier.height(16.dp))
             CurrentWeatherSection()
             Spacer(modifier = Modifier.height(24.dp))
@@ -84,6 +97,27 @@ fun LocationBar() {
         )
     )
 }
+
+@Composable
+fun WebViewSection(navController: NavController, viewModel:WeatherViewModel) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Button(
+            onClick = { /* TODO: 현재 위치 가져오는 로직 호출 */
+                viewModel.onOpenActivityClick()
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                Icons.Default.LocationOn,
+                contentDescription = "현재 위치 아이콘",
+                modifier = Modifier.size(ButtonDefaults.IconSize)
+            )
+            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+            Text("현재 위치로 설정")
+        }
+    }
+}
+
 
 @Composable
 fun CurrentWeatherSection() {
@@ -178,7 +212,7 @@ fun WeeklyForecastSection() {
                     Text(
                         temp,
                         modifier = Modifier.weight(1f),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.End
+                        textAlign = TextAlign.End
                     )
                 }
             }
@@ -216,11 +250,23 @@ fun InfoItem(icon: String, label: String, value: String) {
     }
 }
 
+
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     // MaterialTheme으로 감싸주면 미리보기가 더 정확해집니다.
+
+    // 2. Create an instance of the ViewModel using the fake UseCases
+    val fakeViewModel = WeatherViewModel(
+        weatherMode = WeatherMode.WRITE,
+        id = -1L,
+    )
+
     MaterialTheme {
-        WeatherScreen()
+        WeatherScreen(
+            navController = rememberNavController(),
+            viewModel = fakeViewModel
+        )
     }
 }

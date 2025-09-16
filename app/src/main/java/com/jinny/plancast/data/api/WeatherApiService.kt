@@ -1,6 +1,6 @@
-package com.fastcampus.part5.chapter01.data.api
+package com.jinny.plancast.data.api
 
-import com.fastcampus.part5.chapter01.data.model.WeatherResponse
+import com.jinny.plancast.data.model.WeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

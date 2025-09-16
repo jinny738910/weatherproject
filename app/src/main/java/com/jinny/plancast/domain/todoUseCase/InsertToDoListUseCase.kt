@@ -1,8 +1,8 @@
-package com.fastcampus.part5.chapter01.domain.todoUseCase
+package com.jinny.plancast.domain.todoUseCase
 
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
-import com.fastcampus.part5.chapter01.data.repository.ToDoRepository
-import com.fastcampus.part5.chapter01.domain.UseCase
+import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.repository.ToDoRepository
+import com.jinny.plancast.domain.UseCase
 
 internal class InsertToDoListUseCase(
     private val toDoRepository: ToDoRepository

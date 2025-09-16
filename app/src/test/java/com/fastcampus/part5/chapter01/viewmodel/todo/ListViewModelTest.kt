@@ -1,9 +1,9 @@
 package com.fastcampus.part5.chapter01.viewmodel.todo
 
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
-import com.fastcampus.part5.chapter01.domain.todoUseCase.*
-import com.fastcampus.part5.chapter01.presentation.list.ListViewModel
-import com.fastcampus.part5.chapter01.presentation.list.ToDoListState
+import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.domain.todoUseCase.*
+import com.jinny.plancast.presentation.todo.list.ListViewModel
+import com.jinny.plancast.presentation.todo.list.ToDoListState
 import com.fastcampus.part5.chapter01.viewmodel.ViewModelTest
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runBlockingTest

@@ -8,9 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun SearchScreen(
+fun SearchScreen(navController: NavController
     // 실제 구현 시에는 ViewModel 등에서 상태를 관리하고,
     // 람다 함수를 파라미터로 받아 이벤트를 처리하는 것이 좋습니다.
 ) {
@@ -42,7 +44,9 @@ fun SearchScreen(
 
         // 3. 현재 위치로 설정 버튼
         Button(
-            onClick = { /* TODO: 현재 위치 가져오는 로직 호출 */ },
+            onClick = { /* TODO: 현재 위치 가져오는 로직 호출 */
+                navController.navigate("weather")
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Icon(
@@ -60,6 +64,6 @@ fun SearchScreen(
 @Composable
 fun SearchScreenPreview() {
     MaterialTheme {
-        SearchScreen()
+        SearchScreen(navController = rememberNavController())
     }
 }

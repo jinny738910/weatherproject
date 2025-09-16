@@ -1,9 +1,9 @@
-package com.fastcampus.part5.chapter01.domain.todoUseCase
+package com.jinny.plancast.domain.todoUseCase
 
-import com.fastcampus.part5.chapter01.data.repository.ToDoRepository
-import com.fastcampus.part5.chapter01.domain.UseCase
+import com.jinny.plancast.data.repository.ToDoRepository
+import com.jinny.plancast.domain.UseCase
 
-internal class DeleteToDoItemUseCase(
+class DeleteToDoItemUseCase(
     private val toDoRepository: ToDoRepository
 ): UseCase {
 

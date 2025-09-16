@@ -1,6 +1,6 @@
-package com.fastcampus.part5.chapter01.presentation.detail
+package com.jinny.plancast.presentation.todo.detail
 
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
+import com.jinny.plancast.data.entity.ToDoEntity
 
 
 sealed class ToDoDetailState {
@@ -20,5 +20,4 @@ sealed class ToDoDetailState {
     object Error: ToDoDetailState()
 
     object Write: ToDoDetailState()
-
 }

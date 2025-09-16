@@ -1,6 +1,6 @@
-package com.fastcampus.part5.chapter01.domain.repository
+package com.jinny.plancast.domain.repository
 
-import com.fastcampus.part5.chapter01.domain.model.WeatherInfo
+import com.jinny.plancast.domain.model.WeatherInfo
 
 /**
  * 기상청 날씨 정보 Repository 인터페이스

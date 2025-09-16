@@ -1,14 +1,14 @@
-package com.fastcampus.part5.chapter01.presentation.detail
+package com.jinny.plancast.presentation.todo.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
-import com.fastcampus.part5.chapter01.domain.todoUseCase.DeleteToDoItemUseCase
-import com.fastcampus.part5.chapter01.domain.todoUseCase.GetToDoItemUseCase
-import com.fastcampus.part5.chapter01.domain.todoUseCase.InsertToDoUseCase
-import com.fastcampus.part5.chapter01.domain.todoUseCase.UpdateToDoUseCase
-import com.fastcampus.part5.chapter01.presentation.BaseViewModel
+import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.domain.todoUseCase.DeleteToDoItemUseCase
+import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
+import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
+import com.jinny.plancast.domain.todoUseCase.UpdateToDoUseCase
+import com.jinny.plancast.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
 

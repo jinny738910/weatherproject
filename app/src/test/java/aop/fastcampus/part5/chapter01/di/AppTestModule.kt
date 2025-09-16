@@ -1,11 +1,17 @@
 package aop.fastcampus.part5.chapter01.di
 
-import aop.fastcampus.part5.chapter01.data.repository.ToDoRepository
 import aop.fastcampus.part5.chapter01.data.repository.TestToDoRepository
-import aop.fastcampus.part5.chapter01.domain.todoUseCase.*
-import aop.fastcampus.part5.chapter01.presentation.detail.DetailMode
-import aop.fastcampus.part5.chapter01.presentation.list.ListViewModel
-import aop.fastcampus.part5.chapter01.presentation.detail.DetailViewModel
+import com.jinny.plancast.data.repository.ToDoRepository
+import com.jinny.plancast.domain.todoUseCase.DeleteAllToDoItemUseCase
+import com.jinny.plancast.domain.todoUseCase.DeleteToDoItemUseCase
+import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
+import com.jinny.plancast.domain.todoUseCase.GetToDoListUseCase
+import com.jinny.plancast.domain.todoUseCase.InsertToDoListUseCase
+import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
+import com.jinny.plancast.domain.todoUseCase.UpdateToDoUseCase
+import com.jinny.plancast.presentation.todo.detail.DetailMode
+import com.jinny.plancast.presentation.todo.detail.DetailViewModel
+import com.jinny.plancast.presentation.todo.list.ListViewModel
 import org.koin.dsl.module
 import org.koin.androidx.viewmodel.dsl.viewModel
 

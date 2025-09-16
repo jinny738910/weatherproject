@@ -1,9 +1,9 @@
-package com.fastcampus.part5.chapter01.data.local.db
+package com.jinny.plancast.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.fastcampus.part5.chapter01.data.entity.ToDoEntity
-import com.fastcampus.part5.chapter01.data.local.db.dao.ToDoDao
+import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.local.db.dao.ToDoDao
 
 @Database(
     entities =  [ToDoEntity::class],
