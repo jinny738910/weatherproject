@@ -3,7 +3,7 @@ package com.jinny.plancast.domain.todoUseCase
 import com.jinny.plancast.data.repository.ToDoRepository
 import com.jinny.plancast.domain.UseCase
 
-internal class DeleteAllToDoItemUseCase(
+class DeleteAllToDoItemUseCase(
     private val toDoRepository: ToDoRepository
 ): UseCase {
 

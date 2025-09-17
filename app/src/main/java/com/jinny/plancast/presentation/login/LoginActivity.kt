@@ -20,13 +20,13 @@ import com.jinny.plancast.presentation.login.SignUpState.Success
 import com.jinny.plancast.presentation.todo.detail.DetailActivity
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.list.ListActivity
+import com.jinny.plancast.presentation.weather.WeatherActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.Executor
 
 
-@Suppress("UNREACHABLE_CODE")
-internal class LoginActivity : BaseActivity<LoginViewModel>() {
+class LoginActivity : BaseActivity<LoginViewModel>() {
 
     override val viewModel: LoginViewModel by viewModel()
 
@@ -47,21 +47,6 @@ internal class LoginActivity : BaseActivity<LoginViewModel>() {
         }
 
 
-    companion object {
-        const val TODO_ID_KEY = "ToDoId"
-        const val DETAIL_MODE_KEY = "DetailMode"
-
-        const val FETCH_REQUEST_CODE = 10
-
-        fun getIntent(context: Context, detailMode: DetailMode) = Intent(context, DetailActivity::class.java).apply {
-            putExtra(DETAIL_MODE_KEY, detailMode)
-        }
-
-        fun getIntent(context: Context, id: Long, detailMode: DetailMode) = Intent(context, DetailActivity::class.java).apply {
-            putExtra(TODO_ID_KEY, id)
-            putExtra(DETAIL_MODE_KEY, detailMode)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,19 +73,18 @@ internal class LoginActivity : BaseActivity<LoginViewModel>() {
             viewModel.loginState.collect { state ->
                 when (state) {
                     is LoginState.Success -> {
-                        Toast.makeText(this@LoginActivity, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "login success!", Toast.LENGTH_SHORT).show()
                         // 메인 화면으로 이동
-                        val intent = Intent(this@LoginActivity, ListActivity::class.java)
+                        val intent = Intent(this@LoginActivity, WeatherActivity::class.java)
                         listLauncher.launch(intent)
-
                     }
 
                     is LoginState.Error -> {
-                        Toast.makeText(this@LoginActivity, "로그인 실패!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "login error!", Toast.LENGTH_SHORT).show()
                     }
                     // ... Loading, Idle 상태 처리
                     LoginState.Idle -> {
-
+                        Toast.makeText(this@LoginActivity, "login idle!", Toast.LENGTH_SHORT).show()
                     }
 
                     LoginState.Loading -> {
@@ -116,7 +100,7 @@ internal class LoginActivity : BaseActivity<LoginViewModel>() {
             viewModel.signupState.collect { state ->
                 when (state) {
                     is Success -> {
-                        Toast.makeText(this@LoginActivity, "회원가입 성공!", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@LoginActivity, "signup success!", Toast.LENGTH_SHORT)
                             .show()
                         // 메인 화면으로 이동
                         val intent = Intent(this@LoginActivity, ListActivity::class.java)
@@ -125,7 +109,7 @@ internal class LoginActivity : BaseActivity<LoginViewModel>() {
                     }
 
                     is SignUpState.Error -> {
-                        Toast.makeText(this@LoginActivity, "회원가입 실패!", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@LoginActivity, "signup error!", Toast.LENGTH_SHORT)
                             .show()
                     }
                     // ... Loading, Idle 상태 처리

@@ -23,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 
-internal class PaymentActivity : BaseActivity<PaymentViewModel>() {
+class PaymentActivity : BaseActivity<PaymentViewModel>() {
 
     override val viewModel: PaymentViewModel by viewModel()
 

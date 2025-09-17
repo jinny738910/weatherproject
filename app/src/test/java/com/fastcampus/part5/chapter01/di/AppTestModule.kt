@@ -9,7 +9,7 @@ import com.jinny.plancast.presentation.todo.detail.DetailViewModel
 import org.koin.dsl.module
 import org.koin.androidx.viewmodel.dsl.viewModel
 
-internal val appTestModule = module {
+val appTestModule = module {
 
     factory { GetToDoListUseCase(get()) }
     factory { GetToDoItemUseCase(get()) }

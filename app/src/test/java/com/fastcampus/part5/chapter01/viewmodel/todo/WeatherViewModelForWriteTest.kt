@@ -1,12 +1,12 @@
 package com.fastcampus.part5.chapter01.viewmodel.todo
 
-import com.jinny.plancast.data.entity.ToDoEntity
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.list.ListViewModel
 import com.jinny.plancast.presentation.todo.detail.DetailViewModel
 import com.jinny.plancast.presentation.todo.detail.ToDoDetailState
 import com.jinny.plancast.presentation.todo.list.ToDoListState
 import com.fastcampus.part5.chapter01.viewmodel.ViewModelTest
+import com.jinny.plancast.data.local.entity.ToDoEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

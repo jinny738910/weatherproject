@@ -19,9 +19,16 @@ import com.jinny.plancast.presentation.webView.WebViewActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-internal class WeatherActivity : BaseActivity<WeatherViewModel>() {
+class WeatherActivity : BaseActivity<WeatherViewModel>() {
 
     override val viewModel: WeatherViewModel by viewModel{
+        parametersOf(
+            intent?.getSerializableExtra(DETAIL_MODE_KEY),
+            intent.getLongExtra(TODO_ID_KEY, -1)
+        )
+    }
+
+    val SearchViewModel: SearchViewModel by viewModel{
         parametersOf(
             intent?.getSerializableExtra(DETAIL_MODE_KEY),
             intent.getLongExtra(TODO_ID_KEY, -1)
@@ -77,7 +84,8 @@ internal class WeatherActivity : BaseActivity<WeatherViewModel>() {
             }
             // "search" 경로 요청 시 SearchScreen을 보여줍니다.
             composable("search") {
-                SearchScreen(navController = navController)
+                SearchScreen(navController = navController, viewModel = SearchViewModel)
+//                SearchScreen(navController = navController)
             }
         }
     }

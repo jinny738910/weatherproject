@@ -1,7 +1,6 @@
 package com.jinny.plancast.presentation.weather
 
-import com.jinny.plancast.data.entity.ToDoEntity
-
+import com.jinny.plancast.data.local.entity.ToDoEntity
 
 sealed class WeatherState {
 

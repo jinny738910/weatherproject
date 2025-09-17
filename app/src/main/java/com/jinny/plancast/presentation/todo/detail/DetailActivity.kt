@@ -3,7 +3,6 @@ package com.jinny.plancast.presentation.todo.detail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.isGone
@@ -11,14 +10,11 @@ import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.util.concurrent.Executor
 
-internal class DetailActivity : BaseActivity<DetailViewModel>() {
+
+class DetailActivity : BaseActivity<DetailViewModel>() {
 
     private lateinit var binding: ActivityDetailBinding
-//    private lateinit var executor: Executor
-//    private lateinit var biometricPrompt: BiometricPrompt
-//    private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     override val viewModel: DetailViewModel by viewModel {
         parametersOf(
@@ -48,10 +44,8 @@ internal class DetailActivity : BaseActivity<DetailViewModel>() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val resultIntent = Intent()
-//        resultIntent.putExtra("result_key", "이것이 결과값입니다!")
-//        setResult(Activity.RESULT_OK, resultIntent)
-//        finish()
+        setResult(Activity.RESULT_OK)
+
     }
 
     override fun observeData() = viewModel.toDoDetailLiveData.observe(this@DetailActivity) {

@@ -1,7 +1,7 @@
 package com.jinny.plancast.data.repository
 
 import com.jinny.plancast.data.local.db.dao.ToDoDao
-import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.local.entity.ToDoEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

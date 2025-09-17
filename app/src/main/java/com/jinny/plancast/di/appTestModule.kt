@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.jinny.plancast.data.local.db.ToDoDatabase
 import com.jinny.plancast.data.repository.ToDoRepository
 import com.jinny.plancast.data.repository.DefaultToDoRepository
+import com.jinny.plancast.data.repository.PlaceRepositoryImpl
+import com.jinny.plancast.domain.repository.PlaceRepository
 import com.jinny.plancast.domain.todoUseCase.*
 import com.jinny.plancast.presentation.login.LoginViewModel
 import com.jinny.plancast.presentation.payment.PaymentViewModel
@@ -13,12 +15,13 @@ import com.jinny.plancast.presentation.weather.WeatherViewModel
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.detail.DetailViewModel
 import com.jinny.plancast.presentation.todo.list.ListViewModel
+import com.jinny.plancast.presentation.weather.SearchViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 
-internal val appModule = module {
+val appModule = module {
 
     single { Dispatchers.Main }
     single { Dispatchers.IO }
@@ -32,19 +35,22 @@ internal val appModule = module {
     factory { UpdateToDoUseCase(get()) }
 
     single<ToDoRepository> { DefaultToDoRepository(get(), get()) }
+    single<PlaceRepository> { PlaceRepositoryImpl(get())}
 
     single { provideDB(androidApplication()) }
     single { provideToDoDao(get()) }
 
-//    viewModel { ListViewModel(get(), get(), get()) }
+    viewModel { ListViewModel(get(), get(), get()) }
+//    viewModel { ListViewModel() }
     viewModel { LoginViewModel() }
-    viewModel { ListViewModel() }
     viewModel { PaymentViewModel() }
     viewModel { (detailMode: DetailMode, id: Long) -> DetailViewModel(detailMode, id, get(), get(), get(), get()) }
     viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id) }
+//    viewModel { (weatherMode: WeatherMode?, id: Long) -> SearchViewModel(weatherMode, id, get()) }
+    viewModel { (weatherMode: WeatherMode?, id: Long) -> SearchViewModel(weatherMode, id) }
 }
 
-internal fun provideDB(context: Context): ToDoDatabase =
+fun provideDB(context: Context): ToDoDatabase =
     Room.databaseBuilder(context, ToDoDatabase::class.java, ToDoDatabase.DB_NAME).build()
 
-internal fun provideToDoDao(database: ToDoDatabase) = database.toDoDao()
+fun provideToDoDao(database: ToDoDatabase) = database.toDoDao()

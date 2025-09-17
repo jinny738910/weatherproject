@@ -1,4 +1,4 @@
-package com.jinny.plancast.data.entity
+package com.jinny.plancast.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

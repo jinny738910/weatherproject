@@ -1,7 +1,7 @@
 package com.jinny.plancast.data.local.db.dao
 
 import androidx.room.*
-import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.local.entity.ToDoEntity
 
 @Dao
 interface ToDoDao {

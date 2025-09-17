@@ -1,6 +1,6 @@
 package com.jinny.plancast.presentation.todo.list
 
-import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.local.entity.ToDoEntity
 
 sealed class ToDoListState {
 

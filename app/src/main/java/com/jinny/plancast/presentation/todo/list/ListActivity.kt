@@ -17,11 +17,12 @@ import com.jinny.plancast.presentation.todo.detail.DetailActivity
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.view.ToDoAdapter
 import com.jinny.plancast.presentation.weather.WeatherActivity
+import com.jinny.plancast.presentation.weather.WeatherViewModel
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
-internal class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
+class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + Job()
@@ -72,19 +73,23 @@ internal class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
         }
 
         addToDoButton.setOnClickListener {
-            val intent = Intent(this@ListActivity, DetailActivity::class.java)
-            detailLauncher.launch(
-                DetailActivity.getIntent(this@ListActivity, DetailMode.WRITE)
-            )
-//            startActivityForResult(
-//                DetailActivity.getIntent(this@ListActivity, DetailMode.WRITE),
-//                DetailActivity.FETCH_REQUEST_CODE
+//            val intent = Intent(this@ListActivity, DetailActivity::class.java)
+//            detailLauncher.launch(
+//                DetailActivity.getIntent(this@ListActivity, DetailMode.WRITE)
 //            )
+            startActivityForResult(
+                DetailActivity.getIntent(this@ListActivity, DetailMode.WRITE),
+                DetailActivity.FETCH_REQUEST_CODE
+            )
         }
 
         weatherDetailsButton.setOnClickListener {
-            val intent = Intent(this@ListActivity, WeatherActivity::class.java)
-            weatherLauncher.launch(intent)
+//            val intent = Intent(this@ListActivity, WeatherActivity::class.java)
+//            weatherLauncher.launch(intent)
+            startActivityForResult(
+                WeatherActivity.getIntent(this@ListActivity, DetailMode.WRITE),
+                WeatherActivity.FETCH_REQUEST_CODE
+            )
         }
 
     }

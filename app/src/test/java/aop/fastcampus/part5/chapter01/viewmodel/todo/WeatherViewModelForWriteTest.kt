@@ -1,7 +1,7 @@
 package aop.fastcampus.part5.chapter01.viewmodel.todo
 
 import aop.fastcampus.part5.chapter01.viewmodel.ViewModelTest
-import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.local.entity.ToDoEntity
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.detail.DetailViewModel
 import com.jinny.plancast.presentation.todo.detail.ToDoDetailState

@@ -2,8 +2,8 @@ package com.jinny.plancast.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.jinny.plancast.data.entity.ToDoEntity
 import com.jinny.plancast.data.local.db.dao.ToDoDao
+import com.jinny.plancast.data.local.entity.ToDoEntity
 
 @Database(
     entities =  [ToDoEntity::class],

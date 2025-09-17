@@ -1,6 +1,6 @@
 package aop.fastcampus.part5.chapter01.data.repository
 
-import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.local.entity.ToDoEntity
 import com.jinny.plancast.data.repository.ToDoRepository
 
 class TestToDoRepository: ToDoRepository {

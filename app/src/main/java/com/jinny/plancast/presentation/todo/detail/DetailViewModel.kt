@@ -3,7 +3,7 @@ package com.jinny.plancast.presentation.todo.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.jinny.plancast.data.entity.ToDoEntity
+import com.jinny.plancast.data.local.entity.ToDoEntity
 import com.jinny.plancast.domain.todoUseCase.DeleteToDoItemUseCase
 import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
 import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
@@ -12,7 +12,7 @@ import com.jinny.plancast.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-internal class DetailViewModel(
+class DetailViewModel(
     var detailMode: DetailMode,
     var id: Long = -1,
     private val getToDoItemUseCase: GetToDoItemUseCase,
