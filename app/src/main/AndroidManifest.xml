@@ -13,38 +13,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Aoppart5chapter01">
-        <activity android:name=".presentation.todo.list.ListActivity"
+        <activity
+            android:name=".presentation.todo.list.ListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.login.LoginActivity"
             android:exported="true">
-        </activity>
-        <activity android:name=".presentation.login.LoginActivity"
-            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".presentation.payment.PaymentActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
         <activity android:name=".presentation.todo.detail.DetailActivity"
             android:exported="true">
         </activity>
         <activity android:name=".presentation.webView.WebViewActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-    </activity>
+        </activity>
         <activity android:name=".presentation.weather.WeatherActivity"
             android:exported="true">
             <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyAVcTJRgBN1haBWQL4PwZ-VIy9fRgAi3es" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

@@ -7,7 +7,14 @@ import androidx.room.PrimaryKey
 data class ToDoEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val title: String,
+    val date: String,
+    val destination: String,
     val description: String,
+    val image: String,
     val hasCompleted: Boolean = false,
+    val isClimate: Boolean = false,
+    val isLocation: Boolean = false,
+    val isFinancial: Boolean = false,
+    val isRepeat: Boolean = false,
     val isLock: Boolean = false
 )

@@ -7,7 +7,7 @@ import com.jinny.plancast.data.local.entity.ToDoEntity
 
 @Database(
     entities =  [ToDoEntity::class],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 abstract class ToDoDatabase: RoomDatabase() {

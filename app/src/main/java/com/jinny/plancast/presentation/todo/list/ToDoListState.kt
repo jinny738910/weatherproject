@@ -12,6 +12,8 @@ sealed class ToDoListState {
         val toDoList: List<ToDoEntity>
     ): ToDoListState()
 
-    object Error: ToDoListState()
+    data class Error(
+        val message: String
+    ): ToDoListState()
 
 }

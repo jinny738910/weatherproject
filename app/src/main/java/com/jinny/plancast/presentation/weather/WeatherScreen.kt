@@ -107,13 +107,9 @@ fun WebViewSection(navController: NavController, viewModel:WeatherViewModel) {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Icon(
-                Icons.Default.LocationOn,
-                contentDescription = "현재 위치 아이콘",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
-            )
+
             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-            Text("현재 위치로 설정")
+            Text("자세한 정보 보러가기")
         }
     }
 }

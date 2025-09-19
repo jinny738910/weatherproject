@@ -4,10 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityDetailBinding
+import com.jinny.plancast.presentation.payment.PaymentActivity
+import com.jinny.plancast.presentation.todo.list.ListActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -22,6 +28,18 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
             intent.getLongExtra(TODO_ID_KEY, -1)
         )
     }
+
+    private val paymentLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // 결과가 돌아왔을 때 이 람다 블록이 실행됩니다.
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 성공적인 결과를 처리합니다.
+                val data: Intent? = result.data
+                val message = data?.getStringExtra("result_key")
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                viewModel.fetchData()
+            }
+        }
 
     companion object {
         const val TODO_ID_KEY = "ToDoId"
@@ -67,7 +85,8 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
                 finish()
             }
             is ToDoDetailState.Error -> {
-                Toast.makeText(this, "에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "오류: ${it.message}", Toast.LENGTH_LONG).show()
+                Log.d("DetailActivity", "오류: ${it.message}")
                 finish()
             }
             is ToDoDetailState.Write -> {
@@ -84,6 +103,7 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         modifyButton.isGone = true
         updateButton.isGone = true
 
+
         deleteButton.setOnClickListener {
             viewModel.deleteToDo()
         }
@@ -93,8 +113,29 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         updateButton.setOnClickListener {
             viewModel.writeToDo(
                 title = titleInput.text.toString(),
-                description = descriptionInput.text.toString()
+                date = timeInput.text.toString(),
+                destination = destinationInput.text.toString(),
+                description = descriptionInput.text.toString(),
+                image = imageInput.text.toString(),
+                isClimate = weatherAlarmCheckbox.isChecked,
+                isLocation = locationAlarmCheckbox.isChecked,
+                isFinancial = financialAlarmCheckbox.isChecked,
+                isRepeat = repeatCheckbox.isChecked,
+                isLock = lockCheckbox.isChecked
             )
+        }
+
+        financialButton.setOnClickListener {
+            val intent = Intent(this@DetailActivity, PaymentActivity::class.java)
+            paymentLauncher.launch(intent)
+//            val destination = destinationInput.text.toString()
+//            if (destination.isNotEmpty()) {
+//                startActivity(Intent(this@DetailActivity, com.jinny.plancast.presentation.financial.FinancialActivity::class.java).apply {
+//                    putExtra("destination", destination)
+//                })
+//            } else {
+//                Toast.makeText(this@DetailActivity, "목적지를 입력해주세요.", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 
@@ -127,9 +168,24 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         deleteButton.isGone = false
         modifyButton.isGone = false
         updateButton.isGone = true
+        financialButton.isGone = true
 
         val toDoItem = state.toDoItem
         titleInput.setText(toDoItem.title)
         descriptionInput.setText(toDoItem.description)
+        timeInput.setText(toDoItem.date)
+        destinationInput.setText(toDoItem.destination)
+        imageInput.setText(toDoItem.image)
+        weatherAlarmCheckbox.isChecked = toDoItem.isClimate
+        locationAlarmCheckbox.isChecked = toDoItem.isLocation
+        financialAlarmCheckbox.isChecked = toDoItem.isFinancial
+        repeatCheckbox.isChecked = toDoItem.isRepeat
+
+        Log.d("DetailActivity", "is Financial : $(toDoItem.isFinancial)")
+
+        if(financialAlarmCheckbox.isChecked){
+            Log.d("DetailActivity", "isFinancial true")
+            financialButton.isGone = false
+        }
     }
 }

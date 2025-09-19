@@ -20,18 +20,32 @@ class ListViewModel(
     val toDoListLiveData: LiveData<ToDoListState> = _toDoListLiveData
 
     override fun fetchData(): Job = viewModelScope.launch {
-        _toDoListLiveData.postValue(ToDoListState.Loading)
-        _toDoListLiveData.postValue(ToDoListState.Suceess(getToDoListUseCase()))
+        try {
+            _toDoListLiveData.postValue(ToDoListState.Loading)
+            val toDoList = getToDoListUseCase()
+            _toDoListLiveData.postValue(ToDoListState.Suceess(toDoList))
+        } catch (e: Exception) {
+            _toDoListLiveData.postValue(ToDoListState.Error(e.message ?: "데이터를 불러오는데 실패했습니다"))
+        }
     }
 
     fun updateEntity(toDoEntity: ToDoEntity) = viewModelScope.launch {
-        updateToDoUseCase(toDoEntity)
+        try {
+            updateToDoUseCase(toDoEntity)
+        } catch (e: Exception) {
+            _toDoListLiveData.postValue(ToDoListState.Error(e.message ?: "업데이트에 실패했습니다"))
+        }
     }
 
     fun deleteAll() = viewModelScope.launch {
-        _toDoListLiveData.postValue(ToDoListState.Loading)
-        deleteAllToDoItemUseCase()
-        _toDoListLiveData.postValue(ToDoListState.Suceess(getToDoListUseCase()))
+        try {
+            _toDoListLiveData.postValue(ToDoListState.Loading)
+            deleteAllToDoItemUseCase()
+            val toDoList = getToDoListUseCase()
+            _toDoListLiveData.postValue(ToDoListState.Suceess(toDoList))
+        } catch (e: Exception) {
+            _toDoListLiveData.postValue(ToDoListState.Error(e.message ?: "삭제에 실패했습니다"))
+        }
     }
 
 }

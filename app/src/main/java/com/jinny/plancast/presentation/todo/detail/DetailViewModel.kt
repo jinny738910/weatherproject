@@ -1,5 +1,6 @@
 package com.jinny.plancast.presentation.todo.detail
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -34,12 +35,14 @@ class DetailViewModel(
                 try {
                     getToDoItemUseCase(id)?.let {
                         _toDoDetailLiveData.postValue(ToDoDetailState.Success(it))
+                        Log.d("DetailViewModel", "fetch detail mode : isClimate, isLocation, isFinancial: $it.isClimate, $it.sLocation, $it.isFinancial")
+
                     } ?: kotlin.run {
-                        _toDoDetailLiveData.postValue(ToDoDetailState.Error)
+                        _toDoDetailLiveData.postValue(ToDoDetailState.Error("데이터를 찾을 수 없습니다"))
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    _toDoDetailLiveData.postValue(ToDoDetailState.Error)
+                    _toDoDetailLiveData.postValue(ToDoDetailState.Error(e.message ?: "데이터를 불러오는데 실패했습니다"))
                 }
             }
         }
@@ -52,7 +55,7 @@ class DetailViewModel(
             _toDoDetailLiveData.postValue(ToDoDetailState.Delete)
         } catch (e: Exception) {
             e.printStackTrace()
-            _toDoDetailLiveData.postValue(ToDoDetailState.Error)
+            _toDoDetailLiveData.postValue(ToDoDetailState.Error(e.message ?: "삭제에 실패했습니다"))
         }
     }
 
@@ -60,32 +63,60 @@ class DetailViewModel(
         _toDoDetailLiveData.postValue(ToDoDetailState.Modify)
     }
 
-    fun writeToDo(title: String, description: String) = viewModelScope.launch {
+    fun writeToDo(
+        title: String,
+        date: String,
+        destination: String,
+        description: String,
+        image: String,
+        isClimate: Boolean,
+        isLocation: Boolean,
+        isFinancial: Boolean,
+        isRepeat: Boolean,
+        isLock: Boolean
+    ) = viewModelScope.launch {
         _toDoDetailLiveData.postValue(ToDoDetailState.Loading)
         when (detailMode) {
             DetailMode.WRITE -> {
                 try {
-                    val toDoEntity = ToDoEntity(title = title, description =  description)
+                    val toDoEntity = ToDoEntity(
+                        title = title,
+                        date = date,
+                        destination = destination,
+                        description = description,
+                        image = image,
+                        hasCompleted = false,
+                        isClimate = isClimate,
+                        isLocation = isLocation,
+                        isFinancial = isFinancial,
+                        isRepeat = isRepeat,
+                        isLock = isLock
+                    )
                     id = insertToDoUseCase(toDoEntity)
                     _toDoDetailLiveData.postValue(ToDoDetailState.Success(toDoEntity))
+                    Log.d("DetailViewModel", "write mode : isClimate, isLocation, isFinancial: $isClimate, $isLocation, $isFinancial")
                     detailMode = DetailMode.DETAIL
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    _toDoDetailLiveData.postValue(ToDoDetailState.Error)
+                    _toDoDetailLiveData.postValue(ToDoDetailState.Error(e.message ?: "저장에 실패했습니다"))
                 }
             }
             DetailMode.DETAIL -> {
                 try {
                     getToDoItemUseCase(id)?.let {
-                        val updateToDoEntity = it.copy(title = title, description = description)
+                        val updateToDoEntity = it.copy(title = title, description = description, date = date,
+                            destination = destination, image = image, isClimate = isClimate,
+                            isLocation = isLocation, isFinancial = isFinancial, isRepeat = isRepeat,
+                            isLock = isLock)
                         updateToDoUseCase(updateToDoEntity)
                         _toDoDetailLiveData.postValue(ToDoDetailState.Success(updateToDoEntity))
+                        Log.d("DetailViewModel", "detail mode : isClimate, isLocation, isFinancial: $isClimate, $isLocation, $isFinancial")
                     } ?: kotlin.run {
-                        _toDoDetailLiveData.postValue(ToDoDetailState.Error)
+                        _toDoDetailLiveData.postValue(ToDoDetailState.Error("업데이트할 데이터를 찾을 수 없습니다"))
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    _toDoDetailLiveData.postValue(ToDoDetailState.Error)
+                    _toDoDetailLiveData.postValue(ToDoDetailState.Error(e.message ?: "업데이트에 실패했습니다"))
                 }
             }
         }

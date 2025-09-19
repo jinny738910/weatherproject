@@ -73,23 +73,15 @@ class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
         }
 
         addToDoButton.setOnClickListener {
-//            val intent = Intent(this@ListActivity, DetailActivity::class.java)
-//            detailLauncher.launch(
-//                DetailActivity.getIntent(this@ListActivity, DetailMode.WRITE)
-//            )
-            startActivityForResult(
-                DetailActivity.getIntent(this@ListActivity, DetailMode.WRITE),
-                DetailActivity.FETCH_REQUEST_CODE
+            val intent = Intent(this@ListActivity, DetailActivity::class.java)
+            detailLauncher.launch(
+                DetailActivity.getIntent(this@ListActivity, DetailMode.WRITE)
             )
         }
 
         weatherDetailsButton.setOnClickListener {
-//            val intent = Intent(this@ListActivity, WeatherActivity::class.java)
-//            weatherLauncher.launch(intent)
-            startActivityForResult(
-                WeatherActivity.getIntent(this@ListActivity, DetailMode.WRITE),
-                WeatherActivity.FETCH_REQUEST_CODE
-            )
+            val intent = Intent(this@ListActivity, WeatherActivity::class.java)
+            weatherLauncher.launch(intent)
         }
 
     }
@@ -107,7 +99,7 @@ class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
                     handleSuccessState(it)
                 }
                 is ToDoListState.Error -> {
-
+                    handleErrorState(it)
                 }
             }
         }
@@ -141,6 +133,12 @@ class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
         }
     }
 
+    private fun handleErrorState(state: ToDoListState.Error) = with(binding) {
+        refreshLayout.isRefreshing = false
+        Toast.makeText(this@ListActivity, "오류: ${state.message}", Toast.LENGTH_LONG).show()
+    }
+
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == DetailActivity.FETCH_REQUEST_CODE && resultCode == Activity.RESULT_OK) {

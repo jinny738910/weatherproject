@@ -26,6 +26,15 @@ val appModule = module {
     single { Dispatchers.Main }
     single { Dispatchers.IO }
 
+    // 데이터베이스 관련 의존성을 먼저 정의
+    single { provideDB(androidApplication()) }
+    single { provideToDoDao(get()) }
+
+    // Repository 정의
+    single<ToDoRepository> { DefaultToDoRepository(get(), get()) }
+    single<PlaceRepository> { PlaceRepositoryImpl(get())}
+
+    // UseCase 정의 (Repository에 의존)
     factory { GetToDoListUseCase(get()) }
     factory { GetToDoItemUseCase(get()) }
     factory { InsertToDoListUseCase(get()) }
@@ -34,12 +43,7 @@ val appModule = module {
     factory { DeleteAllToDoItemUseCase(get()) }
     factory { UpdateToDoUseCase(get()) }
 
-    single<ToDoRepository> { DefaultToDoRepository(get(), get()) }
-    single<PlaceRepository> { PlaceRepositoryImpl(get())}
-
-    single { provideDB(androidApplication()) }
-    single { provideToDoDao(get()) }
-
+    // ViewModel 정의 (UseCase에 의존)
     viewModel { ListViewModel(get(), get(), get()) }
 //    viewModel { ListViewModel() }
     viewModel { LoginViewModel() }
@@ -51,6 +55,8 @@ val appModule = module {
 }
 
 fun provideDB(context: Context): ToDoDatabase =
-    Room.databaseBuilder(context, ToDoDatabase::class.java, ToDoDatabase.DB_NAME).build()
+    Room.databaseBuilder(context, ToDoDatabase::class.java, ToDoDatabase.DB_NAME)
+        .fallbackToDestructiveMigration()
+        .build()
 
 fun provideToDoDao(database: ToDoDatabase) = database.toDoDao()

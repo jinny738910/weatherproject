@@ -51,7 +51,10 @@ internal class WeatherViewModelForWriteTest : ViewModelTest() {
 
         detailViewModel.writeToDo(
             title = todo.title,
-            description = todo.description
+            description = todo.description,
+            time = timeInput.text.toString(),
+            destination = destinationInput.text.toString(),
+            image = imageInput.text.toString()
         )
 
         detailTestObservable.assertValueSequence(

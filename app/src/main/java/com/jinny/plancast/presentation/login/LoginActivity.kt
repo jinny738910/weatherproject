@@ -75,7 +75,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                     is LoginState.Success -> {
                         Toast.makeText(this@LoginActivity, "login success!", Toast.LENGTH_SHORT).show()
                         // 메인 화면으로 이동
-                        val intent = Intent(this@LoginActivity, WeatherActivity::class.java)
+                        val intent = Intent(this@LoginActivity, ListActivity::class.java)
                         listLauncher.launch(intent)
                     }
 

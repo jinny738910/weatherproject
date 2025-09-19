@@ -20,7 +20,7 @@ abstract class BaseActivity<VM: BaseViewModel>: AppCompatActivity() {
     abstract fun observeData()
 
     override fun onDestroy() {
-        if (fetchJob.isActive) {
+        if (::fetchJob.isInitialized && fetchJob.isActive) {
             fetchJob.cancel()
         }
         super.onDestroy()

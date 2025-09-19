@@ -17,7 +17,9 @@ sealed class ToDoDetailState {
 
     object Modify: ToDoDetailState()
 
-    object Error: ToDoDetailState()
+    data class Error(
+        val message: String
+    ): ToDoDetailState()
 
     object Write: ToDoDetailState()
 }
