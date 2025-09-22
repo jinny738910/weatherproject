@@ -22,6 +22,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "MAPS_API_KEY", "\"AIzaSyAbxQ-SBDJI_I-aQy6rGwoJmR-8aH-pHs8\"")
+        buildConfigField("String", "WEATHER_API_KEY", "\"YOUR_API_KEY\"")
     }
 
     buildTypes {
@@ -139,4 +140,11 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:4.4.1")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("com.google.android.libraries.places:places:3.5.0")
+
+    // 1. Retrofit (핵심 라이브러리)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // 2. Gson Converter (JSON 데이터 파싱용)
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // 3. OkHttp Logging Interceptor (네트워크 통신 로그 확인용 - 권장)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }

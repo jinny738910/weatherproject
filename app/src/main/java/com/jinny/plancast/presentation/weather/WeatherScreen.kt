@@ -41,7 +41,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.jinny.plancast.domain.model.PlacePrediction
+import com.jinny.plancast.domain.model.WeatherCategory
 import com.jinny.plancast.domain.model.WeatherInfo
+import com.jinny.plancast.domain.repository.PlaceRepository
 import com.jinny.plancast.domain.repository.WeatherRepository
 import com.jinny.plancast.domain.weatherUseCase.GetShortTermForecastUseCase
 import com.jinny.plancast.domain.weatherUseCase.GetUltraShortTermForecastUseCase
@@ -259,7 +261,20 @@ private class FakeRepository : WeatherRepository {
         nx: Int,
         ny: Int
     ): Result<List<WeatherInfo>> {
-        TODO("Not yet implemented")
+
+        val dummyInfo = listOf(
+            WeatherInfo(WeatherCategory.REH, "65","dfsdf","safsd"), // 습도
+            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf","dfafdd"), // 풍속
+            WeatherInfo(WeatherCategory.PTY, "0","dfsa","sdfsdf"), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
+            WeatherInfo(WeatherCategory.VEC, "180","fadsf","dfafd"), // 풍향
+            WeatherInfo(WeatherCategory.SKY, "1","dafd","fsafd")  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
+        )
+
+        return if (true) {
+            Result.failure(Exception("네트워크 오류 발생"))
+        } else {
+            Result.success(dummyInfo)
+        }
     }
 
     override suspend fun getUltraShortTermForecast(
@@ -268,9 +283,22 @@ private class FakeRepository : WeatherRepository {
         nx: Int,
         ny: Int
     ): Result<List<WeatherInfo>> {
-        TODO("Not yet implemented")
+        val dummyInfo = listOf(
+            WeatherInfo(WeatherCategory.REH, "65","dfsdf","safsd"), // 습도
+            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf","dfafdd"), // 풍속
+            WeatherInfo(WeatherCategory.PTY, "0","dfsa","sdfsdf"), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
+            WeatherInfo(WeatherCategory.VEC, "180","fadsf","dfafd"), // 풍향
+            WeatherInfo(WeatherCategory.SKY, "1","dafd","fsafd")  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
+        )
+
+        return if (true) {
+            Result.failure(Exception("네트워크 오류 발생"))
+        } else {
+            Result.success(dummyInfo)
+        }
     }
 }
+
 
 private class FakeShortTermUseCase : GetShortTermForecastUseCase(
     weatherRepository = FakeRepository()
@@ -281,7 +309,19 @@ private class FakeShortTermUseCase : GetShortTermForecastUseCase(
         nx: Int,
         ny: Int
     ): Result<List<WeatherInfo>> {
-        TODO("Not yet implemented")
+        val dummyInfo = listOf(
+            WeatherInfo(WeatherCategory.REH, "65","dfsdf","safsd"), // 습도
+            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf","dfafdd"), // 풍속
+            WeatherInfo(WeatherCategory.PTY, "0","dfsa","sdfsdf"), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
+            WeatherInfo(WeatherCategory.VEC, "180","fadsf","dfafd"), // 풍향
+            WeatherInfo(WeatherCategory.SKY, "1","dafd","fsafd")  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
+        )
+
+        return if (true) {
+            Result.failure(Exception("네트워크 오류 발생"))
+        } else {
+            Result.success(dummyInfo)
+        }
     }
 }
 
@@ -294,7 +334,19 @@ private class FakeUltraTermUseCase : GetUltraShortTermForecastUseCase(
         nx: Int,
         ny: Int
     ): Result<List<WeatherInfo>> {
-        TODO("Not yet implemented")
+        val dummyInfo = listOf(
+            WeatherInfo(WeatherCategory.REH, "65","dfsdf","safsd"), // 습도
+            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf","dfafdd"), // 풍속
+            WeatherInfo(WeatherCategory.PTY, "0","dfsa","sdfsdf"), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
+            WeatherInfo(WeatherCategory.VEC, "180","fadsf","dfafd"), // 풍향
+            WeatherInfo(WeatherCategory.SKY, "1","dafd","fsafd")  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
+        )
+
+        return if (true) {
+            Result.failure(Exception("네트워크 오류 발생"))
+        } else {
+            Result.success(dummyInfo)
+        }
     }
 }
 
@@ -309,8 +361,8 @@ fun DefaultPreview() {
     val fakeViewModel = WeatherViewModel(
         weatherMode = WeatherMode.WRITE,
         id = -1L,
-//        getShortTermForecastUseCase = FakeShortTermUseCase(),
-//        getUltraShortTermForecastUseCase = FakeUltraTermUseCase()
+        getShortTermForecastUseCase = FakeShortTermUseCase(),
+        getUltraShortTermForecastUseCase = FakeUltraTermUseCase()
     )
 
     MaterialTheme {

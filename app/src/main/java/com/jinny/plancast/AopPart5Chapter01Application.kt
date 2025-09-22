@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import com.jinny.plancast.BuildConfig
+import com.jinny.plancast.data.api.networkModule
 
 class AopPart5Chapter01Application: Application() {
 
@@ -27,7 +28,7 @@ class AopPart5Chapter01Application: Application() {
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@AopPart5Chapter01Application)
-            modules(appModule)
+            modules(appModule, networkModule)
 
         }
 

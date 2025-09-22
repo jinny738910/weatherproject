@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
 class WeatherViewModel(
     var weatherMode: WeatherMode?,
     var id: Long = -1,
-//    private val getShortTermForecastUseCase: GetShortTermForecastUseCase,
-//    private val getUltraShortTermForecastUseCase: GetUltraShortTermForecastUseCase
+    private val getShortTermForecastUseCase: GetShortTermForecastUseCase,
+    private val getUltraShortTermForecastUseCase: GetUltraShortTermForecastUseCase
 ) : BaseViewModel() {
 
     private val _weatherState = MutableStateFlow<List<WeatherInfo>>(emptyList())

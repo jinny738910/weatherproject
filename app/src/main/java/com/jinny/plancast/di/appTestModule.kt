@@ -2,12 +2,18 @@ package com.jinny.plancast.di
 
 import android.content.Context
 import androidx.room.Room
+import com.jinny.plancast.BuildConfig
+import com.jinny.plancast.data.api.WeatherApiService
 import com.jinny.plancast.data.local.db.ToDoDatabase
 import com.jinny.plancast.data.repository.ToDoRepository
 import com.jinny.plancast.data.repository.DefaultToDoRepository
 import com.jinny.plancast.data.repository.PlaceRepositoryImpl
+import com.jinny.plancast.data.repository.WeatherRepositoryImpl
 import com.jinny.plancast.domain.repository.PlaceRepository
+import com.jinny.plancast.domain.repository.WeatherRepository
 import com.jinny.plancast.domain.todoUseCase.*
+import com.jinny.plancast.domain.weatherUseCase.GetShortTermForecastUseCase
+import com.jinny.plancast.domain.weatherUseCase.GetUltraShortTermForecastUseCase
 import com.jinny.plancast.presentation.login.LoginViewModel
 import com.jinny.plancast.presentation.payment.PaymentViewModel
 import com.jinny.plancast.presentation.weather.WeatherMode
@@ -20,19 +26,26 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 
 val appModule = module {
+
+    val ApiKeyQualifier = named("ApiKey")
 
     single { Dispatchers.Main }
     single { Dispatchers.IO }
 
+    single(ApiKeyQualifier) { BuildConfig.WEATHER_API_KEY }
     // 데이터베이스 관련 의존성을 먼저 정의
     single { provideDB(androidApplication()) }
     single { provideToDoDao(get()) }
 
     // Repository 정의
     single<ToDoRepository> { DefaultToDoRepository(get(), get()) }
+    single<ToDoRepository> { DefaultToDoRepository(get(), get()) }
     single<PlaceRepository> { PlaceRepositoryImpl(get())}
+    single<WeatherRepository> { WeatherRepositoryImpl(apiService = get(), apiKey = get(ApiKeyQualifier))}
+
 
     // UseCase 정의 (Repository에 의존)
     factory { GetToDoListUseCase(get()) }
@@ -43,14 +56,17 @@ val appModule = module {
     factory { DeleteAllToDoItemUseCase(get()) }
     factory { UpdateToDoUseCase(get()) }
 
+    factory { GetShortTermForecastUseCase(get()) }
+    factory { GetUltraShortTermForecastUseCase(get()) }
+
     // ViewModel 정의 (UseCase에 의존)
     viewModel { ListViewModel(get(), get(), get()) }
 //    viewModel { ListViewModel() }
     viewModel { LoginViewModel() }
     viewModel { PaymentViewModel() }
     viewModel { (detailMode: DetailMode, id: Long) -> DetailViewModel(detailMode, id, get(), get(), get(), get()) }
-//    viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id, get(), get()) }
-    viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id) }
+    viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id, get(), get()) }
+//    viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id) }
 //    viewModel { (weatherMode: WeatherMode?, id: Long) -> SearchViewModel(weatherMode, id, get()) }
     viewModel { (weatherMode: WeatherMode?, id: Long) -> SearchViewModel(weatherMode, id, get()) }
 }
