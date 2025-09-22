@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jinny.plancast.presentation.payment.PaymentUiState
+import com.jinny.plancast.presentation.payment.PaymentViewModel
+import com.jinny.plancast.presentation.weather.SearchViewModel
+import com.jinny.plancast.presentation.weather.WeatherMode
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -22,6 +26,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreen(
+    viewModel: PaymentViewModel,
     state: PaymentUiState,
     onPayClick: () -> Unit,
     onMethodChangeClick: () -> Unit,
@@ -180,14 +185,20 @@ fun PaymentMethodDialog(
     )
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
 fun PaymentScreenPreview() {
     var showDialog by remember { mutableStateOf(false) }
     var state by remember { mutableStateOf(PaymentUiState()) }
 
+    val fakeViewModel = PaymentViewModel(
+        id = -1
+    )
+
     MaterialTheme {
         PaymentScreen(
+            viewModel = fakeViewModel,
             state = state,
             onPayClick = { /*TODO*/ },
             onMethodChangeClick = { showDialog = true },

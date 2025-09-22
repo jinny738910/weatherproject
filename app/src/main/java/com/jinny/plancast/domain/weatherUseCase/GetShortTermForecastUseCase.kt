@@ -7,10 +7,10 @@ import com.jinny.plancast.domain.repository.WeatherRepository
  * 단기 예보 정보를 가져오는 Usecase
  * @param weatherRepository WeatherRepository 의존성 주입
  */
-class GetShortTermForecastUseCase(
+open class GetShortTermForecastUseCase(
     private val weatherRepository: WeatherRepository
 ) {
-    suspend operator fun invoke(
+    open suspend operator fun invoke(
         baseDate: String,
         baseTime: String,
         nx: Int,

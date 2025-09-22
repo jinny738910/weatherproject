@@ -21,6 +21,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "MAPS_API_KEY", "\"AIzaSyAbxQ-SBDJI_I-aQy6rGwoJmR-8aH-pHs8\"")
     }
 
     buildTypes {
@@ -44,6 +45,7 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
 
 }
 

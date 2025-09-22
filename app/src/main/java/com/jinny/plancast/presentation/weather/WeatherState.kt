@@ -1,6 +1,7 @@
 package com.jinny.plancast.presentation.weather
 
 import com.jinny.plancast.data.local.entity.ToDoEntity
+import com.jinny.plancast.domain.model.WeatherInfo
 
 sealed class WeatherState {
 
@@ -9,7 +10,7 @@ sealed class WeatherState {
     object Loading: WeatherState()
 
     data class Success(
-        val toDoItem: ToDoEntity
+        val weatherInfo: WeatherInfo
     ): WeatherState()
 
     object Delete: WeatherState()

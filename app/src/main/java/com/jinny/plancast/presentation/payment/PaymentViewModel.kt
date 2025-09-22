@@ -1,8 +1,16 @@
 package com.jinny.plancast.presentation.payment
 
+import android.app.Activity
+import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.wallet.AutoResolveHelper
+import com.google.android.gms.wallet.IsReadyToPayRequest
+import com.google.android.gms.wallet.PaymentData
+import com.google.android.gms.wallet.PaymentDataRequest
 import com.jinny.plancast.domain.todoUseCase.DeleteToDoItemUseCase
 import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
 import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
@@ -16,6 +24,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 
 class PaymentViewModel(
     var id: Long = -1,
@@ -52,9 +62,4 @@ class PaymentViewModel(
 //            }
     }
 
-    fun onOpenActivityClick() {
-        viewModelScope.launch {
-//            _paymentStateEvent.emit() // Activity에 신호 보내기
-        }
-    }
 }

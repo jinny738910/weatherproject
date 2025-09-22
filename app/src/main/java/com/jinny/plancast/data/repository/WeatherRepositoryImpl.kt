@@ -1,5 +1,6 @@
 package com.jinny.plancast.data.repository
 
+import android.util.Log
 import com.jinny.plancast.domain.model.WeatherInfo
 import com.jinny.plancast.domain.repository.WeatherRepository
 import com.jinny.plancast.data.api.WeatherApiService
@@ -29,6 +30,7 @@ class WeatherRepositoryImpl (
                 nx = nx,
                 ny = ny
             )
+            Log.d("WeatherRepositoryImpl", "getShortTermForecast 메세지: ${response.response.header.resultMsg}")
             // API 응답 코드 확인 (성공 시 "00")
             if (response.response.header.resultCode == "00") {
                 Result.success(response.response.body.items.item.map { it.toDomain() })
@@ -54,6 +56,7 @@ class WeatherRepositoryImpl (
                 nx = nx,
                 ny = ny
             )
+            Log.d("WeatherRepositoryImpl", "getUltraShortTermForecast 메세지: ${response.response.header.resultMsg}")
             if (response.response.header.resultCode == "00") {
                 Result.success(response.response.body.items.item.map { it.toDomain() })
             } else {

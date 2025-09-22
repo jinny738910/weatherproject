@@ -49,9 +49,10 @@ val appModule = module {
     viewModel { LoginViewModel() }
     viewModel { PaymentViewModel() }
     viewModel { (detailMode: DetailMode, id: Long) -> DetailViewModel(detailMode, id, get(), get(), get(), get()) }
+//    viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id, get(), get()) }
     viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id) }
 //    viewModel { (weatherMode: WeatherMode?, id: Long) -> SearchViewModel(weatherMode, id, get()) }
-    viewModel { (weatherMode: WeatherMode?, id: Long) -> SearchViewModel(weatherMode, id) }
+    viewModel { (weatherMode: WeatherMode?, id: Long) -> SearchViewModel(weatherMode, id, get()) }
 }
 
 fun provideDB(context: Context): ToDoDatabase =

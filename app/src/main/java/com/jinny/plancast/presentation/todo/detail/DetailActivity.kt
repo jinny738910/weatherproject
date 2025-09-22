@@ -61,9 +61,6 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        setResult(Activity.RESULT_OK)
-
     }
 
     override fun observeData() = viewModel.toDoDetailLiveData.observe(this@DetailActivity) {

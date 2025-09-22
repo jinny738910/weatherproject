@@ -1,5 +1,6 @@
 package com.jinny.plancast.presentation.weather
 
+import MapScreen
 import SearchScreen
 import WeatherScreen
 import android.content.Context
@@ -7,8 +8,11 @@ import android.content.Intent
 import android.os.Bundle
 
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -73,6 +77,9 @@ class WeatherActivity : BaseActivity<WeatherViewModel>() {
 
     @Composable
     fun WeatherAppNavigation() {
+
+        val searchResults by SearchViewModel.searchResults.collectAsState()
+
         // 1. 화면 이동을 제어하는 NavController를 생성합니다.
         val navController = rememberNavController()
 
@@ -84,8 +91,17 @@ class WeatherActivity : BaseActivity<WeatherViewModel>() {
             }
             // "search" 경로 요청 시 SearchScreen을 보여줍니다.
             composable("search") {
-                SearchScreen(navController = navController, viewModel = SearchViewModel)
-//                SearchScreen(navController = navController)
+                SearchScreen(navController = navController, viewModel = SearchViewModel, onSerachIconClick = {
+                    // 검색 아이콘 클릭 시 "weather" 화면으로 이동
+                    navController.navigate("weather")
+                })
+            }
+            composable(
+                "map"
+//                route = "map/{placeId}",
+//                arguments = listOf(navArgument("placeId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                MapScreen(placeId = backStackEntry.arguments?.getString("placeId"))
             }
         }
     }

@@ -29,7 +29,8 @@ fun MapScreen(placeId: String?) {
         Marker(
             state = MarkerState(position = location),
             title = "선택된 위치",
-            snippet = "Place ID: $placeId"
+//            snippet = "Place ID: $placeId"
+            snippet = "Place ID: ChIJ0ay8ZjShfDURq_YqSP_HC7c"
         )
     }
 }

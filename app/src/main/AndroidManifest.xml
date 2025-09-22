@@ -13,6 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Aoppart5chapter01">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAbxQ-SBDJI_I-aQy6rGwoJmR-8aH-pHs8" />
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
         <activity
             android:name=".presentation.todo.list.ListActivity"
             android:exported="true" />
@@ -37,7 +43,7 @@
             android:exported="true">
             <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyAVcTJRgBN1haBWQL4PwZ-VIy9fRgAi3es" />
+                android:value="AIzaSyAbxQ-SBDJI_I-aQy6rGwoJmR-8aH-pHs8" />
         </activity>
     </application>
 

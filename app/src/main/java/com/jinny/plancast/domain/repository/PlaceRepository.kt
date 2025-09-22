@@ -1,6 +1,7 @@
 package com.jinny.plancast.domain.repository
 
 import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.jinny.plancast.domain.model.PlacePrediction
 import com.jinny.plancast.domain.model.WeatherInfo
 
 /**
@@ -16,6 +17,6 @@ interface PlaceRepository {
      * @param ny Y 좌표
      * @return Result<List<WeatherInfo>> 날씨 정보 리스트 또는 에러
      */
-    suspend fun searchPlaces(query: String): Result<List<AutocompletePrediction>>
+    suspend fun searchPlaces(query: String): Result<List<PlacePrediction>>
 
 }

@@ -40,6 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.jinny.plancast.domain.model.PlacePrediction
+import com.jinny.plancast.domain.model.WeatherInfo
+import com.jinny.plancast.domain.repository.WeatherRepository
+import com.jinny.plancast.domain.weatherUseCase.GetShortTermForecastUseCase
+import com.jinny.plancast.domain.weatherUseCase.GetUltraShortTermForecastUseCase
 import com.jinny.plancast.presentation.weather.WeatherMode
 import com.jinny.plancast.presentation.weather.WeatherViewModel
 
@@ -247,6 +252,53 @@ fun InfoItem(icon: String, label: String, value: String) {
 }
 
 
+private class FakeRepository : WeatherRepository {
+    override suspend fun getShortTermForecast(
+        baseDate: String,
+        baseTime: String,
+        nx: Int,
+        ny: Int
+    ): Result<List<WeatherInfo>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUltraShortTermForecast(
+        baseDate: String,
+        baseTime: String,
+        nx: Int,
+        ny: Int
+    ): Result<List<WeatherInfo>> {
+        TODO("Not yet implemented")
+    }
+}
+
+private class FakeShortTermUseCase : GetShortTermForecastUseCase(
+    weatherRepository = FakeRepository()
+){
+    override suspend operator fun invoke(
+        baseDate: String,
+        baseTime: String,
+        nx: Int,
+        ny: Int
+    ): Result<List<WeatherInfo>> {
+        TODO("Not yet implemented")
+    }
+}
+
+private class FakeUltraTermUseCase : GetUltraShortTermForecastUseCase(
+    weatherRepository = FakeRepository()
+) {
+    override suspend operator fun invoke(
+        baseDate: String,
+        baseTime: String,
+        nx: Int,
+        ny: Int
+    ): Result<List<WeatherInfo>> {
+        TODO("Not yet implemented")
+    }
+}
+
+
 @SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
@@ -257,6 +309,8 @@ fun DefaultPreview() {
     val fakeViewModel = WeatherViewModel(
         weatherMode = WeatherMode.WRITE,
         id = -1L,
+//        getShortTermForecastUseCase = FakeShortTermUseCase(),
+//        getUltraShortTermForecastUseCase = FakeUltraTermUseCase()
     )
 
     MaterialTheme {
