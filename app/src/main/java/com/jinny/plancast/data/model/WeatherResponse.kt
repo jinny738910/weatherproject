@@ -79,7 +79,7 @@ data class Item(
     @SerializedName("fcstTime")
     val fcstTime: String,       // 예보시각 (e.g., "1500")
     @SerializedName("fcstValue")
-    val fcstValue: String,      // 예보값 (e.g., "27", "0", "1")
+    val fcstValue: String,      // 예보값 (문자열: 숫자, "강수없음", "1.0mm" 등)
     @SerializedName("nx")
     val nx: Int,                // X좌표
     @SerializedName("ny")
@@ -95,12 +95,36 @@ data class Item(
  * 앱의 다른 부분에 미치는 영향을 최소화할 수 있습니다.
  */
 fun Item.toDomain(): WeatherInfo {
+    val numericValue: Double = parseForecastValueSafely(category = category, raw = fcstValue)
     return WeatherInfo(
         // "T1H"와 같은 문자열 코드를 우리가 정의한 WeatherCategory Enum 타입으로 변환합니다.
         // 이를 통해 코드의 안정성과 가독성이 크게 향상됩니다.
         category = WeatherCategory.fromCode(this.category),
         forecastDate = this.fcstDate,
         forecastTime = this.fcstTime,
-        forecastValue = this.fcstValue
+        forecastValue = numericValue
     )
+}
+
+/**
+ * 기상청 "fcstValue" 문자열을 안전하게 Double로 변환합니다.
+ * - "강수없음" 같은 비수치 값을 0.0으로 해석
+ * - "1mm", "0.5mm" 등 단위를 포함한 값에서 숫자만 추출
+ * - "-" 등 비어있거나 알 수 없는 값은 0.0
+ */
+private fun parseForecastValueSafely(category: String, raw: String): Double {
+    val trimmed = raw.trim()
+    if (trimmed.isEmpty() || trimmed == "-" || trimmed == "강수없음") return 0.0
+
+    // mm, cm, %, m/s 등 단위 제거 및 숫자, 부호, 소수점만 남김
+    val numericPart = trimmed
+        .replace("mm", "", ignoreCase = true)
+        .replace("cm", "", ignoreCase = true)
+        .replace("%", "", ignoreCase = true)
+        .replace("m/s", "", ignoreCase = true)
+        .replace("m", "", ignoreCase = true)
+        .replace("deg", "", ignoreCase = true)
+        .trim()
+
+    return numericPart.toDoubleOrNull() ?: 0.0
 }

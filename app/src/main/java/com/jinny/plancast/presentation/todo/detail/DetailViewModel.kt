@@ -73,7 +73,8 @@ class DetailViewModel(
         isLocation: Boolean,
         isFinancial: Boolean,
         isRepeat: Boolean,
-        isLock: Boolean
+        isLock: Boolean,
+        hasCompleted: Boolean
     ) = viewModelScope.launch {
         _toDoDetailLiveData.postValue(ToDoDetailState.Loading)
         when (detailMode) {
@@ -85,7 +86,7 @@ class DetailViewModel(
                         destination = destination,
                         description = description,
                         image = image,
-                        hasCompleted = false,
+                        hasCompleted = hasCompleted,
                         isClimate = isClimate,
                         isLocation = isLocation,
                         isFinancial = isFinancial,
@@ -107,7 +108,7 @@ class DetailViewModel(
                         val updateToDoEntity = it.copy(title = title, description = description, date = date,
                             destination = destination, image = image, isClimate = isClimate,
                             isLocation = isLocation, isFinancial = isFinancial, isRepeat = isRepeat,
-                            isLock = isLock)
+                            isLock = isLock, hasCompleted = hasCompleted)
                         updateToDoUseCase(updateToDoEntity)
                         _toDoDetailLiveData.postValue(ToDoDetailState.Success(updateToDoEntity))
                         Log.d("DetailViewModel", "detail mode : isClimate, isLocation, isFinancial: $isClimate, $isLocation, $isFinancial")

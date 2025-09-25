@@ -3,12 +3,7 @@ package com.jinny.plancast.data.repository
 import android.content.Context
 import android.util.Log
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
-import com.jinny.plancast.domain.model.WeatherInfo
-import com.jinny.plancast.domain.repository.WeatherRepository
-import com.jinny.plancast.data.api.WeatherApiService
-import com.jinny.plancast.data.model.toDomain
 import com.jinny.plancast.domain.model.PlacePrediction
 import com.jinny.plancast.domain.repository.PlaceRepository
 import kotlinx.coroutines.tasks.await

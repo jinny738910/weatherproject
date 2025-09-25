@@ -12,5 +12,6 @@ data class WeatherInfo(
     val category: WeatherCategory,
     val forecastDate: String,
     val forecastTime: String,
-    val forecastValue: String
+    val forecastValue: Double
+
 )

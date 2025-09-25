@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 
 @Composable
@@ -57,6 +58,9 @@ fun LoginScreen(
             )
 
             Spacer(modifier = Modifier.height(32.dp))
+
+            Text("E-Mail: jinny7389@naver.com, Password: jinny4019",fontSize = 15.sp, style = MaterialTheme.typography.headlineLarge)
+            Spacer(modifier = Modifier.height(25.dp))
 
             Row {
                 Button(

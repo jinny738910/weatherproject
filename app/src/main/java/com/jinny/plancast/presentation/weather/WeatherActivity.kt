@@ -84,7 +84,7 @@ class WeatherActivity : BaseActivity<WeatherViewModel>() {
         val navController = rememberNavController()
 
         // 2. NavHost를 사용하여 내비게이션 경로와 화면을 정의합니다.
-        NavHost(navController = navController, startDestination = "weather") {
+        NavHost(navController = navController, startDestination = "search") {
             // "weather" 경로 요청 시 WeatherScreen을 보여줍니다.
             composable("weather") {
                 WeatherScreen(navController = navController, viewModel = viewModel)

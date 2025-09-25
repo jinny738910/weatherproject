@@ -20,10 +20,23 @@ val networkModule = module {
             .build()
     }
 
+//    // Retrofit 싱글톤 객체 제공
+//    single {
+//        Retrofit.Builder()
+//            .baseUrl("http://10.0.2.2:8080/")
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//    }
+
     // 2. WeatherApiService 인스턴스 생성 방법을 정의
     single {
         // 위에서 만든 Retrofit 인스턴스를 Koin에게서 받아(get) ApiService를 생성
         get<Retrofit>().create(WeatherApiService::class.java)
+    }
+
+    // TransferApiService 싱글톤 객체 제공
+    single {
+        get<Retrofit>().create(TransferApiService::class.java)
     }
 
     // 3. OkHttpClient 인스턴스 생성 방법을 정의 (로깅 인터셉터 포함)

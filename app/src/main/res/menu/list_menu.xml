@@ -6,4 +6,9 @@
         app:showAsAction="never"
         android:title="@string/delete_all">
     </item>
+    <item
+        android:id="@+id/action_alarm_check"
+        app:showAsAction="never"
+        android:title="@string/alarmCheck">
+    </item>
 </menu>

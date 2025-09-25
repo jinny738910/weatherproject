@@ -22,7 +22,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "MAPS_API_KEY", "\"AIzaSyAbxQ-SBDJI_I-aQy6rGwoJmR-8aH-pHs8\"")
-        buildConfigField("String", "WEATHER_API_KEY", "\"YOUR_API_KEY\"")
+        buildConfigField("String", "WEATHER_API_KEY", "\"sUf3H+um11e1zzXnFbifsSUR15b4M4XM2Y0fVjTTAYOkByhn6sjuYZb7snwqRgeFmUhUynp5ogHPFXr4b+Nmmg==\"")
     }
 
     buildTypes {
@@ -60,6 +60,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.android.support:support-v4:30.0.3'
     implementation 'androidx.navigation:navigation-compose-android:2.9.3'
+    implementation 'androidx.work:work-runtime-ktx:2.10.4'
+    implementation 'androidx.compose.runtime:runtime-livedata:1.9.1'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "com.google.truth:truth:1.0"
@@ -147,4 +149,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     // 3. OkHttp Logging Interceptor (네트워크 통신 로그 확인용 - 권장)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // 보안키패드 라이브러리
+    implementation 'io.github.chaosleung:pinview:1.4.4'
 }

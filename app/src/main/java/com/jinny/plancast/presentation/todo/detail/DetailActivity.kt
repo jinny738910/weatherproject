@@ -1,6 +1,7 @@
 package com.jinny.plancast.presentation.todo.detail
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,12 +9,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
+import com.jinny.plancast.R
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityDetailBinding
 import com.jinny.plancast.presentation.payment.PaymentActivity
-import com.jinny.plancast.presentation.todo.list.ListActivity
+import com.jinny.plancast.presentation.transfer.TransferActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -30,6 +33,18 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
     }
 
     private val paymentLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // 결과가 돌아왔을 때 이 람다 블록이 실행됩니다.
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 성공적인 결과를 처리합니다.
+                val data: Intent? = result.data
+                val message = data?.getStringExtra("result_key")
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                viewModel.fetchData()
+            }
+        }
+
+    private val transferLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // 결과가 돌아왔을 때 이 람다 블록이 실행됩니다.
             if (result.resultCode == Activity.RESULT_OK) {
@@ -100,6 +115,11 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         modifyButton.isGone = true
         updateButton.isGone = true
 
+        weatherAlarmCheckbox.isEnabled = false
+        locationAlarmCheckbox.isEnabled = false
+        financialAlarmCheckbox.isEnabled = false
+        repeatCheckbox.isEnabled = false
+        lockCheckbox.isEnabled =false
 
         deleteButton.setOnClickListener {
             viewModel.deleteToDo()
@@ -118,13 +138,14 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
                 isLocation = locationAlarmCheckbox.isChecked,
                 isFinancial = financialAlarmCheckbox.isChecked,
                 isRepeat = repeatCheckbox.isChecked,
-                isLock = lockCheckbox.isChecked
+                isLock = lockCheckbox.isChecked,
+                hasCompleted = false
             )
         }
 
         financialButton.setOnClickListener {
-            val intent = Intent(this@DetailActivity, PaymentActivity::class.java)
-            paymentLauncher.launch(intent)
+
+            showTwoButtonDialog()
 //            val destination = destinationInput.text.toString()
 //            if (destination.isNotEmpty()) {
 //                startActivity(Intent(this@DetailActivity, com.jinny.plancast.presentation.financial.FinancialActivity::class.java).apply {
@@ -133,6 +154,26 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
 //            } else {
 //                Toast.makeText(this@DetailActivity, "목적지를 입력해주세요.", Toast.LENGTH_SHORT).show()
 //            }
+        }
+
+        completeButton.setOnClickListener {
+            viewModel.writeToDo(
+                title = titleInput.text.toString(),
+                date = timeInput.text.toString(),
+                destination = destinationInput.text.toString(),
+                description = descriptionInput.text.toString(),
+                image = imageInput.text.toString(),
+                hasCompleted = true,
+                isClimate = weatherAlarmCheckbox.isChecked,
+                isLocation = locationAlarmCheckbox.isChecked,
+                isFinancial = financialAlarmCheckbox.isChecked,
+                isRepeat = repeatCheckbox.isChecked,
+                isLock = lockCheckbox.isChecked
+            )
+            completeButton.setText(R.string.complete)
+            completeButton.setTextColor(Color.White.toArgb())
+            completeButton.setBackgroundColor(Color.Blue.toArgb())
+            completeButton.isEnabled = false
         }
     }
 
@@ -146,6 +187,7 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
 
         deleteButton.isGone = true
         modifyButton.isGone = true
+        completeButton.isGone = true
         updateButton.isGone = false
     }
 
@@ -164,6 +206,7 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
 
         deleteButton.isGone = false
         modifyButton.isGone = false
+        completeButton.isGone = false
         updateButton.isGone = true
         financialButton.isGone = true
 
@@ -177,12 +220,46 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         locationAlarmCheckbox.isChecked = toDoItem.isLocation
         financialAlarmCheckbox.isChecked = toDoItem.isFinancial
         repeatCheckbox.isChecked = toDoItem.isRepeat
-
-        Log.d("DetailActivity", "is Financial : $(toDoItem.isFinancial)")
+        lockCheckbox.isChecked = toDoItem.isLock
 
         if(financialAlarmCheckbox.isChecked){
             Log.d("DetailActivity", "isFinancial true")
             financialButton.isGone = false
         }
+
+        if(toDoItem.hasCompleted) {
+            completeButton.setText(R.string.complete)
+            completeButton.setTextColor(Color.White.toArgb())
+            completeButton.setBackgroundColor(Color.Blue.toArgb())
+            completeButton.isEnabled = false
+        }
+    }
+
+    private fun showTwoButtonDialog() {
+        val builder = AlertDialog.Builder(this)
+
+        // 팝업창의 제목과 메시지 설정
+        builder.setTitle("금융 거래 선택")
+        builder.setMessage("송금 혹은 결제 선택해주세요")
+
+        // '예' 버튼 (Positive Button)
+        builder.setPositiveButton("카드로 결제") { dialog, which ->
+            // '예' 버튼을 눌렀을 때 실행될 코드
+            Toast.makeText(this, "카드로 결제 진행하겠습니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@DetailActivity, PaymentActivity::class.java)
+            paymentLauncher.launch(intent)
+        }
+
+        // '아니오' 버튼 (Negative Button)
+        builder.setNegativeButton("송금하기") { dialog, which ->
+            // '아니오' 버튼을 눌렀을 때 실행될 코드
+            Toast.makeText(this, "송금 진행하겠습니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@DetailActivity, TransferActivity::class.java)
+            transferLauncher.launch(intent)
+        }
+
+        // 팝업창 생성 및 표시
+        val dialog = builder.create()
+        dialog.show()
     }
 }

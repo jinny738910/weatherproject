@@ -1,6 +1,5 @@
 package com.jinny.plancast.presentation.payment
 
-import LoginScreen
 import PaymentScreen
 import android.app.Activity
 import android.content.Context
@@ -96,7 +95,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
                     onDismissRequest = { },
                     onMethodSelected = {
                     },
-                    showPaymentMethodDialog = showDialog
+                    showPaymentMethodDialog = showDialog,
+                    onBackClick = {
+                        finish()
+                    }
                 )
 
             }
@@ -109,6 +111,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
 //        resultIntent.putExtra("result_key", "이것이 결과값입니다!")
 //        setResult(Activity.RESULT_OK, resultIntent)
 //        finish()
+    }
+
+    override fun observeData() {
+        TODO("Not yet implemented")
     }
 
     /**
@@ -241,33 +247,4 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
         return paymentDataRequest
     }
 
-
-
-
-    override fun observeData() = viewModel.loginLiveData.observe(this@PaymentActivity) {
-//            when (it) {
-////            is ToDoDetailState.UnInitialized -> {
-////                initViews(binding)
-////            }
-////            is ToDoDetailState.Loading -> {
-////                handleLoadingState()
-////            }
-////            is ToDoDetailState.Success -> {
-////                handleSuccessState(it)
-////            }
-////            is ToDoDetailState.Modify -> {
-////                handleModifyState()
-////            }
-////            is ToDoDetailState.Delete -> {
-////                Toast.makeText(this, "성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-////                finish()
-////            }
-////            is ToDoDetailState.Error -> {
-////                Toast.makeText(this, "에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
-////                finish()
-////            }
-////            is ToDoDetailState.Write -> {
-////                handleWriteState()
-////            }
-    }
 }

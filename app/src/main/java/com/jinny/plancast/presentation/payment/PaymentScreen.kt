@@ -29,6 +29,7 @@ fun PaymentScreen(
     viewModel: PaymentViewModel,
     state: PaymentUiState,
     onPayClick: () -> Unit,
+    onBackClick: () -> Unit,
     onMethodChangeClick: () -> Unit,
     onDismissRequest: () -> Unit,
     onMethodSelected: (String) -> Unit,
@@ -39,7 +40,7 @@ fun PaymentScreen(
             TopAppBar(
                 title = { Text("결제하기") },
                 navigationIcon = {
-                    IconButton(onClick = { /* TODO: 뒤로 가기 */ }) {
+                    IconButton(onClick = { }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "뒤로 가기")
                     }
                 }
@@ -207,7 +208,8 @@ fun PaymentScreenPreview() {
                 state = state.copy(selectedPaymentMethod = it)
                 showDialog = false
             },
-            showPaymentMethodDialog = showDialog
+            showPaymentMethodDialog = showDialog,
+            onBackClick = { /*TODO*/ }
         )
     }
 }

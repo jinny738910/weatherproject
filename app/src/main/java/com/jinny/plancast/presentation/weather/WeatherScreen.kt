@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,8 +63,19 @@ fun WeatherScreen(
     navController: NavController,
     viewModel: WeatherViewModel
 ) {
+
+    val weatherState = viewModel.weatherState.collectAsState()
+
+    LaunchedEffect(key1 = weatherState) {
+        if (weatherState.value.isNotEmpty()) {
+            // weatherList.toString()을 사용하여 리스트의 내용을 로그로 출력합니다.
+            Log.d("WeatherScreen", "날씨 데이터가 업데이트 되었습니다: $weatherState")
+        }
+    }
+
+
     Scaffold(
-        topBar = { LocationBar() }
+    topBar = { LocationBar(viewModel = viewModel) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -89,13 +103,13 @@ fun WeatherScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationBar() {
+fun LocationBar(viewModel: WeatherViewModel) {
     TopAppBar(
         title = {
             Text("성남시, 분당구", fontWeight = FontWeight.Bold)
         },
         actions = {
-            IconButton(onClick = { /* TODO: 검색 화면 이동 */ }) {
+            IconButton(onClick = { viewModel.getShortTermForecast()}) {
                 Icon(Icons.Default.Search, contentDescription = "지역 검색")
             }
         },
@@ -254,7 +268,7 @@ fun InfoItem(icon: String, label: String, value: String) {
 }
 
 
-private class FakeRepository : WeatherRepository {
+class FakeRepository : WeatherRepository {
     override suspend fun getShortTermForecast(
         baseDate: String,
         baseTime: String,
@@ -263,11 +277,11 @@ private class FakeRepository : WeatherRepository {
     ): Result<List<WeatherInfo>> {
 
         val dummyInfo = listOf(
-            WeatherInfo(WeatherCategory.REH, "65","dfsdf","safsd"), // 습도
-            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf","dfafdd"), // 풍속
-            WeatherInfo(WeatherCategory.PTY, "0","dfsa","sdfsdf"), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
-            WeatherInfo(WeatherCategory.VEC, "180","fadsf","dfafd"), // 풍향
-            WeatherInfo(WeatherCategory.SKY, "1","dafd","fsafd")  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
+            WeatherInfo(WeatherCategory.REH, "65","dfsdf",23.0), // 습도
+            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf",23.0), // 풍속
+            WeatherInfo(WeatherCategory.PTY, "0","dfsa",23.0), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
+            WeatherInfo(WeatherCategory.VEC, "180","fadsf",2323.0), // 풍향
+            WeatherInfo(WeatherCategory.SKY, "1","dafd",23.0)  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
         )
 
         return if (true) {
@@ -284,11 +298,11 @@ private class FakeRepository : WeatherRepository {
         ny: Int
     ): Result<List<WeatherInfo>> {
         val dummyInfo = listOf(
-            WeatherInfo(WeatherCategory.REH, "65","dfsdf","safsd"), // 습도
-            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf","dfafdd"), // 풍속
-            WeatherInfo(WeatherCategory.PTY, "0","dfsa","sdfsdf"), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
-            WeatherInfo(WeatherCategory.VEC, "180","fadsf","dfafd"), // 풍향
-            WeatherInfo(WeatherCategory.SKY, "1","dafd","fsafd")  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
+            WeatherInfo(WeatherCategory.REH, "65","dfsdf",23.0), // 습도
+            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf",23.0), // 풍속
+            WeatherInfo(WeatherCategory.PTY, "0","dfsa",23.0), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
+            WeatherInfo(WeatherCategory.VEC, "180","fadsf",23.0), // 풍향
+            WeatherInfo(WeatherCategory.SKY, "1","dafd",23.0)  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
         )
 
         return if (true) {
@@ -310,11 +324,11 @@ private class FakeShortTermUseCase : GetShortTermForecastUseCase(
         ny: Int
     ): Result<List<WeatherInfo>> {
         val dummyInfo = listOf(
-            WeatherInfo(WeatherCategory.REH, "65","dfsdf","safsd"), // 습도
-            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf","dfafdd"), // 풍속
-            WeatherInfo(WeatherCategory.PTY, "0","dfsa","sdfsdf"), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
-            WeatherInfo(WeatherCategory.VEC, "180","fadsf","dfafd"), // 풍향
-            WeatherInfo(WeatherCategory.SKY, "1","dafd","fsafd")  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
+            WeatherInfo(WeatherCategory.REH, "65","dfsdf",23.0), // 습도
+            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf",23.0), // 풍속
+            WeatherInfo(WeatherCategory.PTY, "0","dfsa",23.0), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
+            WeatherInfo(WeatherCategory.VEC, "180","fadsf",23.0), // 풍향
+            WeatherInfo(WeatherCategory.SKY, "1","dafd",23.0)  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
         )
 
         return if (true) {
@@ -335,11 +349,11 @@ private class FakeUltraTermUseCase : GetUltraShortTermForecastUseCase(
         ny: Int
     ): Result<List<WeatherInfo>> {
         val dummyInfo = listOf(
-            WeatherInfo(WeatherCategory.REH, "65","dfsdf","safsd"), // 습도
-            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf","dfafdd"), // 풍속
-            WeatherInfo(WeatherCategory.PTY, "0","dfsa","sdfsdf"), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
-            WeatherInfo(WeatherCategory.VEC, "180","fadsf","dfafd"), // 풍향
-            WeatherInfo(WeatherCategory.SKY, "1","dafd","fsafd")  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
+            WeatherInfo(WeatherCategory.REH, "65","dfsdf",23.03), // 습도
+            WeatherInfo(WeatherCategory.WSD, "3.5","dfasf",23.0),
+            WeatherInfo(WeatherCategory.PTY, "0","dfsa",23.0), // 강수 형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈)
+            WeatherInfo(WeatherCategory.VEC, "180","fadsf",23.0), // 풍향
+            WeatherInfo(WeatherCategory.SKY, "1","dafd",23.0)  // 하늘 상태 (1: 맑음, 3: 구름많음, 4: 흐림)
         )
 
         return if (true) {
