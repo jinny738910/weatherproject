@@ -14,6 +14,9 @@
     <string name="completeCheck">할일 완료 체크</string>
     <string name="complete">할일 완료 하였습니다!</string>
     <string name="alarmCheck">알림 확인</string>
+    <string name="setting">설정</string>
+    <string name="logout">로그아웃</string>
+    <string name="write_name">이름을 입력해주세요</string>
 
     <string name="lock">나만 볼래요!</string>
 </resources>

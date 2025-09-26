@@ -1,4 +1,4 @@
-package com.jinny.plancast.presentation.transfer
+package com.jinny.plancast.presentation.financial.transfer
 
 import TransferScreen
 import android.app.Activity
@@ -9,14 +9,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
 
 import com.jinny.plancast.presentation.BaseActivity
-import com.jinny.plancast.presentation.login.LoginState
-import com.jinny.plancast.presentation.password.PasswordActivity
-import com.jinny.plancast.presentation.todo.list.ListActivity
+import com.jinny.plancast.presentation.financial.password.PasswordActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -66,6 +62,24 @@ class TransferActivity : BaseActivity<TransferViewModel>() {
             }
         }
     }
+
+//    private fun launchTossBillingAuth() {
+//        TossPayments.requestBillingAuth(
+//            activity = this,
+//            clientKey = "test_ck_Z1aOwX7K8mOnyoBNl1zPVyQxzvNP", // 발급받은 테스트 클라이언트 키
+//            customerKey = viewModel.customerKey, // ViewModel에서 생성/관리하는 사용자 키
+//            object : BillingAuthCallback {
+//                override fun onBillingSuccess(authKey: String) {
+//                    // 성공 시, authKey를 ViewModel으로 전달
+//                    viewModel.registerBillingKey(authKey)
+//                }
+//
+//                override fun onBillingFail(fail: TossPaymentResult.Fail) {
+//                    Toast.makeText(this@RemittanceActivity, "인증 실패: ${fail.errorMessage}", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        )
+//    }
 
     override fun observeData() = viewModel.transferLiveData.observe(this@TransferActivity) {
     }

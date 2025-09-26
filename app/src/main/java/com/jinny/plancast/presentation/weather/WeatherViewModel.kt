@@ -32,6 +32,9 @@ class WeatherViewModel(
     private val _weatherState = MutableStateFlow<List<WeatherInfo>>(emptyList())
     val weatherState = _weatherState.asStateFlow()
 
+    private val _uiState = MutableStateFlow<Boolean>(false)
+    val uiState = _uiState.asStateFlow()
+
     private var _weatherLiveData = MutableLiveData<ToDoDetailState>(ToDoDetailState.UnInitialized)
     val weatherLiveData: LiveData<ToDoDetailState> = _weatherLiveData
 
@@ -127,6 +130,9 @@ class WeatherViewModel(
         }
     }
 
+    fun onFinish() {
+        _uiState.value = true
+    }
     fun onOpenActivityClick() {
         viewModelScope.launch {
             _navigationEvent.emit(Unit) // Activity에 신호 보내기

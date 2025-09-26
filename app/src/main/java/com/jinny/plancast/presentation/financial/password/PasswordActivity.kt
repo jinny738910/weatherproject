@@ -1,4 +1,4 @@
-package com.jinny.plancast.presentation.password
+package com.jinny.plancast.presentation.financial.password
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,6 @@ import android.widget.Toast
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.res.ResourcesCompat
 
 
 import com.chaos.view.PinView

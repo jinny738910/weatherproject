@@ -1,5 +1,7 @@
 package com.jinny.plancast.presentation.login
 
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,7 +10,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.jinny.plancast.presentation.todo.list.ListActivity
 import com.jinny.plancast.presentation.todo.list.ToDoListState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +24,7 @@ class LoginViewModel(
     var id: Long = -1,
 ) : BaseViewModel() {
 
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth = Firebase.auth
 
     // UI에 보여줄 로그인 상태 (예: StateFlow 사용)
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
@@ -43,8 +47,6 @@ class LoginViewModel(
             return
         }
 
-        auth = Firebase.auth
-
         viewModelScope.launch {
             _loginState.value = LoginState.Loading
             try {
@@ -53,7 +55,7 @@ class LoginViewModel(
 
                 // await() 호출이 성공적으로 끝나면 이 코드가 실행됨
                 _loginState.value = LoginState.Success(authResult.user)
-
+                handleSuccesLogin()
 
             } catch (e: Exception) {
                 // 로그인 실패 시 await()이 예외를 던짐
@@ -75,6 +77,7 @@ class LoginViewModel(
 
                 // await() 호출이 성공적으로 끝나면 이 코드가 실행됨
                 _loginState.value = LoginState.Success(authResult.user)
+                handleSuccesLogin()
 
             } catch (e: Exception) {
                 // 로그인 실패 시 await()이 예외를 던짐
@@ -91,8 +94,6 @@ class LoginViewModel(
             return
         }
 
-        auth = Firebase.auth
-
         viewModelScope.launch {
             _signupState.value = SignUpState.Loading
             try {
@@ -101,7 +102,7 @@ class LoginViewModel(
 
                 // await() 호출이 성공적으로 끝나면 이 코드가 실행됨
                 _signupState.value = SignUpState.Success(authResult.user)
-
+                handleSuccesLogin()
                 // 회원가입 토큰 저장
 
             } catch (e: Exception) {
@@ -109,10 +110,22 @@ class LoginViewModel(
                 _signupState.value = SignUpState.Error(e.message ?: "로그인 실패")
             }
         }
-
     }
 
+    fun handleSuccesLogin() {
+        if(auth.currentUser == null) {
+            Log.d("ListViewModel", "로그인에 실패 했습니다.")
+            return
+        }
+        Log.d("ListViewModel", "handleSuccesLogin ! ")
+        val userId = auth.currentUser?.uid.orEmpty()
+        Log.d("ListViewModel", "userId ! $userId")
+        val currentuserDB = Firebase.database.reference.child("users").child(userId)
+        val user = mutableMapOf<String, Any>()
+        user["userId"] = userId
+        currentuserDB.updateChildren(user)
 
+    }
 
 
     override fun fetchData()= viewModelScope.launch {

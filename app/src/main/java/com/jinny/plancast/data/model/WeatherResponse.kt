@@ -12,13 +12,13 @@ data class WeatherResponse(
     // @SerializedName: JSON 데이터의 키 이름과 Kotlin 클래스의 변수 이름이 다를 경우,
     // 둘을 매핑시켜주는 역할을 합니다. 이름이 같아도 명시적으로 작성하면 더 안전합니다.
     @SerializedName("response")
-    val response: Response
+    val response: Response<Any?>
 )
 
 /**
  * "response" 객체 내부에 있는 header와 body를 담는 클래스입니다.
  */
-data class Response(
+data class Response<T>(
     @SerializedName("header")
     val header: Header,
     @SerializedName("body")

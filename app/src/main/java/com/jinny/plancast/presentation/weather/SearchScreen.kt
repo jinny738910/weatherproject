@@ -87,6 +87,7 @@ fun SearchScreen(
         Button(
             onClick = { /* TODO: 현재 위치 가져오는 로직 호출 */
                 navController.navigate("weather")
+                {popUpTo("search") { inclusive = true } }
             },
             modifier = Modifier.fillMaxWidth()
         ) {

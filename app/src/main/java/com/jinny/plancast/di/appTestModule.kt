@@ -13,19 +13,24 @@ import com.jinny.plancast.domain.repository.PlaceRepository
 import com.jinny.plancast.domain.repository.TransferRepository
 import com.jinny.plancast.domain.repository.WeatherRepository
 import com.jinny.plancast.domain.todoUseCase.*
-import com.jinny.plancast.domain.transferUseCase.TransferMoneyUseCase
+import com.jinny.plancast.domain.transferUseCase.ExecuteTransferUseCase
+import com.jinny.plancast.domain.transferUseCase.RegisterBillingKeyUseCase
+
 import com.jinny.plancast.domain.weatherUseCase.GetShortTermForecastUseCase
 import com.jinny.plancast.domain.weatherUseCase.GetUltraShortTermForecastUseCase
 import com.jinny.plancast.presentation.alarm.AlarmListViewModel
+import com.jinny.plancast.presentation.chat.ChatListViewModel
+import com.jinny.plancast.presentation.chat.ChatRoomViewModel
 import com.jinny.plancast.presentation.login.LoginViewModel
-import com.jinny.plancast.presentation.password.PasswordViewModel
-import com.jinny.plancast.presentation.payment.PaymentViewModel
+import com.jinny.plancast.presentation.financial.password.PasswordViewModel
+import com.jinny.plancast.presentation.financial.payment.PaymentViewModel
 import com.jinny.plancast.presentation.weather.WeatherMode
 import com.jinny.plancast.presentation.weather.WeatherViewModel
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.detail.DetailViewModel
 import com.jinny.plancast.presentation.todo.list.ListViewModel
-import com.jinny.plancast.presentation.transfer.TransferViewModel
+import com.jinny.plancast.presentation.financial.transfer.TransferViewModel
+import com.jinny.plancast.presentation.setting.SettingViewModel
 import com.jinny.plancast.presentation.weather.SearchViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
@@ -51,7 +56,7 @@ val appModule = module {
     single<ToDoRepository> { DefaultToDoRepository(get(), get()) }
     single<PlaceRepository> { PlaceRepositoryImpl(get())}
     single<WeatherRepository> { WeatherRepositoryImpl(apiService = get(), apiKey = get(ApiKeyQualifier))}
-    single<TransferRepository> { TransferRepositoryImpl(apiService = get()) }
+    single<TransferRepository> { TransferRepositoryImpl(transferService = get())}
 
 
     // UseCase 정의 (Repository에 의존)
@@ -62,22 +67,26 @@ val appModule = module {
     factory { DeleteToDoItemUseCase(get()) }
     factory { DeleteAllToDoItemUseCase(get()) }
     factory { UpdateToDoUseCase(get()) }
-    factory { TransferMoneyUseCase(get()) }
+    factory { ExecuteTransferUseCase(get()) }
+    factory { RegisterBillingKeyUseCase(get()) }
 
     factory { GetShortTermForecastUseCase(get()) }
     factory { GetUltraShortTermForecastUseCase(get()) }
 
     // ViewModel 정의 (UseCase에 의존)
     viewModel { ListViewModel(get(), get(), get()) }
-//    viewModel { ListViewModel() }
     viewModel { LoginViewModel() }
-    viewModel { PaymentViewModel() }
     viewModel { (detailMode: DetailMode, id: Long) -> DetailViewModel(detailMode, id, get(), get(), get(), get()) }
     viewModel { (weatherMode: WeatherMode?, id: Long) -> WeatherViewModel(weatherMode, id, get(), get()) }
     viewModel { (weatherMode: WeatherMode?, id: Long) -> SearchViewModel(weatherMode, id, get()) }
     viewModel { (id: Long) -> PasswordViewModel(id) }
-    viewModel { TransferViewModel(get()) }
+    viewModel { TransferViewModel(get(), get()) }
+    viewModel { SettingViewModel() }
     viewModel { AlarmListViewModel() }
+    viewModel { PaymentViewModel() }
+    viewModel { ChatListViewModel() }
+    viewModel { ChatRoomViewModel() }
+
 }
 
 fun provideDB(context: Context): ToDoDatabase =

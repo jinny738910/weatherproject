@@ -73,6 +73,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                         // 메인 화면으로 이동
                         val intent = Intent(this@LoginActivity, ListActivity::class.java)
                         listLauncher.launch(intent)
+                        finish()
                     }
 
                     is LoginState.Error -> {
@@ -101,6 +102,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                         // 메인 화면으로 이동
                         val intent = Intent(this@LoginActivity, ListActivity::class.java)
                         listLauncher.launch(intent)
+                        finish()
 
                     }
 
@@ -137,12 +139,11 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     // ✅ 인증 성공!
-                    // 실제 앱에서는 여기서 EncryptedSharedPreferences에 저장된
-                    // 이메일/비밀번호나 토큰으로 Firebase 로그인을 시도해야 합니다.
-                    // 이 예제에서는 인증 성공 시 바로 로그인 성공으로 간주합니다.
-
                     Toast.makeText(applicationContext, "인증 성공: $result", Toast.LENGTH_SHORT).show()
-                    viewModel.loginWithFirebase(email, password)
+
+                    // 여기서 EncryptedSharedPreferences에 저장된
+                    // 이메일/비밀번호나 토큰으로 Firebase 로그인을 시도
+                    viewModel.loginWithFirebase("jinny7389@naver.com", "jinny4019")
                 }
 
                 // ❌ 에러 발생 시 호출됨 (예: 센서 오류, 시도 횟수 초과)
@@ -166,6 +167,8 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
 
         biometricPrompt.authenticate(promptInfo)
     }
+
+
 
     override fun observeData() = viewModel.loginLiveData.observe(this@LoginActivity) {
 

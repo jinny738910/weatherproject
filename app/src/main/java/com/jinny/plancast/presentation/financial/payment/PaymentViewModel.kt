@@ -1,16 +1,12 @@
-package com.jinny.plancast.presentation.payment
+package com.jinny.plancast.presentation.financial.payment
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.presentation.BaseViewModel
-import com.jinny.plancast.presentation.login.LoginState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class PaymentViewModel(
-    var id: Long = -1,
 ) : BaseViewModel() {
 
 

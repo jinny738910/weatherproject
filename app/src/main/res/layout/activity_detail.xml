@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".presentation.todo.detail.DetailActivity">
 
+
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="0dp"
@@ -20,6 +21,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+
+            <LinearLayout
+                android:id="@+id/topActionButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <Button
+                    android:id="@+id/inviteButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="초대하기"/>
+
+                <Space
+                    android:layout_width="8dp"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/commentsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="댓글 확인"/>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/titleInput"
@@ -56,7 +84,7 @@
                 android:id="@+id/financial_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="송금/결제 하러 가기"
+                android:text="결제/송금 하러 가기"
                 android:layout_margin="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +97,15 @@
                 android:layout_height="250dp"
                 android:gravity="top"
                 android:hint="@string/image" />
+
+            <Button
+                android:id="@+id/media_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="이미지/영상 첨부하기"
+                android:layout_margin="16dp"
+                />
+
 
             <TextView
                 android:id="@+id/options_section_title"

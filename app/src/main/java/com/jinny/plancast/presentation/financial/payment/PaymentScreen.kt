@@ -15,10 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jinny.plancast.presentation.payment.PaymentUiState
-import com.jinny.plancast.presentation.payment.PaymentViewModel
-import com.jinny.plancast.presentation.weather.SearchViewModel
-import com.jinny.plancast.presentation.weather.WeatherMode
+import com.jinny.plancast.presentation.financial.payment.PaymentUiState
+import com.jinny.plancast.presentation.financial.payment.PaymentViewModel
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -29,7 +27,6 @@ fun PaymentScreen(
     viewModel: PaymentViewModel,
     state: PaymentUiState,
     onPayClick: () -> Unit,
-    onBackClick: () -> Unit,
     onMethodChangeClick: () -> Unit,
     onDismissRequest: () -> Unit,
     onMethodSelected: (String) -> Unit,
@@ -194,7 +191,6 @@ fun PaymentScreenPreview() {
     var state by remember { mutableStateOf(PaymentUiState()) }
 
     val fakeViewModel = PaymentViewModel(
-        id = -1
     )
 
     MaterialTheme {
@@ -208,8 +204,7 @@ fun PaymentScreenPreview() {
                 state = state.copy(selectedPaymentMethod = it)
                 showDialog = false
             },
-            showPaymentMethodDialog = showDialog,
-            onBackClick = { /*TODO*/ }
+            showPaymentMethodDialog = showDialog
         )
     }
 }

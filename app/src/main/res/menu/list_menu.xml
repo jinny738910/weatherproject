@@ -11,4 +11,14 @@
         app:showAsAction="never"
         android:title="@string/alarmCheck">
     </item>
+    <item
+        android:id="@+id/action_setting"
+        app:showAsAction="never"
+        android:title="@string/setting">
+    </item>
+    <item
+        android:id="@+id/action_logout"
+        app:showAsAction="never"
+        android:title="@string/logout">
+    </item>
 </menu>

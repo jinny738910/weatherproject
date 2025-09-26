@@ -1,6 +1,4 @@
-package com.jinny.plancast.presentation.payment
-
-import com.google.firebase.auth.FirebaseUser
+package com.jinny.plancast.presentation.financial.payment
 
 
 // 1. UI의 모든 정보를 담는 상태(State) 데이터 클래스

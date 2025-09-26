@@ -3,6 +3,7 @@ package com.jinny.plancast.presentation.weather
 import MapScreen
 import SearchScreen
 import WeatherScreen
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -75,13 +76,16 @@ class WeatherActivity : BaseActivity<WeatherViewModel>() {
 //        finish()
     }
 
+
     @Composable
     fun WeatherAppNavigation() {
 
         val searchResults by SearchViewModel.searchResults.collectAsState()
+        val uistate by viewModel.uiState.collectAsState()
 
         // 1. 화면 이동을 제어하는 NavController를 생성합니다.
         val navController = rememberNavController()
+
 
         // 2. NavHost를 사용하여 내비게이션 경로와 화면을 정의합니다.
         NavHost(navController = navController, startDestination = "search") {

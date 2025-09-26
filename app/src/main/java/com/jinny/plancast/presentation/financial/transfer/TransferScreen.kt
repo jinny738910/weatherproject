@@ -6,17 +6,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jinny.plancast.data.model.TransferResponse
+import com.jinny.plancast.domain.model.TransferResult
 import com.jinny.plancast.domain.repository.TransferRepository
-import com.jinny.plancast.domain.transferUseCase.TransferMoneyUseCase
-import com.jinny.plancast.presentation.login.LoginViewModel
-import com.jinny.plancast.presentation.transfer.TransferViewModel
+import com.jinny.plancast.domain.transferUseCase.ExecuteTransferUseCase
+import com.jinny.plancast.domain.transferUseCase.RegisterBillingKeyUseCase
+import com.jinny.plancast.presentation.financial.transfer.TransferViewModel
 
 
 @Composable
@@ -78,28 +78,30 @@ fun TransferScreen(viewModel: TransferViewModel) {
 }
 
 private class FakeTransferRepository : TransferRepository {
-    override suspend fun transferMoney(
-        recipient: String, amount: Int
-    ): TransferResponse {
 
-        return TransferResponse(
-            status = "success",
-            message = "송금이 완료되었습니다."
-        )
+    override suspend fun registerBillingKey(authKey: String, customerKey: String): Result<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun executeTransfer(
+        amount: Long,
+        orderName: String,
+        customerKey: String
+    ): Result<TransferResult> {
+        TODO("Not yet implemented")
     }
 }
 
-private class FakeTransferUseCase : TransferMoneyUseCase(
+private class FakeExecuteTransfeUseCase : ExecuteTransferUseCase(
     transferRepository = FakeTransferRepository()
 ) {
-    override suspend fun execute(
-        recipient: String, amount: Int
-    ): TransferResponse {
-        return TransferResponse(
-            status = "success",
-            message = "송금이 완료되었습니다."
-        )
-    }
+
+}
+
+private class FakeRegisterBillingKeyUseCase : RegisterBillingKeyUseCase(
+    transferRepository = FakeTransferRepository()
+) {
+
 }
 
 
@@ -110,7 +112,8 @@ private class FakeTransferUseCase : TransferMoneyUseCase(
 fun TransferScreenPreview() {
 
     val fakeViewModel = TransferViewModel(
-        transferMoneyUseCase = FakeTransferUseCase()
+        executeTransferUseCase = FakeExecuteTransfeUseCase(),
+        registerBillingKeyUseCase = FakeRegisterBillingKeyUseCase()
     )
 
     // ViewModel 없이 프리뷰만 보기 위한 더미 호출

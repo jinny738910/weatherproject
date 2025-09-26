@@ -1,4 +1,4 @@
-package com.jinny.plancast.presentation.payment
+package com.jinny.plancast.presentation.financial.payment
 
 import PaymentScreen
 import android.app.Activity
@@ -9,8 +9,6 @@ import android.util.Log
 import android.widget.Toast
 
 import androidx.activity.compose.setContent
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,12 +21,12 @@ import com.google.android.gms.wallet.PaymentsClient
 import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
 import com.jinny.plancast.presentation.BaseActivity
-import com.jinny.plancast.presentation.todo.detail.DetailActivity
-import com.jinny.plancast.presentation.todo.detail.DetailMode
+import com.jinny.plancast.presentation.todo.detail.DetailActivity.Companion.DETAIL_MODE_KEY
+import com.jinny.plancast.presentation.todo.detail.DetailActivity.Companion.TODO_ID_KEY
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import org.koin.core.parameter.parametersOf
 
 
 class PaymentActivity : BaseActivity<PaymentViewModel>() {
@@ -40,35 +38,6 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
     private val LOAD_PAYMENT_DATA_REQUEST_CODE = 991
 
 
-    private val listLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            // 결과가 돌아왔을 때 이 람다 블록이 실행됩니다.
-            if (result.resultCode == Activity.RESULT_OK) {
-                // 성공적인 결과를 처리합니다.
-                val data: Intent? = result.data
-                val message = data?.getStringExtra("result_key")
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                viewModel.fetchData()
-            }
-        }
-
-
-    companion object {
-        const val TODO_ID_KEY = "ToDoId"
-        const val DETAIL_MODE_KEY = "DetailMode"
-
-        const val FETCH_REQUEST_CODE = 10
-
-        fun getIntent(context: Context, detailMode: DetailMode) = Intent(context, DetailActivity::class.java).apply {
-            putExtra(DETAIL_MODE_KEY, detailMode)
-        }
-
-        fun getIntent(context: Context, id: Long, detailMode: DetailMode) = Intent(context, DetailActivity::class.java).apply {
-            putExtra(TODO_ID_KEY, id)
-            putExtra(DETAIL_MODE_KEY, detailMode)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -76,9 +45,6 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
             .setEnvironment(WalletConstants.ENVIRONMENT_TEST) // ❗ 프로덕션에서는 ENVIRONMENT_PRODUCTION 으로 변경
             .build()
         paymentsClient = Wallet.getPaymentsClient(this, walletOptions)
-
-        // 2. Google Pay 사용 가능 여부 확인
-//        checkIsReadyToPay()
 
 
         setContent {
@@ -95,26 +61,17 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
                     onDismissRequest = { },
                     onMethodSelected = {
                     },
-                    showPaymentMethodDialog = showDialog,
-                    onBackClick = {
-                        finish()
-                    }
+                    showPaymentMethodDialog = showDialog
                 )
 
             }
 
         }
 
-
-
-//        val resultIntent = Intent()
-//        resultIntent.putExtra("result_key", "이것이 결과값입니다!")
-//        setResult(Activity.RESULT_OK, resultIntent)
-//        finish()
     }
 
     override fun observeData() {
-        TODO("Not yet implemented")
+        // do op
     }
 
     /**
@@ -165,6 +122,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
     /**
      * Google Pay 결제 시트로부터 결과를 받아 처리합니다.
      */
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOAD_PAYMENT_DATA_REQUEST_CODE) {
@@ -190,6 +148,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
                 AutoResolveHelper.RESULT_ERROR -> {
                     val status = AutoResolveHelper.getStatusFromIntent(data)
                     Log.w("PaymentActivity", "Error code: ${status?.statusCode}")
+                    Log.w("PaymentActivity", "Error code: ${status?.statusMessage}")
                 }
             }
         }
@@ -243,6 +202,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
 
         val cardPaymentMethod = baseCardPaymentMethod
         cardPaymentMethod.put("tokenizationSpecification", tokenizationSpecification)
+
+        paymentDataRequest.put("allowedPaymentMethods", JSONArray()
+            .put(cardPaymentMethod))
 
         return paymentDataRequest
     }

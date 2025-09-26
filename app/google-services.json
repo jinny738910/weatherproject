@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "618629712032",
+    "firebase_url": "https://weatherproject-3d64c-default-rtdb.firebaseio.com",
     "project_id": "weatherproject-3d64c",
     "storage_bucket": "weatherproject-3d64c.firebasestorage.app"
   },

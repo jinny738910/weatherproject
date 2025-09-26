@@ -62,6 +62,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-compose-android:2.9.3'
     implementation 'androidx.work:work-runtime-ktx:2.10.4'
     implementation 'androidx.compose.runtime:runtime-livedata:1.9.1'
+    implementation 'com.google.androidbrowserhelper:billing:1.1.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "com.google.truth:truth:1.0"
@@ -126,6 +127,7 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
 
     // Biometric (생체 인증)
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
@@ -152,4 +154,7 @@ dependencies {
 
     // 보안키패드 라이브러리
     implementation 'io.github.chaosleung:pinview:1.4.4'
+
+    // 토스페이먼츠 SDK 연동
+//    implementation("com.tosspayments.android:paymentsdk:3.5.1")
 }

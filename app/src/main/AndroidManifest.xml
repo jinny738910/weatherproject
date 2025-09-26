@@ -27,16 +27,17 @@
             android:value="true" />
         <activity
             android:name=".presentation.todo.list.ListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.payment.PaymentActivity"
+        <activity
+            android:name=".presentation.login.LoginActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".presentation.financial.payment.PaymentActivity"
             android:exported="true">
         </activity>
         <activity android:name=".presentation.todo.detail.DetailActivity"
@@ -45,13 +46,22 @@
         <activity android:name=".presentation.webView.WebViewActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".presentation.transfer.TransferActivity"
+        <activity android:name=".presentation.financial.transfer.TransferActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".presentation.password.PasswordActivity"
+        <activity android:name=".presentation.financial.password.PasswordActivity"
             android:exported="true">
         </activity>
         <activity android:name=".presentation.alarm.AlarmListActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".presentation.chat.ChatRoomActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".presentation.chat.ChatListActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".presentation.setting.SettingActivity"
             android:exported="true">
         </activity>
         <activity android:name=".presentation.weather.WeatherActivity"

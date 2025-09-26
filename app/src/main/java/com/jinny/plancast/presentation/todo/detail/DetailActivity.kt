@@ -15,8 +15,13 @@ import androidx.core.view.isGone
 import com.jinny.plancast.R
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityDetailBinding
-import com.jinny.plancast.presentation.payment.PaymentActivity
-import com.jinny.plancast.presentation.transfer.TransferActivity
+import com.jinny.plancast.presentation.chat.ChatListActivity
+import com.jinny.plancast.presentation.chat.ChatRoomActivity
+import com.jinny.plancast.presentation.financial.password.PasswordActivity
+import com.jinny.plancast.presentation.financial.payment.PaymentActivity
+import com.jinny.plancast.presentation.financial.transfer.TransferActivity
+import com.jinny.plancast.presentation.weather.WeatherActivity
+import com.jinny.plancast.presentation.weather.WeatherActivity.Companion
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -56,6 +61,30 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
             }
         }
 
+    private val inviteLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // 결과가 돌아왔을 때 이 람다 블록이 실행됩니다.
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 성공적인 결과를 처리합니다.
+                val data: Intent? = result.data
+                val message = data?.getStringExtra("result_key")
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                viewModel.fetchData()
+            }
+        }
+
+    private val commentLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // 결과가 돌아왔을 때 이 람다 블록이 실행됩니다.
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 성공적인 결과를 처리합니다.
+                val data: Intent? = result.data
+                val message = data?.getStringExtra("result_key")
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                viewModel.fetchData()
+            }
+        }
+
     companion object {
         const val TODO_ID_KEY = "ToDoId"
         const val DETAIL_MODE_KEY = "DetailMode"
@@ -78,6 +107,11 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         setContentView(binding.root)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        setResult(Activity.RESULT_OK)
+    }
+
     override fun observeData() = viewModel.toDoDetailLiveData.observe(this@DetailActivity) {
         when (it) {
             is ToDoDetailState.UnInitialized -> {
@@ -94,11 +128,15 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
             }
             is ToDoDetailState.Delete -> {
                 Toast.makeText(this, "성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+
+                setResult(Activity.RESULT_OK)
                 finish()
             }
             is ToDoDetailState.Error -> {
                 Toast.makeText(this, "오류: ${it.message}", Toast.LENGTH_LONG).show()
                 Log.d("DetailActivity", "오류: ${it.message}")
+
+                setResult(Activity.RESULT_OK)
                 finish()
             }
             is ToDoDetailState.Write -> {
@@ -120,6 +158,16 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         financialAlarmCheckbox.isEnabled = false
         repeatCheckbox.isEnabled = false
         lockCheckbox.isEnabled =false
+
+        inviteButton.setOnClickListener {
+            val intent = Intent(this@DetailActivity, ChatListActivity::class.java)
+            inviteLauncher.launch(intent)
+        }
+
+        commentsButton.setOnClickListener {
+            val intent = Intent(this@DetailActivity, ChatRoomActivity::class.java)
+            commentLauncher.launch(intent)
+        }
 
         deleteButton.setOnClickListener {
             viewModel.deleteToDo()
@@ -189,6 +237,14 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         modifyButton.isGone = true
         completeButton.isGone = true
         updateButton.isGone = false
+        financialButton.isGone = true
+
+        weatherAlarmCheckbox.isEnabled = true
+        locationAlarmCheckbox.isEnabled = true
+        financialAlarmCheckbox.isEnabled = true
+
+        repeatCheckbox.isEnabled = true
+        lockCheckbox.isEnabled =true
     }
 
     private fun handleWriteState() = with(binding) {
@@ -196,6 +252,14 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         descriptionInput.isEnabled = true
 
         updateButton.isGone = false
+        financialButton.isGone = true
+
+        weatherAlarmCheckbox.isEnabled = true
+        locationAlarmCheckbox.isEnabled = true
+        financialAlarmCheckbox.isEnabled = true
+
+        repeatCheckbox.isEnabled = true
+        lockCheckbox.isEnabled =true
     }
 
     private fun handleSuccessState(state: ToDoDetailState.Success) = with(binding) {
@@ -203,6 +267,10 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
 
         titleInput.isEnabled = false
         descriptionInput.isEnabled = false
+        imageInput.isEnabled = false
+        timeInput.isEnabled = false
+        destinationInput.isEnabled = false
+
 
         deleteButton.isGone = false
         modifyButton.isGone = false
@@ -246,7 +314,7 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         builder.setPositiveButton("카드로 결제") { dialog, which ->
             // '예' 버튼을 눌렀을 때 실행될 코드
             Toast.makeText(this, "카드로 결제 진행하겠습니다.", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this@DetailActivity, PaymentActivity::class.java)
+            val intent = Intent(this@DetailActivity,PaymentActivity::class.java)
             paymentLauncher.launch(intent)
         }
 

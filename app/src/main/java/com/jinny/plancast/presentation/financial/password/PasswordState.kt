@@ -1,4 +1,4 @@
-package com.jinny.plancast.presentation.password
+package com.jinny.plancast.presentation.financial.password
 
 import com.google.firebase.auth.FirebaseUser
 

@@ -75,7 +75,7 @@ fun WeatherScreen(
 
 
     Scaffold(
-    topBar = { LocationBar(viewModel = viewModel) }
+    topBar = { LocationBar(navController = navController, viewModel = viewModel) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -103,13 +103,23 @@ fun WeatherScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationBar(viewModel: WeatherViewModel) {
+fun LocationBar(navController: NavController, viewModel: WeatherViewModel) {
     TopAppBar(
         title = {
             Text("성남시, 분당구", fontWeight = FontWeight.Bold)
         },
         actions = {
-            IconButton(onClick = { viewModel.getShortTermForecast()}) {
+            IconButton(onClick = {
+//                viewModel.getShortTermForecast()
+                navController.navigate("search") {
+                    popUpTo("weather") {
+                        // inclusive = true: "login" 라우트까지 포함하여 제거한다는 의미
+                        // 즉, "login" 화면 자체를 백스택에서 삭제합니다.
+                        inclusive = true
+                    }
+                }
+            }
+            ) {
                 Icon(Icons.Default.Search, contentDescription = "지역 검색")
             }
         },

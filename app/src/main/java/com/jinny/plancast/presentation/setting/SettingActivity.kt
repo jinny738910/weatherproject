@@ -1,4 +1,4 @@
-package com.jinny.plancast.presentation.alarm
+package com.jinny.plancast.presentation.setting
 
 import android.app.Activity
 import android.content.Intent
@@ -18,7 +18,7 @@ import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
-class AlarmListActivity : BaseActivity<AlarmListViewModel>(), CoroutineScope{
+class SettingActivity : BaseActivity<SettingViewModel>(), CoroutineScope{
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + Job()
@@ -27,7 +27,7 @@ class AlarmListActivity : BaseActivity<AlarmListViewModel>(), CoroutineScope{
 
     private val adapter = ToDoAdapter()
 
-    override val viewModel: AlarmListViewModel by viewModel()
+    override val viewModel: SettingViewModel by viewModel()
 
 //    ActivityResultLauncher를 생성하고 결과를 처리할 콜백을 정의합니다.
     private val detailLauncher: ActivityResultLauncher<Intent> =
@@ -76,12 +76,13 @@ class AlarmListActivity : BaseActivity<AlarmListViewModel>(), CoroutineScope{
     }
 
     private fun initViews(binding: ActivityListBinding) = with(binding) {
-        recyclerView.layoutManager = LinearLayoutManager(this@AlarmListActivity, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(this@SettingActivity, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
         refreshLayout.setOnRefreshListener {
             viewModel.fetchData()
         }
+
     }
 
     override fun observeData() {
