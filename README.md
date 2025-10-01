@@ -36,7 +36,8 @@
 
 날씨 정보 표시 화면
 
-<img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/7a2a591b-a7e8-4500-a44b-aa288adb3ebb" />
+<img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/b5780ce1-19a7-4282-90f9-13afd2423ad2" />
+
 <img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/925af514-7d23-4741-932f-fc1f9e78d0be" />
 
 지역 검색 화면
