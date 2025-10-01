@@ -51,9 +51,11 @@
 <img width="333" height="704" alt="image" src="https://github.com/user-attachments/assets/4269904f-3270-4bbf-afc4-50f4212915ae" />
 <img width="317" height="650" alt="image" src="https://github.com/user-attachments/assets/1e06a5de-b3f6-444d-b909-719c3a127a18" />
 
+결제 화면
+
 <img width="305" height="620" alt="image" src="https://github.com/user-attachments/assets/c4b9841c-68c5-4902-bb58-cb3760cc2aaa" />
 <img width="312" height="645" alt="image" src="https://github.com/user-attachments/assets/9a71e934-ec09-42e3-a070-e15dc05fbb50" />
 
-결제 및 송금 화면
+송금 화면
 
 
