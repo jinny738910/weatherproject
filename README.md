@@ -18,13 +18,16 @@
 
 로그인 화면
 
-<img width="312" height="650" alt="image" src="https://github.com/user-attachments/assets/f65f9f7e-9e5a-41e2-b902-7d58ef882639" />
+<img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/99209a9e-3980-4ef3-986c-6e81079bcb86" />
+
 
 생체 인증 화면 
 
 <img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/7cf33c0e-111d-4ce7-9131-c0f2c62cdd4a" />
 <img width="246" height="540" alt="image" src="https://github.com/user-attachments/assets/71dce81b-841c-49c0-ba93-cf0bc42ea726" />
-<img width="305" height="634" alt="image" src="https://github.com/user-attachments/assets/a4531b65-7e13-4984-9c1a-0adb0fd270dd" />
+<img width="246" height="540" alt="image" src="https://github.com/user-attachments/assets/8352e209-0fbf-4d94-a3c8-18273451d702" />
+<img width="246" height="540" alt="image" src="https://github.com/user-attachments/assets/4e9e2e6a-639a-493d-b7b9-bcca8ac525dd" />
+
 
 할일 관리 기능 
 
