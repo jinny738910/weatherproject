@@ -14,7 +14,7 @@
 
 ## 결과 화면
 
-<img width="426" height="929" alt="image" src="https://github.com/user-attachments/assets/46796b2c-f04d-443c-afca-51c74ed24a8a" />
+<img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/46796b2c-f04d-443c-afca-51c74ed24a8a" />
 
 로그인 화면
 
