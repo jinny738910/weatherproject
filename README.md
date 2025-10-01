@@ -1,4 +1,4 @@
-# CleanArchitecture와 함께 알림 해주는 ToDo앱 만들기
+# CleanArchitecture를 적용한 알림 해주는 ToDo앱 만들기
 
 ## 기능
 - 로그인 기능  (Authentication)
