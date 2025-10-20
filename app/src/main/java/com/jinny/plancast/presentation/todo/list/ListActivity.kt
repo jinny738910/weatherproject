@@ -1,5 +1,6 @@
 package com.jinny.plancast.presentation.todo.list
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -27,6 +28,8 @@ import com.jinny.plancast.R
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
 import com.jinny.plancast.presentation.alarm.AlarmListActivity
+import com.jinny.plancast.presentation.chat.ChatListActivity
+import com.jinny.plancast.presentation.chat.ChatListItem
 import com.jinny.plancast.presentation.login.LoginActivity
 import com.jinny.plancast.presentation.setting.SettingActivity
 import com.jinny.plancast.presentation.todo.detail.DetailActivity
@@ -133,17 +136,13 @@ class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
                     return
                 }
 
-                Log.d("ListActivity", "datasnapshot: $snapshot")
-                Log.d("ListActivity", "datasnapshot name: ${snapshot.child("name").value}")
-                Log.d("ListActivity", "datasnapshot userId: ${snapshot.child("userId").value}")
-
-
             }
 
             override fun onCancelled(error: DatabaseError) {}
 
         })
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -279,6 +278,11 @@ class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
             R.id.action_logout -> {
                 auth.signOut()
                 startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+                true
+            }
+            R.id.action_chatlist -> {
+                startActivity(Intent(this, ChatListActivity::class.java))
                 finish()
                 true
             }

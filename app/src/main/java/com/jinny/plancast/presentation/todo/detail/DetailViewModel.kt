@@ -1,5 +1,6 @@
 package com.jinny.plancast.presentation.todo.detail
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -68,7 +69,7 @@ class DetailViewModel(
         date: String,
         destination: String,
         description: String,
-        image: String,
+        image: Uri?,
         isClimate: Boolean,
         isLocation: Boolean,
         isFinancial: Boolean,
@@ -85,7 +86,7 @@ class DetailViewModel(
                         date = date,
                         destination = destination,
                         description = description,
-                        image = image,
+                        image = image.toString(),
                         hasCompleted = hasCompleted,
                         isClimate = isClimate,
                         isLocation = isLocation,
@@ -106,7 +107,7 @@ class DetailViewModel(
                 try {
                     getToDoItemUseCase(id)?.let {
                         val updateToDoEntity = it.copy(title = title, description = description, date = date,
-                            destination = destination, image = image, isClimate = isClimate,
+                            destination = destination, image = image.toString(), isClimate = isClimate,
                             isLocation = isLocation, isFinancial = isFinancial, isRepeat = isRepeat,
                             isLock = isLock, hasCompleted = hasCompleted)
                         updateToDoUseCase(updateToDoEntity)

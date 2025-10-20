@@ -12,6 +12,11 @@
         android:title="@string/alarmCheck">
     </item>
     <item
+        android:id="@+id/action_chatlist"
+        app:showAsAction="never"
+        android:title="@string/chatList">
+    </item>
+    <item
         android:id="@+id/action_setting"
         app:showAsAction="never"
         android:title="@string/setting">

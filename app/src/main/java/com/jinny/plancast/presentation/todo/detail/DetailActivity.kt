@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -11,17 +13,22 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.isGone
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.database
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storage
 import com.jinny.plancast.R
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityDetailBinding
-import com.jinny.plancast.presentation.chat.ChatListActivity
+import com.jinny.plancast.presentation.chat.ChatUserListActivity
 import com.jinny.plancast.presentation.chat.ChatRoomActivity
-import com.jinny.plancast.presentation.financial.password.PasswordActivity
 import com.jinny.plancast.presentation.financial.payment.PaymentActivity
 import com.jinny.plancast.presentation.financial.transfer.TransferActivity
-import com.jinny.plancast.presentation.weather.WeatherActivity
-import com.jinny.plancast.presentation.weather.WeatherActivity.Companion
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,6 +36,16 @@ import org.koin.core.parameter.parametersOf
 class DetailActivity : BaseActivity<DetailViewModel>() {
 
     private lateinit var binding: ActivityDetailBinding
+    private var selectedUri: Uri? = null
+    private val auth by lazy {
+        Firebase.auth
+    }
+    private val storage: FirebaseStorage by lazy {
+        Firebase.storage
+    }
+    private val chatDB: DatabaseReference by lazy {
+        Firebase.database.reference.child("chats")
+    }
 
     override val viewModel: DetailViewModel by viewModel {
         parametersOf(
@@ -160,7 +177,7 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         lockCheckbox.isEnabled =false
 
         inviteButton.setOnClickListener {
-            val intent = Intent(this@DetailActivity, ChatListActivity::class.java)
+            val intent = Intent(this@DetailActivity, ChatUserListActivity::class.java)
             inviteLauncher.launch(intent)
         }
 
@@ -181,7 +198,8 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
                 date = timeInput.text.toString(),
                 destination = destinationInput.text.toString(),
                 description = descriptionInput.text.toString(),
-                image = imageInput.text.toString(),
+//                image = imageInput.text.toString(),
+                image = selectedUri,
                 isClimate = weatherAlarmCheckbox.isChecked,
                 isLocation = locationAlarmCheckbox.isChecked,
                 isFinancial = financialAlarmCheckbox.isChecked,
@@ -189,6 +207,27 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
                 isLock = lockCheckbox.isChecked,
                 hasCompleted = false
             )
+        }
+
+        mediaButton.setOnClickListener {
+            when {
+                ContextCompat.checkSelfPermission(
+                    this@DetailActivity,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED -> {
+                    // 권한이 이미 허용된 경우
+                   startContentProvider()
+                }
+                shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+                    // 권한 요청 이유 다이얼로그 표시
+                    showPermissionDialog()
+                }
+                else -> {
+                    // 권한 요청
+                    requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 100)
+                }
+
+            }
         }
 
         financialButton.setOnClickListener {
@@ -210,7 +249,8 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
                 date = timeInput.text.toString(),
                 destination = destinationInput.text.toString(),
                 description = descriptionInput.text.toString(),
-                image = imageInput.text.toString(),
+//                image = imageInput.text.toString(),
+                image = selectedUri,
                 hasCompleted = true,
                 isClimate = weatherAlarmCheckbox.isChecked,
                 isLocation = locationAlarmCheckbox.isChecked,
@@ -223,6 +263,62 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
             completeButton.setBackgroundColor(Color.Blue.toArgb())
             completeButton.isEnabled = false
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            100 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 권한이 허용된 경우
+                    startContentProvider()
+                } else {
+                    // 권한이 거부된 경우
+                    Toast.makeText(this, "권한이 거부되었습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun startContentProvider() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        startActivityForResult(intent, 2020)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode != Activity.RESULT_OK){
+            return
+        }
+
+        when (resultCode) {
+            2020 -> {
+                val uri = data?.data ?: return
+                Log.d("DetailActivity", "onActivityResult: $uri")
+                binding.imageInput.setImageURI(uri)
+                selectedUri = uri
+            }
+            else -> {
+                Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun showPermissionDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("권한이 필요합니다")
+            .setMessage("사진을 불러오기 위해 권한이 필요합니다.")
+            .setPositiveButton("확인") { dialog, which ->
+                // 권한 요청
+                requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 100)
+            }
+            .setNegativeButton("취소") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     private fun handleLoadingState() = with(binding) {
@@ -283,7 +379,8 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         descriptionInput.setText(toDoItem.description)
         timeInput.setText(toDoItem.date)
         destinationInput.setText(toDoItem.destination)
-        imageInput.setText(toDoItem.image)
+//        imageInput.setText(toDoItem.image)
+        imageInput.setImageURI(toDoItem.image.toUri())
         weatherAlarmCheckbox.isChecked = toDoItem.isClimate
         locationAlarmCheckbox.isChecked = toDoItem.isLocation
         financialAlarmCheckbox.isChecked = toDoItem.isFinancial

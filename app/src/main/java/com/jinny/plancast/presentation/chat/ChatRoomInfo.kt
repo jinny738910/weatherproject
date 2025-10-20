@@ -1,6 +1,6 @@
 package com.jinny.plancast.presentation.chat
 
-data class ChatListItem(
+data class ChatRoomInfo(
     val userId: String,
     val title: String,
     val date: String,

@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.presentation.financial.payment.PaymentUiState
 import com.jinny.plancast.presentation.financial.payment.PaymentViewModel
 import java.text.NumberFormat
@@ -191,6 +192,11 @@ fun PaymentScreenPreview() {
     var state by remember { mutableStateOf(PaymentUiState()) }
 
     val fakeViewModel = PaymentViewModel(
+        backendRepository = object : BackendRepository {
+            override suspend fun fetchHelloMessage(): Result<String> {
+                return Result.success("Hello from Fake Repository")
+            }
+        }
     )
 
     MaterialTheme {

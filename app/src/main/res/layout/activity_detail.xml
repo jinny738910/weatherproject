@@ -45,7 +45,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="댓글 확인"/>
+                    android:text="채팅방 생성"/>
 
             </LinearLayout>
 
@@ -91,7 +91,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
 
-            <EditText
+            <ImageView
                 android:id="@+id/imageInput"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"

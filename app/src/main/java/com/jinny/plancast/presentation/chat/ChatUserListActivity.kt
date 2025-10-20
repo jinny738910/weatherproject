@@ -22,7 +22,7 @@ import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
-class ChatListActivity : BaseActivity<ChatListViewModel>(), CoroutineScope{
+class ChatUserListActivity : BaseActivity<ChatUserListViewModel>(), CoroutineScope{
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + Job()
@@ -30,27 +30,11 @@ class ChatListActivity : BaseActivity<ChatListViewModel>(), CoroutineScope{
     private lateinit var binding: ActivityListBinding
 
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private var userDB: DatabaseReference = Firebase.database.reference
-    private val chatListAdapter = ChatListAdapter()
-    private val chatListItems = mutableListOf<ChatListItem>()
-    private val listener = object:  ChildEventListener {
-        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            val chatListItem = snapshot.getValue(ChatListItem::class.java)
-            chatListItem ?: return
+    private var userDB: DatabaseReference = Firebase.database.reference.child("users")
+    private val chatUserListAdapter = ChatUserListAdapter()
+    private val chatUserListItems = mutableListOf<ChatUserListItem>()
 
-            Log.d("ChatListActivity", "${chatListItem.title}, ${chatListItem.userId}, ${chatListItem.date}, ${chatListItem.description}")
-
-            chatListItems.add(chatListItem)
-            chatListAdapter.setToChatList(chatListItems, chatItemClickListener = { ChatListItem ->
-            })
-        }
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-        override fun onChildRemoved(snapshot: DataSnapshot) {}
-        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-        override fun onCancelled(error: DatabaseError) {}
-    }
-
-    override val viewModel: ChatListViewModel by viewModel()
+    override val viewModel: ChatUserListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,13 +47,46 @@ class ChatListActivity : BaseActivity<ChatListViewModel>(), CoroutineScope{
         binding.weatherDetailsButton.isGone =true
 
 
-        val chatDB = Firebase.database.reference.child("chats")
-        chatDB.addChildEventListener(listener)
+        Log.d("ChatListActivity", "currentUserId: ${getCurrentUserID()}")
+        userDB.addListenerForSingleValueEvent(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("ChatListActivity", "addListenerForSingleValueEvent -> onDataChange")
+                Log.d("ChatListActivity", "datasnapshot: $snapshot")
+
+                val userId = snapshot.child("userId").value.toString()
+                var name = "undecided"
+                if (snapshot.child("name").value != null) {
+                    name = snapshot.child("name").value.toString()
+                }
+
+                Log.d("onDataChange ChatListActivity", "userId: $userId, name: $name")
+
+
+                if (userId.isEmpty() || name == "undecided") {
+                    Log.d("ChatListActivity", "setToChatList: userId가 undecided인 아이템이 있습니다.")
+                } else {
+                    chatUserListItems.add(ChatUserListItem(userId, name))
+                    chatUserListAdapter.setToChatList(chatUserListItems, chatItemClickListener = { chatListItem ->
+                        Log.d("ChatListActivity", "onChatListItemClick : ${chatListItem.userId}")
+                        invite(chatListItem .userId)
+                    })
+                    chatUserListAdapter.notifyDataSetChanged()
+                }
+
+                getUnSelectedUsers()
+                getInviteMessage()
+                getMatchMessage()
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+
+        })
     }
 
     private fun initViews(binding: ActivityListBinding) = with(binding) {
-        recyclerView.layoutManager = LinearLayoutManager(this@ChatListActivity, LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = chatListAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this@ChatUserListActivity, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = chatUserListAdapter
 
         refreshLayout.setOnRefreshListener {
             viewModel.fetchData()
@@ -80,6 +97,55 @@ class ChatListActivity : BaseActivity<ChatListViewModel>(), CoroutineScope{
     override fun observeData() {
     }
 
+    private fun getUnSelectedUsers() {
+
+        userDB.addChildEventListener(object : ChildEventListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                if (snapshot.child("userId").value != getCurrentUserID()
+                    && snapshot.child("likedBy").child("like").hasChild(getCurrentUserID()).not()
+                    && snapshot.child("likedBy").child("dislike").hasChild(getCurrentUserID()).not()
+                ) {
+
+                    Log.d("ChatListActivity", "addChildEventListener -> onChildAdded")
+                    Log.d("ChatListActivity", "snapshot: $snapshot")
+                    val userId = snapshot.child("userId").value.toString()
+                    var name = "undecided"
+                    if (snapshot.child("name").value != null) {
+                        name = snapshot.child("name").value.toString()
+                    }
+
+                    Log.d("ChatListActivity", "userId: $userId, name: $name")
+
+                    chatUserListItems.add(ChatUserListItem(userId, name))
+                    chatUserListAdapter.setToChatList(chatUserListItems, chatItemClickListener = { chatListItem ->
+                        Log.d("ChatListActivity", "onChatListItemClick : ${chatListItem.userId}")
+                        invite(chatListItem.userId)
+                    })
+                    Log.d("ChatListActivity", "itemcount: ${chatUserListAdapter.getItemCount()}")
+
+                    chatUserListAdapter.notifyDataSetChanged()
+                }
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+                chatUserListItems.find { it.userId == dataSnapshot.key }?.let {
+                    it.name = dataSnapshot.child("name").value.toString()
+                    Log.d("ChatListActivity", "onChildChanged - name: ${it.name}")
+                }
+                chatUserListAdapter.setToChatList(chatUserListItems, chatItemClickListener = { chatListItem ->
+                    Log.d("ChatListActivity", "onChatListItemClick : ${chatListItem.userId}")
+                    invite(chatListItem.userId)
+                })
+                chatUserListAdapter.notifyDataSetChanged()
+
+            }
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
 
     private fun getInviteMessage() {
 
@@ -90,7 +156,7 @@ class ChatListActivity : BaseActivity<ChatListViewModel>(), CoroutineScope{
                 val isInvited = snapshot.getValue(Boolean::class.java) ?: false
                 if (isInvited == true) {
                     val inviteUser = snapshot.key.toString()
-                    Toast.makeText(this@ChatListActivity, "$inviteUser 님이 초대했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ChatUserListActivity, "$inviteUser 님이 초대했습니다.", Toast.LENGTH_SHORT).show()
                     showInviteDialog(inviteUser)
                 }
             }
@@ -101,7 +167,7 @@ class ChatListActivity : BaseActivity<ChatListViewModel>(), CoroutineScope{
                 val isInvited = snapshot.getValue(Boolean::class.java) ?: false
                 if (isInvited == true) {
                     val inviteUser = snapshot.key.toString()
-                    Toast.makeText(this@ChatListActivity, "$inviteUser 님이 초대했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ChatUserListActivity, "$inviteUser 님이 초대했습니다.", Toast.LENGTH_SHORT).show()
                     showInviteDialog(inviteUser)
                 }
             }
@@ -120,8 +186,8 @@ class ChatListActivity : BaseActivity<ChatListViewModel>(), CoroutineScope{
                 val isMatched = snapshot.getValue(Boolean::class.java) ?: false
                 if (isMatched == true) {
                     val matchedUser = snapshot.key.toString()
-                    Toast.makeText(this@ChatListActivity, "$matchedUser 님이 매치됐습니다.", Toast.LENGTH_SHORT).show()
-                    chatListAdapter.setToChatList(chatListItems, chatItemClickListener = { chatListItem ->
+                    Toast.makeText(this@ChatUserListActivity, "$matchedUser 님이 매치됐습니다.", Toast.LENGTH_SHORT).show()
+                    chatUserListAdapter.setToChatList(chatUserListItems, chatItemClickListener = { chatListItem ->
                         Log.d("ChatListActivity", "onChatListItemClick : ${chatListItem.userId}")
 
                     })
@@ -134,7 +200,7 @@ class ChatListActivity : BaseActivity<ChatListViewModel>(), CoroutineScope{
                 val isMatched = snapshot.getValue(Boolean::class.java) ?: false
                 if (isMatched == true) {
                     val matchedUser = snapshot.key.toString()
-                    Toast.makeText(this@ChatListActivity, "$matchedUser 님이 매치됐습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ChatUserListActivity, "$matchedUser 님이 매치됐습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {}

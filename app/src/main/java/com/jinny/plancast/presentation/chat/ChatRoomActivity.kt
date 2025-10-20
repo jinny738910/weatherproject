@@ -1,11 +1,7 @@
 package com.jinny.plancast.presentation.chat
 
-import android.app.Activity
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -18,7 +14,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
-import com.jinny.plancast.presentation.todo.view.ToDoAdapter
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
@@ -33,7 +28,21 @@ class ChatRoomActivity : BaseActivity<ChatRoomViewModel>(), CoroutineScope{
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var userDB: DatabaseReference = Firebase.database.reference
     private val chatRoomAdapter = ChatRoomAdapter()
-    private val chatRoomItems = mutableListOf<ChatRoomItem>()
+    private val chatRoomInfos = mutableListOf<ChatRoomInfo>()
+    private val listener = object:  ChildEventListener {
+        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            val chatRoomInfo = snapshot.getValue(ChatRoomInfo::class.java)
+            chatRoomInfo ?: return
+
+            chatRoomInfos.add(chatRoomInfo)
+            chatRoomAdapter.setToChatRoom(chatRoomInfos, chatRoomClickListener = { ChatRoomInfo ->
+            })
+        }
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+        override fun onChildRemoved(snapshot: DataSnapshot) {}
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+        override fun onCancelled(error: DatabaseError) {}
+    }
 
     override val viewModel: ChatRoomViewModel by viewModel()
 
@@ -46,19 +55,15 @@ class ChatRoomActivity : BaseActivity<ChatRoomViewModel>(), CoroutineScope{
         binding.addToDoButton.isGone =true
         binding.weatherDetailsButton.isGone =true
 
-        userDB = Firebase.database.reference.child("users")
+        userDB = Firebase.database.reference.child("users").child(getCurrentUserID()).child("")
 
-        getUnSelectedUsers()
+        val chatDB = Firebase.database.reference.child("users").child("chats")
 
-        val currentUserDB = userDB.child(getCurrentUserID())
-        currentUserDB.addListenerForSingleValueEvent(object : ValueEventListener {
+        chatDB.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.child("name").value == null) {
-//                    showNameInputPopup()
-                    return
-                }
 
-                getUnSelectedUsers()
+
+                getChatRoomUsers()
 
             }
 
@@ -79,8 +84,9 @@ class ChatRoomActivity : BaseActivity<ChatRoomViewModel>(), CoroutineScope{
     override fun observeData() {
     }
 
-    fun getUnSelectedUsers() {
+    fun getChatRoomUsers() {
         userDB.addChildEventListener(object : ChildEventListener {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 if (snapshot.child("userId").value != getCurrentUserID()
                     && snapshot.child("likedBy").child("like").hasChild(getCurrentUserID()).not()
@@ -94,8 +100,8 @@ class ChatRoomActivity : BaseActivity<ChatRoomViewModel>(), CoroutineScope{
                     }
                     val message = "채팅을 시작해보세요!"
 
-                    chatRoomItems.add(ChatRoomItem(userId, name, message))
-                    chatRoomAdapter.setToChatRoom(chatRoomItems, chatRoomClickListener = { chatRoomItem ->
+                    chatRoomInfos.add(ChatRoomInfo(userId, name, message, "", "fasf", "Afdadf", "dfadsf"))
+                    chatRoomAdapter.setToChatRoom(chatRoomInfos, chatRoomClickListener = { ChatRoomInfo ->
                     })
                     chatRoomAdapter.notifyDataSetChanged()
 
@@ -105,11 +111,11 @@ class ChatRoomActivity : BaseActivity<ChatRoomViewModel>(), CoroutineScope{
                 }
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-                chatRoomItems.find { it.userId == dataSnapshot.key }?.let {
-                    it.name = dataSnapshot.child("name").value.toString()
+                chatRoomInfos.find { it.userId == dataSnapshot.key }?.let {
                 }
-                chatRoomAdapter.setToChatRoom(chatRoomItems, chatRoomClickListener = { chatRoomItem ->
+                chatRoomAdapter.setToChatRoom(chatRoomInfos, chatRoomClickListener = { chatRoomItem ->
                 })
                 chatRoomAdapter.notifyDataSetChanged()
             }

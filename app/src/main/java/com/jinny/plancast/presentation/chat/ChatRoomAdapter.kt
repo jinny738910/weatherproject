@@ -1,5 +1,6 @@
 package com.jinny.plancast.presentation.chat
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -9,19 +10,19 @@ import com.jinny.plancast.databinding.ViewholderTodoItemBinding
 
 class ChatRoomAdapter : RecyclerView.Adapter<ChatRoomAdapter.ToDoItemViewHolder>() {
 
-    private var toDoList: List<ChatRoomItem> = listOf()
-    private lateinit var toDoItemClickListener: (ChatRoomItem) -> Unit
-    private lateinit var toDoCheckListener: (ChatRoomItem) -> Unit
+    private var toDoList: List<ChatRoomInfo> = listOf()
+    private lateinit var toDoItemClickListener: (ChatRoomInfo) -> Unit
+    private lateinit var toDoCheckListener: (ChatRoomInfo) -> Unit
 
     inner class ToDoItemViewHolder(
         private val binding: ViewholderTodoItemBinding,
-        val toDoItemClickListener: (ChatRoomItem) -> Unit
+        val toDoItemClickListener: (ChatRoomInfo) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(data: ChatRoomItem) = with(binding) {
+        fun bindData(data: ChatRoomInfo) = with(binding) {
         }
 
-        fun bindViews(data: ChatRoomItem) {
+        fun bindViews(data: ChatRoomInfo) {
             binding.root.setOnClickListener {
                 toDoItemClickListener(data)
             }
@@ -55,7 +56,8 @@ class ChatRoomAdapter : RecyclerView.Adapter<ChatRoomAdapter.ToDoItemViewHolder>
 
     override fun getItemCount(): Int = toDoList.size
 
-    fun setToChatRoom(chatRoom: List<ChatRoomItem>, chatRoomClickListener: (ChatRoomItem) -> Unit) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun setToChatRoom(chatRoom: MutableList<ChatRoomInfo>, chatRoomClickListener: (ChatRoomInfo) -> Unit) {
         this.toDoList = chatRoom
         this.toDoItemClickListener = chatRoomClickListener
         notifyDataSetChanged()

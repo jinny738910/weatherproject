@@ -9,23 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jinny.plancast.R
 import com.jinny.plancast.databinding.ViewholderChatlistItemBinding
 
-class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.ToDoItemViewHolder>() {
+class ChatUserListAdapter : RecyclerView.Adapter<ChatUserListAdapter.ToDoItemViewHolder>() {
 
-    private var toDoList: List<ChatListItem> = listOf()
-    private lateinit var toDoItemClickListener: (ChatListItem) -> Unit
-    private lateinit var toDoCheckListener: (ChatListItem) -> Unit
+    private var toDoList: List<ChatUserListItem> = listOf()
+    private lateinit var toDoItemClickListener: (ChatUserListItem) -> Unit
+    private lateinit var toDoCheckListener: (ChatUserListItem) -> Unit
 
     inner class ToDoItemViewHolder(
         private val binding: ViewholderChatlistItemBinding,
-        val toDoItemClickListener: (ChatListItem) -> Unit
+        val toDoItemClickListener: (ChatUserListItem) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(data: ChatListItem) = with(binding) {
+        fun bindData(data: ChatUserListItem) = with(binding) {
 
-            Log.d("ChatListAdapter", "onBindViewHolder: ${data.title}")
+            Log.d("ChatListAdapter", "onBindViewHolder: ${data.name}")
             Log.d("ChatListAdapter", "onBindViewHolder: ${data.userId}")
 
-            textView.text = data.title
+            textView.text = data.name
             textView.setTextColor(ContextCompat.getColor(root.context, R.color.black)
             )
 
@@ -37,7 +37,7 @@ class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.ToDoItemViewHolder>
 
         }
 
-        fun bindViews(data: ChatListItem) {
+        fun bindViews(data: ChatUserListItem) {
             binding.root.setOnClickListener {
                 toDoItemClickListener(data)
             }
@@ -61,7 +61,7 @@ class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.ToDoItemViewHolder>
     override fun getItemCount(): Int = toDoList.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setToChatList(chatList: List<ChatListItem>, chatItemClickListener: (ChatListItem) -> Unit) {
+    fun setToChatList(chatList: MutableList<ChatUserListItem>, chatItemClickListener: (ChatUserListItem) -> Unit) {
         this.toDoList = chatList
         this.toDoItemClickListener = chatItemClickListener
         notifyDataSetChanged()

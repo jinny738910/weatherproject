@@ -157,7 +157,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
     private fun processPaymentOnServer(paymentToken: String) {
         // 이 함수에서 백엔드 API를 호출하여 결제를 최종 완료합니다.
         // 예: Retrofit, Volley 등을 사용하여 서버에 paymentToken 전송
+        viewModel.loadHelloMessage()
         Log.d("PaymentToken", "서버로 전송할 토큰: $paymentToken")
+
     }
 
     // --- 아래는 Google Pay 요청에 필요한 JSON 데이터를 생성하는 헬퍼 함수들입니다. ---

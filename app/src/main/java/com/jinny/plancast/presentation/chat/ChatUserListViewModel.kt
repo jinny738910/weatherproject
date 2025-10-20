@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.jinny.plancast.presentation.BaseViewModel
 import kotlinx.coroutines.*
 
-class ChatListViewModel(
+class ChatUserListViewModel(
 //    private val getToDoListUseCase: GetToDoListUseCase,
 //    private val updateToDoUseCase: UpdateToDoUseCase,
 //    private val deleteAllToDoItemUseCase: DeleteAllToDoItemUseCase

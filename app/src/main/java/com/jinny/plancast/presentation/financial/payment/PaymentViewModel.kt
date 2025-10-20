@@ -1,12 +1,17 @@
 package com.jinny.plancast.presentation.financial.payment
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.presentation.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class PaymentViewModel(
+    private val backendRepository: BackendRepository
 ) : BaseViewModel() {
 
 
@@ -15,6 +20,15 @@ class PaymentViewModel(
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog = _showDialog
+
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String> = _message // UI가 관찰할 LiveData
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _error = MutableLiveData<String?>()
+    val error: MutableLiveData<String?> = _error
 
     override fun fetchData() = viewModelScope.launch {
 //        when (weatherMode) {
@@ -34,6 +48,24 @@ class PaymentViewModel(
 //                    _weatherLiveData.postValue(WeatherState.Error)
 //                }
 //            }
+    }
+
+    fun loadHelloMessage() {
+        // Coroutine을 사용하여 비동기 작업을 ViewModel 범위에서 실행
+        viewModelScope.launch {
+            _isLoading.value = true // 로딩 시작
+            _error.value = null     // 오류 초기화
+
+            val result = backendRepository.fetchHelloMessage()
+            result.onSuccess { message ->
+                Log.d("PaymentViewModel", "Fetched message: $message")
+                _message.value = message // 성공 시 메시지 설정
+            }.onFailure { exception ->
+                Log.d("PaymentViewModel", "Fetched message: $message")
+                _error.value = exception.message // 실패 시 오류 메시지 설정
+            }
+            _isLoading.value = false // 로딩 종료
+        }
     }
 
 }
