@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Room
 import com.jinny.plancast.BuildConfig
 import com.jinny.plancast.data.local.db.ToDoDatabase
+import com.jinny.plancast.data.repository.BackendRepositoryImpl
 import com.jinny.plancast.data.repository.ToDoRepository
 import com.jinny.plancast.data.repository.DefaultToDoRepository
 import com.jinny.plancast.data.repository.PlaceRepositoryImpl
 import com.jinny.plancast.data.repository.TransferRepositoryImpl
 import com.jinny.plancast.data.repository.WeatherRepositoryImpl
+import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.domain.repository.PlaceRepository
 import com.jinny.plancast.domain.repository.TransferRepository
 import com.jinny.plancast.domain.repository.WeatherRepository
@@ -20,6 +22,7 @@ import com.jinny.plancast.domain.weatherUseCase.GetShortTermForecastUseCase
 import com.jinny.plancast.domain.weatherUseCase.GetUltraShortTermForecastUseCase
 import com.jinny.plancast.presentation.alarm.AlarmListViewModel
 import com.jinny.plancast.presentation.chat.ChatListViewModel
+import com.jinny.plancast.presentation.chat.ChatUserListViewModel
 import com.jinny.plancast.presentation.chat.ChatRoomViewModel
 import com.jinny.plancast.presentation.login.LoginViewModel
 import com.jinny.plancast.presentation.financial.password.PasswordViewModel
@@ -57,6 +60,7 @@ val appModule = module {
     single<PlaceRepository> { PlaceRepositoryImpl(get())}
     single<WeatherRepository> { WeatherRepositoryImpl(apiService = get(), apiKey = get(ApiKeyQualifier))}
     single<TransferRepository> { TransferRepositoryImpl(transferService = get())}
+    single<BackendRepository> { BackendRepositoryImpl(get()) }
 
 
     // UseCase 정의 (Repository에 의존)
@@ -83,9 +87,10 @@ val appModule = module {
     viewModel { TransferViewModel(get(), get()) }
     viewModel { SettingViewModel() }
     viewModel { AlarmListViewModel() }
-    viewModel { PaymentViewModel() }
-    viewModel { ChatListViewModel() }
+    viewModel { PaymentViewModel(get()) }
+    viewModel { ChatUserListViewModel() }
     viewModel { ChatRoomViewModel() }
+    viewModel { ChatListViewModel() }
 
 }
 
