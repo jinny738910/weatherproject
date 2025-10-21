@@ -58,13 +58,13 @@ jobs:
         run: ./gradlew bundleRelease
 
       # ----------------------------------------------------
-      # 🚀 3. CD (배포) - Firebase App Distribution 예시 (QA/테스터 배포)
+      # 🚀 3. CD (배포) - Firebase App Distribution 예시 (QA/테스터 배포) -> 서비스 계정 인증 사용
       # ----------------------------------------------------
-      - name: Deploy to Firebase App Distribution (QA Track)
+      - name: Deploy to Firebase App Distribution (with Service Account)
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID_QA }} # 테스트 앱 ID
-          token: ${{ secrets.FIREBASE_TOKEN }} # Firebase CLI 토큰
+          serviceCredentialsFileContent: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }} 
           groups: 'qa-testers' # 배포할 테스터 그룹 지정
           file: app/build/outputs/bundle/release/app-release.aab # 빌드된 AAB 파일 경로
 
