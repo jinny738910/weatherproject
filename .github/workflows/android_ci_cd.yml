@@ -1,30 +1,82 @@
-name: Android CI
+name: Android CI/CD Deployment
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches: [ "master" ] # 'master' 브랜치에 푸시될 때 트리거
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
+
+    environment: Production # 환경 변수 관리 및 보호를 위해 환경을 지정할 수 있습니다.
+
     steps:
-      - uses: actions/checkout@v4
-      - name: set up JDK 17
+      - name: 📦 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: ☕ JDK 17 설정
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
-      - name: Grant execute permission for gradlew
+      - name: 🔨 Gradle 권한 부여
         run: chmod +x gradlew
 
-      # 테스트 실행
-      - name: Run Tests
-        run: ./gradlew test
+      # ----------------------------------------------------
+      # 🔑 1. Signing 및 Firebase 파일 복원 (CD 필수 준비 단계)
+      # ----------------------------------------------------
+      # Base64로 인코딩된 Keystore 파일을 Secret에서 가져와 복원
+      - name: Restore Keystore File
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }} # GitHub Secret
+          KEYSTORE_FILE_NAME: release.keystore
+        run: |
+          echo $ENCODED_KEYSTORE | base64 --decode > app/$KEYSTORE_FILE_NAME
+          # Gradle이 찾을 수 있도록 local.properties에 설정
+          echo "storeFile=$KEYSTORE_FILE_NAME" >> local.properties
 
-      # 릴리스 AAB 빌드
+      # Firebase Service JSON 파일 복원 (Firebase 사용 시)
+      - name: Decode google-services.json
+        env:
+          FIREBASE_SECRET: ${{ secrets.FIREBASE_SECRET_JSON_BASE64 }} # GitHub Secret
+        run: echo $FIREBASE_SECRET | base64 --decode > app/google-services.json
+
+      # ----------------------------------------------------
+      # ⚙️ 2. CI (빌드)
+      # ----------------------------------------------------
+      # Gradle 속성 설정 (Signing 비밀번호 등)
+      - name: Set Gradle Properties (Secrets)
+        run: |
+          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> local.properties
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> local.properties
+          echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> local.properties
+
+      # AAB 릴리스 빌드 실행
       - name: Build Release AAB
         run: ./gradlew bundleRelease
+
+      # ----------------------------------------------------
+      # 🚀 3. CD (배포) - Firebase App Distribution 예시 (QA/테스터 배포)
+      # ----------------------------------------------------
+      - name: Deploy to Firebase App Distribution (QA Track)
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID_QA }} # 테스트 앱 ID
+          token: ${{ secrets.FIREBASE_TOKEN }} # Firebase CLI 토큰
+          groups: 'qa-testers' # 배포할 테스터 그룹 지정
+          file: app/build/outputs/bundle/release/app-release.aab # 빌드된 AAB 파일 경로
+
+      # ----------------------------------------------------
+      # 🚀 4. CD (배포) - Google Play Store 예시 (Play Store 배포)
+      # ----------------------------------------------------
+      # Google Play Store에 배포할 경우, 아래 주석을 해제하고 사용합니다.
+      # - name: Deploy to Google Play Store (Production)
+      #   uses: r0adkll/upload-google-play@v1
+      #   with:
+      #     serviceAccountJson: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }} # Google Play 서비스 계정 JSON
+      #     packageName: com.yourcompany.appname # 앱 패키지명
+      #     releaseFile: app/build/outputs/bundle/release/app-release.aab
+      #     track: production # 'production', 'internal', 'beta', 'alpha' 중 선택
+      #     status: completed # 배포 상태 (보통 'completed'로 즉시 출시)
