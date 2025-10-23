@@ -43,8 +43,12 @@ fun TransactionScreen(
     // ViewModel의 StateFlow를 Compose State로 수집
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(key1 = Unit) {
+        viewModel.fetchData()
+    }
+
     Scaffold(
-        topBar = { TopAppBar(title = { Text("상품 목록") }) }
+        topBar = { TopAppBar(title = { Text("금융 거래 목록") }) }
     ) { paddingValues ->
 
         Box(
@@ -146,6 +150,7 @@ fun formatPrice(price: Int): String {
 }
 
 
+@Suppress("UNREACHABLE_CODE")
 private class FakeProductRepository2 : ProductRepository {
     override suspend fun createProduct(product: Product): Product {
         return product.copy(id = 1L)
@@ -173,23 +178,23 @@ private class FakeProductRepository2 : ProductRepository {
 }
 
 
-private class FakeCreateProductsUseCase2 : com.jinny.plancast.domain.usecase.productUseCase.CreateProductsUseCase(
+private class FakeCreateProductsUseCase2 : CreateProductsUseCase(
     repository = FakeProductRepository2()
 )
 
-private class FakeDeleteProductsUseCase2 : com.jinny.plancast.domain.usecase.productUseCase.DeleteProductsUseCase(
+private class FakeDeleteProductsUseCase2 : DeleteProductsUseCase(
     repository = FakeProductRepository2()
 )
 
-private class FakeGetProductsByIdUseCase2 : com.jinny.plancast.domain.usecase.productUseCase.GetProductsByIdUseCase(
+private class FakeGetProductsByIdUseCase2 : GetProductsByIdUseCase(
     repository = FakeProductRepository2()
 )
 
-private class FakeGetProductsUseCase2 : com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase(
+private class FakeGetProductsUseCase2 : GetProductsUseCase(
     repository = FakeProductRepository2()
 )
 
-private class FakeUpdateProductsUseCase2 : com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase(
+private class FakeUpdateProductsUseCase2 : UpdateProductsUseCase(
     repository = FakeProductRepository2()
 )
 
@@ -213,9 +218,13 @@ fun TransactionScreenPreview() {
         updateProductsUseCase = FakeUpdateProductsUseCase2()
     )
 
+//    val fakeViewModel = LoginViewModel(
+//        id = 1L
+//    )
+
     MaterialTheme {
         TransactionScreen(
-            viewModel = fakeViewModel,
+            viewModel = fakeViewModel
         )
     }
 }

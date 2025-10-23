@@ -40,6 +40,7 @@ import com.jinny.plancast.presentation.chat.chatroom.ChatRoomViewModel
 import com.jinny.plancast.presentation.login.LoginViewModel
 import com.jinny.plancast.presentation.financial.password.PasswordViewModel
 import com.jinny.plancast.presentation.financial.payment.PaymentViewModel
+import com.jinny.plancast.presentation.financial.transaction.TransactionViewModel
 import com.jinny.plancast.presentation.weather.weatherView.WeatherMode
 import com.jinny.plancast.presentation.weather.weatherView.WeatherViewModel
 import com.jinny.plancast.presentation.todo.detail.DetailMode
@@ -111,7 +112,7 @@ val appModule = module {
     viewModel { ChatUserListViewModel() }
     viewModel { ChatRoomViewModel() }
     viewModel { ChatViewViewModel() }
-
+    viewModel { TransactionViewModel(get(), get(), get(), get(), get(), get()) }
 }
 
 fun provideDB(context: Context): ToDoDatabase =

@@ -11,21 +11,18 @@ import com.jinny.plancast.domain.usecase.productUseCase.GetProductsByIdUseCase
 import com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase
 import com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase
 import com.jinny.plancast.domain.repository.BackendRepository
-import com.jinny.plancast.domain.repository.ProductRepository
 import com.jinny.plancast.presentation.BaseViewModel
-import com.jinny.plancast.presentation.financial.payment.PaymentState
-import com.jinny.plancast.presentation.login.LoginState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class TransactionViewModel(
     private val backendRepository: BackendRepository,
-    private val createProductUsecase: com.jinny.plancast.domain.usecase.productUseCase.CreateProductsUseCase,
-    private val deleteProductsUseCase: com.jinny.plancast.domain.usecase.productUseCase.DeleteProductsUseCase,
-    private val getProductsByIdUseCase: com.jinny.plancast.domain.usecase.productUseCase.GetProductsByIdUseCase,
-    private val getProductsUseCase: com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase,
-    private val updateProductsUseCase: com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase
+    private val createProductUsecase: CreateProductsUseCase,
+    private val deleteProductsUseCase: DeleteProductsUseCase,
+    private val getProductsByIdUseCase: GetProductsByIdUseCase,
+    private val getProductsUseCase: GetProductsUseCase,
+    private val updateProductsUseCase: UpdateProductsUseCase
 ) : BaseViewModel() {
 
 
@@ -46,6 +43,7 @@ class TransactionViewModel(
 
     override fun fetchData() = viewModelScope.launch {
         getAllProducts()
+
 //        when (weatherMode) {
 //            weatherMode.WRITE -> {
 //                _weatherLiveData.postValue(WeatherState.Write)

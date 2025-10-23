@@ -1,9 +1,7 @@
 package com.jinny.plancast.presentation.financial.transaction
 
-import PaymentScreen
 import TransactionScreen
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -23,17 +21,18 @@ import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
 import com.jinny.plancast.data.model.Product
 import com.jinny.plancast.presentation.BaseActivity
-import com.jinny.plancast.presentation.todo.detail.DetailActivity.Companion.DETAIL_MODE_KEY
-import com.jinny.plancast.presentation.todo.detail.DetailActivity.Companion.TODO_ID_KEY
+import com.jinny.plancast.presentation.login.LoginViewModel
+
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 
 class TransactionActivity : BaseActivity<TransactionViewModel>() {
 
     override val viewModel: TransactionViewModel by viewModel()
+//    override val viewModel: LoginViewModel by viewModel()
+
     private lateinit var paymentsClient: PaymentsClient
 
     // 결제 데이터 로딩을 위한 요청 코드
@@ -51,8 +50,8 @@ class TransactionActivity : BaseActivity<TransactionViewModel>() {
 
         setContent {
             MaterialTheme {
-                val uiState by viewModel.uiState.collectAsState()
-                val showDialog by viewModel.showDialog.collectAsState()
+//                val uiState by viewModel.uiState.collectAsState()
+//                val showDialog by viewModel.showDialog.collectAsState()
 
                 TransactionScreen(
                     viewModel = viewModel
@@ -131,7 +130,7 @@ class TransactionActivity : BaseActivity<TransactionViewModel>() {
                         val token = paymentMethodData.getJSONObject("tokenizationData").getString("token")
 
                         val product  = handlePaymentProduct(intent)
-                        viewModel.createProduct(product)
+//                        viewModel.createProduct(product)
 
                         // ❗❗ 중요: 이 토큰을 백엔드 서버로 보내 실제 결제를 완료해야 합니다.
                         processPaymentOnServer(token)
@@ -203,7 +202,7 @@ class TransactionActivity : BaseActivity<TransactionViewModel>() {
     private fun processPaymentOnServer(paymentToken: String) {
         // 이 함수에서 백엔드 API를 호출하여 결제를 최종 완료합니다.
         // 예: Retrofit, Volley 등을 사용하여 서버에 paymentToken 전송
-        viewModel.loadHelloMessage()
+//        viewModel.loadHelloMessage()
         Log.d("PaymentToken", "서버로 전송할 토큰: $paymentToken")
 
     }
