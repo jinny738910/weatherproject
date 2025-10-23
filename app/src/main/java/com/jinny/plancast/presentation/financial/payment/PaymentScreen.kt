@@ -15,7 +15,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jinny.plancast.data.model.Product
+import com.jinny.plancast.domain.model.TransferResult
+import com.jinny.plancast.domain.productUseCase.CreateProductsUseCase
+import com.jinny.plancast.domain.productUseCase.DeleteProductsUseCase
+import com.jinny.plancast.domain.productUseCase.GetProductsByIdUseCase
+import com.jinny.plancast.domain.productUseCase.GetProductsUseCase
+import com.jinny.plancast.domain.productUseCase.UpdateProductsUseCase
 import com.jinny.plancast.domain.repository.BackendRepository
+import com.jinny.plancast.domain.repository.ProductRepository
+import com.jinny.plancast.domain.repository.TransferRepository
+import com.jinny.plancast.domain.transferUseCase.ExecuteTransferUseCase
+import com.jinny.plancast.domain.transferUseCase.RegisterBillingKeyUseCase
 import com.jinny.plancast.presentation.financial.payment.PaymentUiState
 import com.jinny.plancast.presentation.financial.payment.PaymentViewModel
 import java.text.NumberFormat
@@ -184,6 +195,50 @@ fun PaymentMethodDialog(
     )
 }
 
+
+private class FakeProductRepository : ProductRepository {
+    override suspend fun createProduct(product: Product): Product {
+        return product.copy(id = 1L)
+    }
+
+    override suspend fun getProducts(): List<Product> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getProductById(id: Long): Product {
+        return Product(id = id, name = "Fake Product", price = 1000)
+    }
+
+    override suspend fun updateProduct(id: Long, product: Product): Product {
+        return product.copy(id = id)
+    }
+
+    override suspend fun deleteProduct(id: Long) {
+
+    }
+}
+
+
+private class FakeCreateProductsUseCase : CreateProductsUseCase(
+    repository = FakeProductRepository()
+)
+
+private class FakeDeleteProductsUseCase : DeleteProductsUseCase(
+    repository = FakeProductRepository()
+)
+
+private class FakeGetProductsByIdUseCase : GetProductsByIdUseCase(
+    repository = FakeProductRepository()
+)
+
+private class FakeGetProductsUseCase : GetProductsUseCase(
+    repository = FakeProductRepository()
+)
+
+private class FakeUpdateProductsUseCase : UpdateProductsUseCase(
+    repository = FakeProductRepository()
+)
+
 @SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
@@ -196,7 +251,12 @@ fun PaymentScreenPreview() {
             override suspend fun fetchHelloMessage(): Result<String> {
                 return Result.success("Hello from Fake Repository")
             }
-        }
+        },
+        createProductUsecase = FakeCreateProductsUseCase(),
+        deleteProductsUseCase = FakeDeleteProductsUseCase(),
+        getProductsByIdUseCase = FakeGetProductsByIdUseCase(),
+        getProductsUseCase = FakeGetProductsUseCase(),
+        updateProductsUseCase = FakeUpdateProductsUseCase()
     )
 
     MaterialTheme {

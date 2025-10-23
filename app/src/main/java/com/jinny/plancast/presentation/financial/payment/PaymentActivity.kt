@@ -20,6 +20,7 @@ import com.google.android.gms.wallet.PaymentDataRequest
 import com.google.android.gms.wallet.PaymentsClient
 import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
+import com.jinny.plancast.data.model.Product
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.presentation.todo.detail.DetailActivity.Companion.DETAIL_MODE_KEY
 import com.jinny.plancast.presentation.todo.detail.DetailActivity.Companion.TODO_ID_KEY
@@ -136,6 +137,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
                         val paymentMethodData = JSONObject(paymentDataJson).getJSONObject("paymentMethodData")
                         val token = paymentMethodData.getJSONObject("tokenizationData").getString("token")
 
+                        val product  = handlePaymentProduct(intent)
+                        viewModel.createProduct(product)
+
                         // ❗❗ 중요: 이 토큰을 백엔드 서버로 보내 실제 결제를 완료해야 합니다.
                         processPaymentOnServer(token)
 
@@ -151,6 +155,53 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
                     Log.w("PaymentActivity", "Error code: ${status?.statusMessage}")
                 }
             }
+        }
+    }
+
+    /**
+     * Google Pay 응답 Intent에서 Product 정보를 추출하여 세팅하는 함수
+     */
+    private fun handlePaymentProduct(data: Intent) : Product {
+        val paymentData = PaymentData.getFromIntent(data)
+
+        // 1. 결제 데이터가 있는지 확인
+        if (paymentData != null) {
+
+            // 2. 결제 토큰 (암호화된 데이터) 추출
+            val paymentToken = paymentData.toJson()
+
+            // 3. (가정) 결제 데이터에서 상품 ID와 같은 메타데이터를 추출
+            //    실제로는 `paymentData` 내의 `paymentMethodData` JSON을 파싱하여 가져와야 합니다.
+            //    여기서는 JSON 파싱이 복잡하므로, 단순히 더미 값을 설정하거나,
+            //    실제 비즈니스 로직에 맞춰 백엔드 API를 호출하여 상품 정보를 가져와야 합니다.
+
+            // ***************************************************************
+            // 핵심 로직: Product 객체에 값 세팅
+            // ***************************************************************
+
+            // (A) - 서버 통신을 통해 상품 정보를 조회하는 것이 일반적
+            // val orderId = extractOrderIdFromPaymentToken(paymentToken)
+            // val productInfo = getProductInfoFromServer(orderId) // 이 함수는 백엔드 통신을 담당
+
+            // (B) - 단순 예시를 위해 더미 값 또는 정적으로 저장된 값 사용
+            val productId = null // 결제 요청 전에 미리 알고 있던 상품 ID
+            val productName = "프리미엄 구독권"
+            val productPrice = 50000 // 결제 금액과 일치해야 함
+
+            val product = Product(
+                id = productId,
+                name = productName,
+                price = productPrice
+            )
+
+            Log.i("GooglePay", "결제 완료된 상품: $product")
+
+            return product;
+
+
+        } else {
+            Log.e("GooglePay", "PaymentData가 응답 데이터에서 null입니다.")
+            return Product(name="", price=0)
         }
     }
 

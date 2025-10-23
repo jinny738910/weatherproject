@@ -8,10 +8,17 @@ import com.jinny.plancast.data.repository.BackendRepositoryImpl
 import com.jinny.plancast.data.repository.ToDoRepository
 import com.jinny.plancast.data.repository.DefaultToDoRepository
 import com.jinny.plancast.data.repository.PlaceRepositoryImpl
+import com.jinny.plancast.data.repository.ProductRepositoryImpl
 import com.jinny.plancast.data.repository.TransferRepositoryImpl
 import com.jinny.plancast.data.repository.WeatherRepositoryImpl
+import com.jinny.plancast.domain.productUseCase.CreateProductsUseCase
+import com.jinny.plancast.domain.productUseCase.DeleteProductsUseCase
+import com.jinny.plancast.domain.productUseCase.GetProductsByIdUseCase
+import com.jinny.plancast.domain.productUseCase.GetProductsUseCase
+import com.jinny.plancast.domain.productUseCase.UpdateProductsUseCase
 import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.domain.repository.PlaceRepository
+import com.jinny.plancast.domain.repository.ProductRepository
 import com.jinny.plancast.domain.repository.TransferRepository
 import com.jinny.plancast.domain.repository.WeatherRepository
 import com.jinny.plancast.domain.todoUseCase.*
@@ -61,6 +68,7 @@ val appModule = module {
     single<WeatherRepository> { WeatherRepositoryImpl(apiService = get(), apiKey = get(ApiKeyQualifier))}
     single<TransferRepository> { TransferRepositoryImpl(transferService = get())}
     single<BackendRepository> { BackendRepositoryImpl(get()) }
+    single<ProductRepository> { ProductRepositoryImpl(get()) }
 
 
     // UseCase 정의 (Repository에 의존)
@@ -77,6 +85,12 @@ val appModule = module {
     factory { GetShortTermForecastUseCase(get()) }
     factory { GetUltraShortTermForecastUseCase(get()) }
 
+    factory { GetProductsUseCase(get()) }
+    factory { CreateProductsUseCase(get()) }
+    factory { UpdateProductsUseCase(get()) }
+    factory { DeleteProductsUseCase(get()) }
+    factory { GetProductsByIdUseCase(get()) }
+
     // ViewModel 정의 (UseCase에 의존)
     viewModel { ListViewModel(get(), get(), get()) }
     viewModel { LoginViewModel() }
@@ -87,7 +101,7 @@ val appModule = module {
     viewModel { TransferViewModel(get(), get()) }
     viewModel { SettingViewModel() }
     viewModel { AlarmListViewModel() }
-    viewModel { PaymentViewModel(get()) }
+    viewModel { PaymentViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { ChatUserListViewModel() }
     viewModel { ChatRoomViewModel() }
     viewModel { ChatListViewModel() }

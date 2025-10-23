@@ -46,6 +46,11 @@ val networkModule = module {
         get<Retrofit>().create(BackendApiService::class.java)
     }
 
+    // ProductApiService 싱글톤 객체 제공
+    single {
+        get<Retrofit>().create(ProductApiService::class.java)
+    }
+
     // 3. OkHttpClient 인스턴스 생성 방법을 정의 (로깅 인터셉터 포함)
     single {
         OkHttpClient.Builder()
