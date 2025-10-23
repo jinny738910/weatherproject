@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.isGone
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.DatabaseReference
@@ -23,12 +24,15 @@ import com.google.firebase.database.database
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import com.jinny.plancast.R
+import com.jinny.plancast.data.api.GptApiService
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityDetailBinding
 import com.jinny.plancast.presentation.chat.ChatUserListActivity
 import com.jinny.plancast.presentation.chat.ChatRoomActivity
 import com.jinny.plancast.presentation.financial.payment.PaymentActivity
 import com.jinny.plancast.presentation.financial.transfer.TransferActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -37,6 +41,9 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
 
     private lateinit var binding: ActivityDetailBinding
     private var selectedUri: Uri? = null
+
+    private val assistantService = GptApiService()
+
     private val auth by lazy {
         Firebase.auth
     }
@@ -184,6 +191,12 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         commentsButton.setOnClickListener {
             val intent = Intent(this@DetailActivity, ChatRoomActivity::class.java)
             commentLauncher.launch(intent)
+            val userQuestion = "안녕하세요"
+            if (userQuestion.isNotBlank()) {
+                sendQuestionToLLM(userQuestion)
+//                questionInput.setText("")
+
+            }
         }
 
         deleteButton.setOnClickListener {
@@ -279,6 +292,24 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
             }
         }
     }
+
+    private fun sendQuestionToLLM(question: String) {
+        Log.d("DetailActivity", "sendQuestionToLLM!!")
+
+//        responseText.text = "GPT 비서가 답변 생성 중..."
+
+        // IO 스레드에서 네트워크 호출 실행 (메인 스레드 차단 방지)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val response = assistantService.getAssistantResponse("판교봇들공원에서 러닝을 하려고 하는데", question)
+
+            // 결과를 메인(UI) 스레드에서 업데이트
+            launch(Dispatchers.Main) {
+//                responseText.text = response
+                Log.d("DetailActivity", "response: ${response}")
+            }
+        }
+    }
+
 
     private fun startContentProvider() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)

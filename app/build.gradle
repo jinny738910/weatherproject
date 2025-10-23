@@ -8,6 +8,9 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(project.rootProject.file('local.properties')))
+
 android {
     namespace 'com.jinny.plancast'
     compileSdk 35
@@ -21,8 +24,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "MAPS_API_KEY", "\"AIzaSyAbxQ-SBDJI_I-aQy6rGwoJmR-8aH-pHs8\"")
-        buildConfigField("String", "WEATHER_API_KEY", "\"sUf3H+um11e1zzXnFbifsSUR15b4M4XM2Y0fVjTTAYOkByhn6sjuYZb7snwqRgeFmUhUynp5ogHPFXr4b+Nmmg==\"")
+        buildConfigField ("String", "MAPS_API_KEY",
+                "\"${localProperties.getProperty("MAPS_API_KEY", "default_or_placeholder_key")}\"")
+        buildConfigField ("String", "WEATHER_API_KEY",
+                "\"${localProperties.getProperty("WEATHER_API_KEY", "default_or_placeholder_key")}\"")
+        buildConfigField ("String", "GPT_API_KEY",
+                "\"${localProperties.getProperty("GPT_API_KEY", "default_or_placeholder_key")}\"")
     }
 
     buildTypes {
@@ -156,6 +163,12 @@ dependencies {
 
     // 보안키패드 라이브러리
     implementation 'io.github.chaosleung:pinview:1.4.4'
+
+    // OkHttp (HTTP 요청 처리)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    // Moshi (JSON 직렬화/역직렬화)
+    implementation("com.squareup.moshi:moshi:1.15.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
 
     // 토스페이먼츠 SDK 연동
 //    implementation("com.tosspayments.android:paymentsdk:3.5.1")
