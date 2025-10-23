@@ -187,11 +187,15 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
             val productId = null // 결제 요청 전에 미리 알고 있던 상품 ID
             val productName = "프리미엄 구독권"
             val productPrice = 50000 // 결제 금액과 일치해야 함
+            val selectedPaymentMethod = null
+            val availablePaymentMethods = emptyList<String>()
 
             val product = Product(
                 id = productId,
                 name = productName,
-                price = productPrice
+                price = productPrice,
+                selectedPaymentMethod = null.toString(),
+                availablePaymentMethods = emptyList()
             )
 
             Log.i("GooglePay", "결제 완료된 상품: $product")
@@ -201,7 +205,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
 
         } else {
             Log.e("GooglePay", "PaymentData가 응답 데이터에서 null입니다.")
-            return Product(name="", price=0)
+            return Product(name="", price=0, selectedPaymentMethod="", availablePaymentMethods= emptyList())
         }
     }
 

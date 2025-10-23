@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.data.model.Product
-import com.jinny.plancast.domain.productUseCase.CreateProductsUseCase
-import com.jinny.plancast.domain.productUseCase.DeleteProductsUseCase
-import com.jinny.plancast.domain.productUseCase.GetProductsByIdUseCase
-import com.jinny.plancast.domain.productUseCase.GetProductsUseCase
-import com.jinny.plancast.domain.productUseCase.UpdateProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.CreateProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.DeleteProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.GetProductsByIdUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase
 import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.domain.repository.ProductRepository
 import com.jinny.plancast.presentation.BaseViewModel
@@ -19,16 +19,16 @@ import kotlinx.coroutines.launch
 
 class PaymentViewModel(
     private val backendRepository: BackendRepository,
-    private val createProductUsecase: CreateProductsUseCase,
-    private val deleteProductsUseCase: DeleteProductsUseCase,
-    private val getProductsByIdUseCase: GetProductsByIdUseCase,
-    private val getProductsUseCase: GetProductsUseCase,
-    private val updateProductsUseCase: UpdateProductsUseCase
+    private val createProductUsecase: com.jinny.plancast.domain.usecase.productUseCase.CreateProductsUseCase,
+    private val deleteProductsUseCase: com.jinny.plancast.domain.usecase.productUseCase.DeleteProductsUseCase,
+    private val getProductsByIdUseCase: com.jinny.plancast.domain.usecase.productUseCase.GetProductsByIdUseCase,
+    private val getProductsUseCase: com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase,
+    private val updateProductsUseCase: com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase
 ) : BaseViewModel() {
 
 
-    private val _uiState = MutableStateFlow(PaymentUiState())
-    val uiState: StateFlow<PaymentUiState> = _uiState
+    private val _uiState = MutableStateFlow(PaymentState())
+    val uiState: StateFlow<PaymentState> = _uiState
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog = _showDialog

@@ -17,6 +17,11 @@
         android:title="@string/chatList">
     </item>
     <item
+        android:id="@+id/action_money_check"
+        app:showAsAction="never"
+        android:title="@string/moneyCheck">
+    </item>
+    <item
         android:id="@+id/action_setting"
         app:showAsAction="never"
         android:title="@string/setting">

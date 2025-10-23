@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import com.jinny.plancast.data.model.TransferResponse
 import com.jinny.plancast.domain.model.TransferResult
 import com.jinny.plancast.domain.repository.TransferRepository
-import com.jinny.plancast.domain.transferUseCase.ExecuteTransferUseCase
-import com.jinny.plancast.domain.transferUseCase.RegisterBillingKeyUseCase
+import com.jinny.plancast.domain.usecase.transferUseCase.ExecuteTransferUseCase
+import com.jinny.plancast.domain.usecase.transferUseCase.RegisterBillingKeyUseCase
 import com.jinny.plancast.presentation.financial.transfer.TransferViewModel
 
 
@@ -92,13 +92,13 @@ private class FakeTransferRepository : TransferRepository {
     }
 }
 
-private class FakeExecuteTransfeUseCase : ExecuteTransferUseCase(
+private class FakeExecuteTransfeUseCase : com.jinny.plancast.domain.usecase.transferUseCase.ExecuteTransferUseCase(
     transferRepository = FakeTransferRepository()
 ) {
 
 }
 
-private class FakeRegisterBillingKeyUseCase : RegisterBillingKeyUseCase(
+private class FakeRegisterBillingKeyUseCase : com.jinny.plancast.domain.usecase.transferUseCase.RegisterBillingKeyUseCase(
     transferRepository = FakeTransferRepository()
 ) {
 

@@ -3,8 +3,8 @@ package aop.fastcampus.part5.chapter01.viewmodel.todo
 
 import aop.fastcampus.part5.chapter01.viewmodel.ViewModelTest
 import com.jinny.plancast.data.local.entity.ToDoEntity
-import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
-import com.jinny.plancast.domain.todoUseCase.InsertToDoListUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoListUseCase
 import com.jinny.plancast.presentation.todo.list.ListViewModel
 import com.jinny.plancast.presentation.todo.list.ToDoListState
 import kotlinx.coroutines.*
@@ -19,8 +19,8 @@ internal class ListViewModelTest : ViewModelTest() {
 
     private val viewModel: ListViewModel by inject()
 
-    private val insertToDoListUseCase: InsertToDoListUseCase by inject()
-    private val getToDoItemUseCase: GetToDoItemUseCase by inject()
+    private val insertToDoListUseCase: com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoListUseCase by inject()
+    private val getToDoItemUseCase: com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase by inject()
 
     private val list = (0 until 10).map {
         ToDoEntity(

@@ -16,18 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jinny.plancast.data.model.Product
-import com.jinny.plancast.domain.model.TransferResult
-import com.jinny.plancast.domain.productUseCase.CreateProductsUseCase
-import com.jinny.plancast.domain.productUseCase.DeleteProductsUseCase
-import com.jinny.plancast.domain.productUseCase.GetProductsByIdUseCase
-import com.jinny.plancast.domain.productUseCase.GetProductsUseCase
-import com.jinny.plancast.domain.productUseCase.UpdateProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.CreateProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.DeleteProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.GetProductsByIdUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase
 import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.domain.repository.ProductRepository
-import com.jinny.plancast.domain.repository.TransferRepository
-import com.jinny.plancast.domain.transferUseCase.ExecuteTransferUseCase
-import com.jinny.plancast.domain.transferUseCase.RegisterBillingKeyUseCase
-import com.jinny.plancast.presentation.financial.payment.PaymentUiState
+import com.jinny.plancast.presentation.financial.payment.PaymentState
 import com.jinny.plancast.presentation.financial.payment.PaymentViewModel
 import java.text.NumberFormat
 import java.util.Locale
@@ -37,7 +33,7 @@ import java.util.Locale
 @Composable
 fun PaymentScreen(
     viewModel: PaymentViewModel,
-    state: PaymentUiState,
+    state: PaymentState,
     onPayClick: () -> Unit,
     onMethodChangeClick: () -> Unit,
     onDismissRequest: () -> Unit,
@@ -206,7 +202,7 @@ private class FakeProductRepository : ProductRepository {
     }
 
     override suspend fun getProductById(id: Long): Product {
-        return Product(id = id, name = "Fake Product", price = 1000)
+        return Product(id = id, name = "Fake Product", price = 1000, selectedPaymentMethod = "Credit Card", availablePaymentMethods = listOf("Credit Card", "PayPal", "Bank Transfer"))
     }
 
     override suspend fun updateProduct(id: Long, product: Product): Product {
@@ -219,23 +215,23 @@ private class FakeProductRepository : ProductRepository {
 }
 
 
-private class FakeCreateProductsUseCase : CreateProductsUseCase(
+private class FakeCreateProductsUseCase : com.jinny.plancast.domain.usecase.productUseCase.CreateProductsUseCase(
     repository = FakeProductRepository()
 )
 
-private class FakeDeleteProductsUseCase : DeleteProductsUseCase(
+private class FakeDeleteProductsUseCase : com.jinny.plancast.domain.usecase.productUseCase.DeleteProductsUseCase(
     repository = FakeProductRepository()
 )
 
-private class FakeGetProductsByIdUseCase : GetProductsByIdUseCase(
+private class FakeGetProductsByIdUseCase : com.jinny.plancast.domain.usecase.productUseCase.GetProductsByIdUseCase(
     repository = FakeProductRepository()
 )
 
-private class FakeGetProductsUseCase : GetProductsUseCase(
+private class FakeGetProductsUseCase : com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase(
     repository = FakeProductRepository()
 )
 
-private class FakeUpdateProductsUseCase : UpdateProductsUseCase(
+private class FakeUpdateProductsUseCase : com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase(
     repository = FakeProductRepository()
 )
 
@@ -244,7 +240,7 @@ private class FakeUpdateProductsUseCase : UpdateProductsUseCase(
 @Composable
 fun PaymentScreenPreview() {
     var showDialog by remember { mutableStateOf(false) }
-    var state by remember { mutableStateOf(PaymentUiState()) }
+    var state by remember { mutableStateOf(PaymentState()) }
 
     val fakeViewModel = PaymentViewModel(
         backendRepository = object : BackendRepository {

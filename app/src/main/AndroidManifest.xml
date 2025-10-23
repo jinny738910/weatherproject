@@ -56,10 +56,10 @@
         <activity android:name=".presentation.alarm.AlarmListActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".presentation.chat.ChatRoomActivity"
+        <activity android:name=".presentation.chat.chatroom.ChatRoomActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".presentation.chat.ChatUserListActivity"
+        <activity android:name=".presentation.chat.chatuserlist.ChatUserListActivity"
             android:exported="true">
         </activity>
         <activity android:name=".presentation.chat.ChatListActivity"
@@ -68,7 +68,7 @@
         <activity android:name=".presentation.setting.SettingActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".presentation.weather.WeatherActivity"
+        <activity android:name=".presentation.weather.weatherView.WeatherActivity"
             android:exported="true">
             <meta-data
                 android:name="com.google.android.geo.API_KEY"

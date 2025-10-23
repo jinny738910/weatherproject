@@ -11,37 +11,43 @@ import com.jinny.plancast.data.repository.PlaceRepositoryImpl
 import com.jinny.plancast.data.repository.ProductRepositoryImpl
 import com.jinny.plancast.data.repository.TransferRepositoryImpl
 import com.jinny.plancast.data.repository.WeatherRepositoryImpl
-import com.jinny.plancast.domain.productUseCase.CreateProductsUseCase
-import com.jinny.plancast.domain.productUseCase.DeleteProductsUseCase
-import com.jinny.plancast.domain.productUseCase.GetProductsByIdUseCase
-import com.jinny.plancast.domain.productUseCase.GetProductsUseCase
-import com.jinny.plancast.domain.productUseCase.UpdateProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.CreateProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.DeleteProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.GetProductsByIdUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase
+import com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase
 import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.domain.repository.PlaceRepository
 import com.jinny.plancast.domain.repository.ProductRepository
 import com.jinny.plancast.domain.repository.TransferRepository
 import com.jinny.plancast.domain.repository.WeatherRepository
-import com.jinny.plancast.domain.todoUseCase.*
-import com.jinny.plancast.domain.transferUseCase.ExecuteTransferUseCase
-import com.jinny.plancast.domain.transferUseCase.RegisterBillingKeyUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.DeleteAllToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.DeleteToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoListUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoListUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase
+import com.jinny.plancast.domain.usecase.transferUseCase.ExecuteTransferUseCase
+import com.jinny.plancast.domain.usecase.transferUseCase.RegisterBillingKeyUseCase
 
-import com.jinny.plancast.domain.weatherUseCase.GetShortTermForecastUseCase
-import com.jinny.plancast.domain.weatherUseCase.GetUltraShortTermForecastUseCase
+import com.jinny.plancast.domain.usecase.weatherUseCase.GetShortTermForecastUseCase
+import com.jinny.plancast.domain.usecase.weatherUseCase.GetUltraShortTermForecastUseCase
 import com.jinny.plancast.presentation.alarm.AlarmListViewModel
-import com.jinny.plancast.presentation.chat.ChatListViewModel
-import com.jinny.plancast.presentation.chat.ChatUserListViewModel
-import com.jinny.plancast.presentation.chat.ChatRoomViewModel
+import com.jinny.plancast.presentation.chat.chatview.ChatViewViewModel
+import com.jinny.plancast.presentation.chat.chatuserlist.ChatUserListViewModel
+import com.jinny.plancast.presentation.chat.chatroom.ChatRoomViewModel
 import com.jinny.plancast.presentation.login.LoginViewModel
 import com.jinny.plancast.presentation.financial.password.PasswordViewModel
 import com.jinny.plancast.presentation.financial.payment.PaymentViewModel
-import com.jinny.plancast.presentation.weather.WeatherMode
-import com.jinny.plancast.presentation.weather.WeatherViewModel
+import com.jinny.plancast.presentation.weather.weatherView.WeatherMode
+import com.jinny.plancast.presentation.weather.weatherView.WeatherViewModel
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.detail.DetailViewModel
 import com.jinny.plancast.presentation.todo.list.ListViewModel
 import com.jinny.plancast.presentation.financial.transfer.TransferViewModel
 import com.jinny.plancast.presentation.setting.SettingViewModel
-import com.jinny.plancast.presentation.weather.SearchViewModel
+import com.jinny.plancast.presentation.weather.search.SearchViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 import org.koin.android.ext.koin.androidApplication
@@ -104,7 +110,7 @@ val appModule = module {
     viewModel { PaymentViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { ChatUserListViewModel() }
     viewModel { ChatRoomViewModel() }
-    viewModel { ChatListViewModel() }
+    viewModel { ChatViewViewModel() }
 
 }
 

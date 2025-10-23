@@ -17,8 +17,8 @@ internal class ListViewModelTest : ViewModelTest() {
 
     private val viewModel: ListViewModel by inject()
 
-    private val insertToDoListUseCase: InsertToDoListUseCase by inject()
-    private val getToDoItemUseCase: GetToDoItemUseCase by inject()
+    private val insertToDoListUseCase: com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoListUseCase by inject()
+    private val getToDoItemUseCase: com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase by inject()
 
     private val list = (0 until 10).map {
         ToDoEntity(

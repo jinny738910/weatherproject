@@ -2,13 +2,13 @@ package aop.fastcampus.part5.chapter01.di
 
 import aop.fastcampus.part5.chapter01.data.repository.TestToDoRepository
 import com.jinny.plancast.data.repository.ToDoRepository
-import com.jinny.plancast.domain.todoUseCase.DeleteAllToDoItemUseCase
-import com.jinny.plancast.domain.todoUseCase.DeleteToDoItemUseCase
-import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
-import com.jinny.plancast.domain.todoUseCase.GetToDoListUseCase
-import com.jinny.plancast.domain.todoUseCase.InsertToDoListUseCase
-import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
-import com.jinny.plancast.domain.todoUseCase.UpdateToDoUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.DeleteAllToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.DeleteToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoListUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoListUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.detail.DetailViewModel
 import com.jinny.plancast.presentation.todo.list.ListViewModel
@@ -17,13 +17,13 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 
 val appTestModule = module {
 
-    factory { GetToDoListUseCase(get()) }
-    factory { GetToDoItemUseCase(get()) }
-    factory { InsertToDoListUseCase(get()) }
-    factory { InsertToDoUseCase(get()) }
-    factory { DeleteToDoItemUseCase(get()) }
-    factory { DeleteAllToDoItemUseCase(get()) }
-    factory { UpdateToDoUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.GetToDoListUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoListUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.DeleteToDoItemUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.DeleteAllToDoItemUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase(get()) }
 
     single<ToDoRepository> { TestToDoRepository() }
 

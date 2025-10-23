@@ -6,10 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.data.local.entity.ToDoEntity
-import com.jinny.plancast.domain.todoUseCase.DeleteToDoItemUseCase
-import com.jinny.plancast.domain.todoUseCase.GetToDoItemUseCase
-import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
-import com.jinny.plancast.domain.todoUseCase.UpdateToDoUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.DeleteToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase
 import com.jinny.plancast.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -17,10 +17,10 @@ import java.lang.Exception
 class DetailViewModel(
     var detailMode: DetailMode,
     var id: Long = -1,
-    private val getToDoItemUseCase: GetToDoItemUseCase,
-    private val deleteToDoItemUseCase: DeleteToDoItemUseCase,
-    private val updateToDoUseCase: UpdateToDoUseCase,
-    private val insertToDoUseCase: InsertToDoUseCase
+    private val getToDoItemUseCase: com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase,
+    private val deleteToDoItemUseCase: com.jinny.plancast.domain.usecase.todoUseCase.DeleteToDoItemUseCase,
+    private val updateToDoUseCase: com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase,
+    private val insertToDoUseCase: com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase
 ) : BaseViewModel() {
 
     private var _toDoDetailLiveData = MutableLiveData<ToDoDetailState>(ToDoDetailState.UnInitialized)

@@ -16,16 +16,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.jinny.plancast.data.local.entity.ToDoEntity
-import com.jinny.plancast.domain.todoUseCase.DeleteAllToDoItemUseCase
-import com.jinny.plancast.domain.todoUseCase.GetToDoListUseCase
-import com.jinny.plancast.domain.todoUseCase.UpdateToDoUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.DeleteAllToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoListUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase
 import com.jinny.plancast.presentation.BaseViewModel
 import kotlinx.coroutines.*
 
 class ListViewModel(
-    private val getToDoListUseCase: GetToDoListUseCase,
-    private val updateToDoUseCase: UpdateToDoUseCase,
-    private val deleteAllToDoItemUseCase: DeleteAllToDoItemUseCase
+    private val getToDoListUseCase: com.jinny.plancast.domain.usecase.todoUseCase.GetToDoListUseCase,
+    private val updateToDoUseCase: com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase,
+    private val deleteAllToDoItemUseCase: com.jinny.plancast.domain.usecase.todoUseCase.DeleteAllToDoItemUseCase
 ): BaseViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()

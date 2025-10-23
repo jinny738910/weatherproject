@@ -27,8 +27,8 @@ import com.jinny.plancast.R
 import com.jinny.plancast.data.api.GptApiService
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityDetailBinding
-import com.jinny.plancast.presentation.chat.ChatUserListActivity
-import com.jinny.plancast.presentation.chat.ChatRoomActivity
+import com.jinny.plancast.presentation.chat.chatuserlist.ChatUserListActivity
+import com.jinny.plancast.presentation.chat.chatroom.ChatRoomActivity
 import com.jinny.plancast.presentation.financial.payment.PaymentActivity
 import com.jinny.plancast.presentation.financial.transfer.TransferActivity
 import kotlinx.coroutines.Dispatchers

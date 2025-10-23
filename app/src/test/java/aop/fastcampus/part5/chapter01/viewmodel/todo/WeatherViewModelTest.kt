@@ -2,7 +2,7 @@ package aop.fastcampus.part5.chapter01.viewmodel.todo
 
 import aop.fastcampus.part5.chapter01.viewmodel.ViewModelTest
 import com.jinny.plancast.data.local.entity.ToDoEntity
-import com.jinny.plancast.domain.todoUseCase.InsertToDoUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.detail.DetailViewModel
 import com.jinny.plancast.presentation.todo.detail.ToDoDetailState
@@ -22,7 +22,7 @@ internal class WeatherViewModelTest : ViewModelTest() {
 
     private val detailViewModel: DetailViewModel by inject { parametersOf(DetailMode.DETAIL, id) }
     private val listViewModel: ListViewModel by inject()
-    private val insertToDoUseCase: InsertToDoUseCase by inject()
+    private val insertToDoUseCase: com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase by inject()
 
     val id = 1L
 

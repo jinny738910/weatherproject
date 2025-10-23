@@ -22,7 +22,7 @@ internal class WeatherViewModelTest : ViewModelTest() {
 
     private val detailViewModel: DetailViewModel by inject { parametersOf(DetailMode.DETAIL, id) }
     private val listViewModel: ListViewModel by inject()
-    private val insertToDoUseCase: InsertToDoUseCase by inject()
+    private val insertToDoUseCase: com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase by inject()
 
     val id = 1L
 

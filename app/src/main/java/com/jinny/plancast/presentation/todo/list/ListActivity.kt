@@ -1,6 +1,5 @@
 package com.jinny.plancast.presentation.todo.list
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -17,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -28,14 +26,14 @@ import com.jinny.plancast.R
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
 import com.jinny.plancast.presentation.alarm.AlarmListActivity
-import com.jinny.plancast.presentation.chat.ChatListActivity
-import com.jinny.plancast.presentation.chat.ChatListItem
+import com.jinny.plancast.presentation.chat.chatview.ChatViewActivity
+import com.jinny.plancast.presentation.financial.transaction.TransactionActivity
 import com.jinny.plancast.presentation.login.LoginActivity
 import com.jinny.plancast.presentation.setting.SettingActivity
 import com.jinny.plancast.presentation.todo.detail.DetailActivity
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.view.ToDoAdapter
-import com.jinny.plancast.presentation.weather.WeatherActivity
+import com.jinny.plancast.presentation.weather.weatherView.WeatherActivity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -282,7 +280,12 @@ class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
                 true
             }
             R.id.action_chatlist -> {
-                startActivity(Intent(this, ChatListActivity::class.java))
+                startActivity(Intent(this, ChatViewActivity::class.java))
+                finish()
+                true
+            }
+            R.id.action_money_check -> {
+                startActivity(Intent(this,TransactionActivity::class.java))
                 finish()
                 true
             }

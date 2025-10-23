@@ -3,8 +3,8 @@ package com.jinny.plancast.presentation.financial.transfer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.jinny.plancast.domain.transferUseCase.ExecuteTransferUseCase
-import com.jinny.plancast.domain.transferUseCase.RegisterBillingKeyUseCase
+import com.jinny.plancast.domain.usecase.transferUseCase.ExecuteTransferUseCase
+import com.jinny.plancast.domain.usecase.transferUseCase.RegisterBillingKeyUseCase
 import com.jinny.plancast.presentation.BaseViewModel
 import com.jinny.plancast.presentation.todo.detail.ToDoDetailState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class TransferViewModel(
-    private val executeTransferUseCase: ExecuteTransferUseCase,
-    private val registerBillingKeyUseCase: RegisterBillingKeyUseCase
+    private val executeTransferUseCase: com.jinny.plancast.domain.usecase.transferUseCase.ExecuteTransferUseCase,
+    private val registerBillingKeyUseCase: com.jinny.plancast.domain.usecase.transferUseCase.RegisterBillingKeyUseCase
 ) : BaseViewModel() {
 
     private val _transferResult = MutableLiveData<String>()

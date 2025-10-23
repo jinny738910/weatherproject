@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.data.local.entity.ToDoEntity
-import com.jinny.plancast.domain.todoUseCase.DeleteAllToDoItemUseCase
-import com.jinny.plancast.domain.todoUseCase.GetToDoListUseCase
-import com.jinny.plancast.domain.todoUseCase.UpdateToDoUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.DeleteAllToDoItemUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoListUseCase
+import com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase
 import com.jinny.plancast.presentation.BaseViewModel
 import kotlinx.coroutines.*
 

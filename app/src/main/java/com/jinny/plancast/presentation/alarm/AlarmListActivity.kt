@@ -10,10 +10,7 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
-import com.jinny.plancast.presentation.todo.detail.DetailActivity
-import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.view.ToDoAdapter
-import com.jinny.plancast.presentation.weather.WeatherActivity
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext

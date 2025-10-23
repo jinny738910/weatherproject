@@ -11,13 +11,13 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 
 val appTestModule = module {
 
-    factory { GetToDoListUseCase(get()) }
-    factory { GetToDoItemUseCase(get()) }
-    factory { InsertToDoListUseCase(get()) }
-    factory { InsertToDoUseCase(get()) }
-    factory { DeleteToDoItemUseCase(get()) }
-    factory { DeleteAllToDoItemUseCase(get()) }
-    factory { UpdateToDoUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.GetToDoListUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoListUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.DeleteToDoItemUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.DeleteAllToDoItemUseCase(get()) }
+    factory { com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase(get()) }
 
     single<ToDoRepository> { TestToDoRepository() }
 
