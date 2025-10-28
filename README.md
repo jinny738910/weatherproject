@@ -1,4 +1,4 @@
-# CleanArchitecture를 적용한 날씨 위치 기반 알림 해주는 ToDo앱 만들기
+# CleanArchitecture를 적용한 날씨 위치 기반 알림 해주는 ToDo관리 및 공유 앱 만들기
 
 ## 기능
 - 로그인/생체인증 (백엔드 연동)
