@@ -58,6 +58,14 @@
 
 채팅 및 초대 화면 
 
+<img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/cb706de0-61be-4ab1-8a72-87cd3f632e7f" />
+
+채팅방 화면
+
+<img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/cf845cbe-98fe-402c-b134-a3edb8c103d9" />
+
+채팅 목록 조회 화면
+
 <img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/090807dc-f6bc-4f77-a8fc-44980cef2f4b" />
 <img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/4269904f-3270-4bbf-afc4-50f4212915ae" />
 <img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/1e06a5de-b3f6-444d-b909-719c3a127a18" />
@@ -68,5 +76,9 @@
 <img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/9a71e934-ec09-42e3-a070-e15dc05fbb50" />
 
 송금 화면
+
+<img width="246" height="539" alt="image" src="https://github.com/user-attachments/assets/16d67031-ec31-472f-96d2-13d92510a481" />
+
+금융거래 조회 화면
 
 
