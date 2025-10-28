@@ -16,7 +16,7 @@
   
 - 이미지 및 영상 첨부 기능 (Storag, Glide, exoplayer)
 - 채팅 및 초대 기능 (Realtime Database, cloud messaging) + ai
-- 결제 및 송금 기능 (api, 외부라이브러리, 백엔드)
+- 결제 및 송금 기능 (api, 외부라이브러리, 백엔드, oracle database)
 
 
 ## 결과 화면
