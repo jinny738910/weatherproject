@@ -19,6 +19,7 @@
     <string name="setting">설정</string>
     <string name="logout">로그아웃</string>
     <string name="write_name">이름을 입력해주세요</string>
+    <string name="gotoChat">입장하기</string>
 
     <string name="lock">나만 볼래요!</string>
 </resources>

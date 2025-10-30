@@ -5,7 +5,7 @@ import com.jinny.plancast.domain.model.PlacePrediction
 import com.jinny.plancast.domain.model.WeatherInfo
 
 /**
- * 기상청 날씨 정보 Repository 인터페이스
+ * Google pay 정보 Repository 인터페이스
  */
 interface PlaceRepository {
 

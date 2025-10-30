@@ -1,11 +1,15 @@
 package com.jinny.plancast.presentation.chat.chatview
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +22,9 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
+import com.jinny.plancast.presentation.chat.chatroom.ChatRoomActivity
+import com.jinny.plancast.presentation.chat.chatuserlist.ChatUserListItem
+import com.jinny.plancast.presentation.financial.password.PasswordActivity
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
@@ -31,8 +38,22 @@ class ChatViewActivity : BaseActivity<ChatViewViewModel>(), CoroutineScope{
 
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var userDB: DatabaseReference = Firebase.database.reference
+    private var chatDB: DatabaseReference = Firebase.database.reference.child("chats")
     private val chatViewAdapter = ChatViewAdapter()
     private val chatViewItems = mutableListOf<ChatViewItem>()
+
+    private val chatRoomLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // 결과가 돌아왔을 때 이 람다 블록이 실행됩니다.
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 성공적인 결과를 처리합니다.
+                val data: Intent? = result.data
+                val message = data?.getStringExtra("result_key")
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                viewModel.fetchData()
+            }
+        }
+
     private val listener = object:  ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             val chatViewItem = snapshot.getValue(ChatViewItem::class.java)
@@ -42,6 +63,10 @@ class ChatViewActivity : BaseActivity<ChatViewViewModel>(), CoroutineScope{
 
             chatViewItems.add(chatViewItem)
             chatViewAdapter.setToChatList(chatViewItems, chatItemClickListener = { ChatViewItem ->
+                Log.d("ChatViewActivity", "onChatListItemClick : ${ChatViewItem.userId}")
+                val intent = Intent(this@ChatViewActivity, ChatRoomActivity::class.java)
+                intent.putExtra("chat_item", ChatViewItem)
+                chatRoomLauncher.launch(intent)
             })
         }
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -62,9 +87,61 @@ class ChatViewActivity : BaseActivity<ChatViewViewModel>(), CoroutineScope{
         binding.addToDoButton.isGone =true
         binding.weatherDetailsButton.isGone =true
 
+        val userId = getCurrentUserID()
+        val currentUserChatDB = chatDB.child(userId)
 
-        val chatDB = Firebase.database.reference.child("chats")
-        chatDB.addChildEventListener(listener)
+        currentUserChatDB.addChildEventListener(listener)
+
+        Log.d("ChatViewActivity", "currentUserId: ${getCurrentUserID()}")
+        currentUserChatDB.addListenerForSingleValueEvent(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("ChatViewActivity", "addListenerForSingleValueEvent -> onDataChange")
+                Log.d("ChatViewActivity", "datasnapshot: $snapshot")
+
+                val userId = snapshot.child("userId").value.toString()
+                var name = "undecided"
+                if (snapshot.child("name").value != null) {
+                    name = snapshot.child("name").value.toString()
+                }
+                var title = "undecided"
+                if (snapshot.child("title").value != null) {
+                    title = snapshot.child("title").value.toString()
+                }
+                var date = "undecided"
+                if (snapshot.child("date").value != null) {
+                    date = snapshot.child("date").value.toString()
+                }
+                var destination = "undecided"
+                if (snapshot.child("destination").value != null) {
+                    destination = snapshot.child("destination").value.toString()
+                }
+                var message = "undecided"
+                if (snapshot.child("message").value != null) {
+                    message = snapshot.child("message").value.toString()
+                }
+                var imageUrl = "undecided"
+                if (snapshot.child("imageUrl").value != null) {
+                    imageUrl = snapshot.child("imageUrl").value.toString()
+                }
+
+                Log.d("onDataChange ChatListActivity", "userId: $userId, name: $name")
+
+
+                if (userId.isEmpty() || name == "undecided") {
+                    Log.d("ChatViewActivity", "setToChatList: userId가 undecided인 아이템이 있습니다.")
+                } else {
+                    chatViewItems.add(ChatViewItem(userId, name, "", "", "", "", ""))
+                    chatViewAdapter.setToChatList(chatViewItems, chatItemClickListener = { chatViewItem ->
+                        Log.d("ChatViewActivity", "onChatListItemClick : ${chatViewItem.userId}")
+                    })
+                    chatViewAdapter.notifyDataSetChanged()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+
+        })
     }
 
     private fun initViews(binding: ActivityListBinding) = with(binding) {
@@ -81,99 +158,6 @@ class ChatViewActivity : BaseActivity<ChatViewViewModel>(), CoroutineScope{
     }
 
 
-    private fun getInviteMessage() {
-
-        val inviteDB = userDB.child(getCurrentUserID()).child("invitedBy").child("invite")
-        inviteDB.addChildEventListener(object : ChildEventListener {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val isInvited = snapshot.getValue(Boolean::class.java) ?: false
-                if (isInvited == true) {
-                    val inviteUser = snapshot.key.toString()
-                    Toast.makeText(this@ChatViewActivity, "$inviteUser 님이 초대했습니다.", Toast.LENGTH_SHORT).show()
-                    showInviteDialog(inviteUser)
-                }
-            }
-
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onChildChanged(snapshot: DataSnapshot, s: String?) {
-
-                val isInvited = snapshot.getValue(Boolean::class.java) ?: false
-                if (isInvited == true) {
-                    val inviteUser = snapshot.key.toString()
-                    Toast.makeText(this@ChatViewActivity, "$inviteUser 님이 초대했습니다.", Toast.LENGTH_SHORT).show()
-                    showInviteDialog(inviteUser)
-                }
-            }
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
-
-    private fun getMatchMessage() {
-
-        val matchDB = userDB.child(getCurrentUserID()).child("invitedBy").child("match")
-        matchDB.addChildEventListener(object : ChildEventListener {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val isMatched = snapshot.getValue(Boolean::class.java) ?: false
-                if (isMatched == true) {
-                    val matchedUser = snapshot.key.toString()
-                    Toast.makeText(this@ChatViewActivity, "$matchedUser 님이 매치됐습니다.", Toast.LENGTH_SHORT).show()
-                    chatViewAdapter.setToChatList(chatViewItems, chatItemClickListener = { chatViewItem ->
-                        Log.d("ChatViewActivity", "onChatListItemClick : ${chatViewItem.userId}")
-
-                    })
-                }
-            }
-
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onChildChanged(snapshot: DataSnapshot, s: String?) {
-
-                val isMatched = snapshot.getValue(Boolean::class.java) ?: false
-                if (isMatched == true) {
-                    val matchedUser = snapshot.key.toString()
-                    Toast.makeText(this@ChatViewActivity, "$matchedUser 님이 매치됐습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
-
-    fun showInviteDialog(inviteUser: String) {
-        Log.d("ChatListActivity", "showInviteDialog !!")
-
-        val builder = AlertDialog.Builder(this)
-
-        // 팝업창의 제목과 메시지 설정
-        builder.setTitle("할일 초대 요청")
-        builder.setMessage("$inviteUser 님이 초대 했습니다.")
-
-        // '예' 버튼 (Positive Button)
-        builder.setPositiveButton("수락하기") { dialog, which ->
-            // '예' 버튼을 눌렀을 때 실행될 코드
-            invite(inviteUser)
-            Toast.makeText(this, "채팅방으로 이동합니다.", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this@DetailActivity, PaymentActivity::class.java)
-//            paymentLauncher.launch(intent)
-        }
-
-        // '아니오' 버튼 (Negative Button)
-        builder.setNegativeButton("거절하기") { dialog, which ->
-            // '아니오' 버튼을 눌렀을 때 실행될 코드
-            Toast.makeText(this, "초대를 거절하였습니다.", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this@DetailActivity, TransferActivity::class.java)
-//            transferLauncher.launch(intent)
-        }
-        // 팝업창 생성 및 표시
-        val dialog = builder.create()
-        dialog.show()
-    }
-
-
     private fun getCurrentUserID(): String {
         if (auth.currentUser == null) {
             return ""
@@ -182,50 +166,4 @@ class ChatViewActivity : BaseActivity<ChatViewViewModel>(), CoroutineScope{
         return auth.currentUser!!.uid
     }
 
-    private fun invite(invitedUserId: String) {
-
-        Log.d(
-            "ChatListActivity",
-            "invite !! : invitedUserId: $invitedUserId, currentUserId: ${getCurrentUserID()}"
-        )
-
-        userDB.child(invitedUserId)
-            .child("invitedBy")
-            .child("invite")
-            .child(getCurrentUserID())
-            .setValue(true)
-
-        saveMatchIfOtherLikeMe(invitedUserId)
-
-        Toast.makeText(this, "Invite 하셨습니다.", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun saveMatchIfOtherLikeMe(invitedUserId: String) {
-        val invitedUserDB = userDB.child(getCurrentUserID()).child("invitedBy").child("invite")
-            .child(invitedUserId)
-        invitedUserDB.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.value == true) {
-                    userDB.child(getCurrentUserID())
-                        .child("invitedBy")
-                        .child("match")
-                        .child(invitedUserId)
-                        .setValue(true)
-
-                    userDB.child(invitedUserId)
-                        .child("invitedBy")
-                        .child("match")
-                        .child(getCurrentUserID())
-                        .setValue(true)
-                }
-                Log.d("ChatListActivitiy", "match!! $invitedUserId <-> ${getCurrentUserID()}")
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-
-        })
-
-
-
-    }
 }

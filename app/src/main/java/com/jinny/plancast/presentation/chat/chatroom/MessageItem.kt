@@ -1,7 +1,9 @@
 package com.jinny.plancast.presentation.chat.chatroom
 
-data class ChatRoomItem(
+data class MessageItem(
     val userId: String,
     var name: String,
-    var message: String
+    val isUser: Boolean,
+    var message: String,
+    val timestamp: String
 )

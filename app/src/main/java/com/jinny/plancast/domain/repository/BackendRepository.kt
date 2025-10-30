@@ -7,7 +7,7 @@ import com.jinny.plancast.domain.model.WeatherInfo
 import java.time.LocalDate
 
 /**
- * 알림 스케줄링 관련 Repository 인터페이스
+ * 결제 서비스 관련 Repository 인터페이스
  */
 interface BackendRepository {
 

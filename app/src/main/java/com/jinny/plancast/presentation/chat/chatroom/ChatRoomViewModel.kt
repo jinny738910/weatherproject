@@ -12,14 +12,14 @@ class ChatRoomViewModel(
 //    private val deleteAllToDoItemUseCase: DeleteAllToDoItemUseCase
 ): BaseViewModel() {
 
-    private var _toDoListLiveData = MutableLiveData<ChatRoomItem>()
-    val toDoListLiveData: LiveData<ChatRoomItem> = _toDoListLiveData
+    private var _toDoListLiveData = MutableLiveData<MessageItem>()
+    val toDoListLiveData: LiveData<MessageItem> = _toDoListLiveData
 
     override fun fetchData(): Job = viewModelScope.launch {
 
     }
 
-    fun updateEntity(toDoEntity: ChatRoomItem) = viewModelScope.launch {
+    fun updateEntity(toDoEntity: MessageItem) = viewModelScope.launch {
 
     }
 

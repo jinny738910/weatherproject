@@ -21,6 +21,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.database
+import com.google.firebase.database.ktx.database
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import com.jinny.plancast.R
@@ -29,6 +30,7 @@ import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityDetailBinding
 import com.jinny.plancast.presentation.chat.chatuserlist.ChatUserListActivity
 import com.jinny.plancast.presentation.chat.chatroom.ChatRoomActivity
+import com.jinny.plancast.presentation.chat.chatroom.ChatRoomInfo
 import com.jinny.plancast.presentation.financial.payment.PaymentActivity
 import com.jinny.plancast.presentation.financial.transfer.TransferActivity
 import kotlinx.coroutines.Dispatchers
@@ -189,11 +191,27 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         }
 
         commentsButton.setOnClickListener {
+
+            createChatRoom("","${titleInput.text}","${timeInput.text}","${destinationInput.text}","${descriptionInput.text}","${selectedUri}","")
+
+            val chatRoomInfo = ChatRoomInfo(
+                userId = getCurrentUserID(),
+                title = "${titleInput.text}",
+                date = "${timeInput.text}",
+                destination = "${destinationInput.text}",
+                message = "${descriptionInput.text}",
+                imageUrl = "${selectedUri}",
+                invitedUser = "",
+                description = ""
+            )
             val intent = Intent(this@DetailActivity, ChatRoomActivity::class.java)
+            intent.putExtra("chat_item", chatRoomInfo)
             commentLauncher.launch(intent)
+
+
             val userQuestion = "안녕하세요"
             if (userQuestion.isNotBlank()) {
-                sendQuestionToLLM(userQuestion)
+//                sendQuestionToLLM(userQuestion)
 //                questionInput.setText("")
 
             }
@@ -277,6 +295,31 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
             completeButton.isEnabled = false
         }
     }
+
+    fun createChatRoom(name: String, title: String, date: String, destination: String, message: String, imageUrl: String, invitedUser: String) {
+        val userId = getCurrentUserID()
+        val currentUserChatDB = chatDB.child(userId)
+        val currentChatDB = currentUserChatDB.child(userId+title)
+
+        val chatRoomInfo = mutableMapOf<String, Any>()
+        chatRoomInfo["userId"] = userId
+        chatRoomInfo["title"] = title
+        chatRoomInfo["date"] = date
+        chatRoomInfo["destination"] = destination
+        chatRoomInfo["message"] = message
+        chatRoomInfo["imageUrl"] = imageUrl
+        chatRoomInfo["invitedUser"] = invitedUser
+
+        currentChatDB.setValue(chatRoomInfo)
+    }
+
+    private fun getCurrentUserID(): String {
+        if (auth.currentUser == null) {
+            return ""
+        }
+        return auth.currentUser!!.uid
+    }
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

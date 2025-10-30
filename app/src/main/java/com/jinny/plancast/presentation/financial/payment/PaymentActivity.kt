@@ -185,8 +185,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel>() {
 
             // (B) - 단순 예시를 위해 더미 값 또는 정적으로 저장된 값 사용
             val productId = null // 결제 요청 전에 미리 알고 있던 상품 ID
-            val productName = "프리미엄 구독권"
-            val productPrice = 50000 // 결제 금액과 일치해야 함
+            val productName = "프리미엄 구독권1"
+            val productPrice = 10000 // 결제 금액과 일치해야 함
             val selectedPaymentMethod = null
             val availablePaymentMethods = emptyList<String>()
 

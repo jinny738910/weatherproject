@@ -3,7 +3,7 @@ package com.jinny.plancast.domain.repository
 import com.jinny.plancast.data.model.Product
 
 /**
- * 알림 스케줄링 관련 Repository 인터페이스
+ * 결제 정보 관련 Repository 인터페이스
  */
 interface ProductRepository {
 

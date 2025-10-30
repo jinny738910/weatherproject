@@ -9,7 +9,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 /**
- * 송금 API 통신을 위한 Retrofit 인터페이스
+ * 상품 정보 API 통신을 위한 Retrofit 인터페이스
  */
 interface ProductApiService {
     /// R: 모든 상품 조회 (GET /api/products)

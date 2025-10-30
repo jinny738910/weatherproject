@@ -6,7 +6,7 @@ import com.jinny.plancast.domain.repository.AlarmRepository
 import java.time.LocalDate
 
 /**
- * WeatherRepository의 구현체
+ * AlarmRepository의 구현체
  * @param apiService Retrofit으로 생성된 API 서비스
  * @param apiKey 기상청 API 인증키
  */

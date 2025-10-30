@@ -1,5 +1,9 @@
 package com.jinny.plancast.presentation.chat.chatroom
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class ChatRoomInfo(
     val userId: String,
     val title: String,
@@ -8,6 +12,7 @@ data class ChatRoomInfo(
     val description: String,
     var message: String,
     val imageUrl: String,
-) {
-    constructor() : this("", "", "", "", "", "", "")
+    val invitedUser: String
+) : Parcelable {
+    constructor() : this("", "", "", "", "", "", "", "")
 }

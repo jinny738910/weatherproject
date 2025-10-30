@@ -7,7 +7,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 /**
- * 송금 API 통신을 위한 Retrofit 인터페이스
+ * 결제 API 통신을 위한 Retrofit 인터페이스
  */
 interface BackendApiService {
     // 백엔드의 @GetMapping("/hello")와 매핑됩니다.

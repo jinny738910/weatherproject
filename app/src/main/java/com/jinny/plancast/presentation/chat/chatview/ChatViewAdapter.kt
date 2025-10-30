@@ -1,6 +1,7 @@
 package com.jinny.plancast.presentation.chat.chatview
 
 import android.annotation.SuppressLint
+import android.provider.Settings.Global.getString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class ChatViewAdapter : RecyclerView.Adapter<ChatViewAdapter.ToDoItemViewHolder>
             textView2.setTextColor(ContextCompat.getColor(root.context, R.color.black))
 
             inviteButton.setTextColor(ContextCompat.getColor(root.context, R.color.white))
+            inviteButton.setText(R.string.gotoChat)
 
         }
 
