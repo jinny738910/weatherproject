@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.data.local.entity.ToDoEntity
 import com.jinny.plancast.domain.usecase.todoUseCase.DeleteToDoItemUseCase
@@ -11,17 +12,31 @@ import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase
 import com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase
 import com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase
 import com.jinny.plancast.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import javax.inject.Inject
 
-class DetailViewModel(
-    var detailMode: DetailMode,
-    var id: Long = -1,
-    private val getToDoItemUseCase: com.jinny.plancast.domain.usecase.todoUseCase.GetToDoItemUseCase,
-    private val deleteToDoItemUseCase: com.jinny.plancast.domain.usecase.todoUseCase.DeleteToDoItemUseCase,
-    private val updateToDoUseCase: com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase,
-    private val insertToDoUseCase: com.jinny.plancast.domain.usecase.todoUseCase.InsertToDoUseCase
+@HiltViewModel
+class DetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getToDoItemUseCase: GetToDoItemUseCase,
+    private val deleteToDoItemUseCase: DeleteToDoItemUseCase,
+    private val updateToDoUseCase: UpdateToDoUseCase,
+    private val insertToDoUseCase: InsertToDoUseCase
 ) : BaseViewModel() {
+
+    var id: Long = savedStateHandle.get<Long>("ToDoId") ?: -1L
+    var detailMode: DetailMode = savedStateHandle.get<DetailMode>("DetailMode") ?: DetailMode.DETAIL
+
+    init {
+        // 이 로그를 확인해보세요!
+        val keys = savedStateHandle.keys()
+        val allData = keys.joinToString { key ->
+            "$key = ${savedStateHandle.get<Any>(key)}"
+        }
+        Log.e("DetailViewModel", "저장된 데이터: $allData")
+    }
 
     private var _toDoDetailLiveData = MutableLiveData<ToDoDetailState>(ToDoDetailState.UnInitialized)
     val toDoDetailLiveData: LiveData<ToDoDetailState> = _toDoDetailLiveData
@@ -34,6 +49,7 @@ class DetailViewModel(
             DetailMode.DETAIL -> {
                 _toDoDetailLiveData.postValue(ToDoDetailState.Loading)
                 try {
+                    Log.d("DetailViewModel", "fetch detail mode : id: $id")
                     getToDoItemUseCase(id)?.let {
                         _toDoDetailLiveData.postValue(ToDoDetailState.Success(it))
                         Log.d("DetailViewModel", "fetch detail mode : isClimate, isLocation, isFinancial: $it.isClimate, $it.sLocation, $it.isFinancial")

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,24 +20,16 @@ import com.jinny.plancast.presentation.todo.detail.DetailActivity
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.weather.search.SearchViewModel
 import com.jinny.plancast.presentation.webView.WebViewActivity
+import dagger.hilt.android.AndroidEntryPoint
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
+@AndroidEntryPoint
 class WeatherActivity : BaseActivity<WeatherViewModel>() {
 
-    override val viewModel: WeatherViewModel by viewModel{
-        parametersOf(
-            intent?.getSerializableExtra(DETAIL_MODE_KEY),
-            intent.getLongExtra(TODO_ID_KEY, -1)
-        )
-    }
+    override val viewModel: WeatherViewModel by viewModels()
 
-    val SearchViewModel: SearchViewModel by viewModel{
-        parametersOf(
-            intent?.getSerializableExtra(DETAIL_MODE_KEY),
-            intent.getLongExtra(TODO_ID_KEY, -1)
-        )
-    }
+    val SearchViewModel: SearchViewModel by viewModels()
 
     companion object {
         const val TODO_ID_KEY = "ToDoId"

@@ -4,13 +4,14 @@ import com.jinny.plancast.data.api.TransferApiService
 import com.jinny.plancast.data.model.toDomain
 import com.jinny.plancast.domain.model.TransferResult
 import com.jinny.plancast.domain.repository.TransferRepository
+import javax.inject.Inject
 
 /**
  * TransferRepository의 구현체
  * @param apiService Retrofit으로 생성된 API 서비스
  * @param apiKey transfer API 인증키
  */
-class TransferRepositoryImpl(
+class TransferRepositoryImpl @Inject constructor(
     private val transferService: TransferApiService
 ) : TransferRepository {
 

@@ -1,29 +1,37 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-parcelize'
-    id 'kotlin-kapt'
-    id 'com.google.devtools.ksp'
-    id 'org.jetbrains.kotlin.plugin.compose'
-    id 'com.google.gms.google-services'
+    id ("com.android.application")
+    id ("kotlin-android")
+    id ("kotlin-parcelize")
+    id ("kotlin-kapt")
+    id ("com.google.devtools.ksp")
+    id ("org.jetbrains.kotlin.plugin.compose")
+    id ("com.google.gms.google-services")
+    id ("com.google.dagger.hilt.android")
 }
 
-def localProperties = new Properties()
-localProperties.load(new FileInputStream(project.rootProject.file('local.properties')))
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(FileInputStream(localPropertiesFile))
+    }
+}
 
 android {
-    namespace 'com.jinny.plancast'
-    compileSdk 35
-    buildToolsVersion "34.0.0"
+    namespace = "com.jinny.plancast"
+    compileSdk = 35
+    buildToolsVersion = "34.0.0"
 
     defaultConfig {
-        applicationId "com.jinny.plancast"
-        minSdkVersion 23
-        targetSdkVersion 33
-        versionCode 1
-        versionName "1.0"
+        applicationId = "com.jinny.plancast"
+        minSdk = 23
+        targetSdk = 33
+        versionCode = 1
+        versionName = "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField ("String", "MAPS_API_KEY",
                 "\"${localProperties.getProperty("MAPS_API_KEY", "default_or_placeholder_key")}\"")
         buildConfigField ("String", "WEATHER_API_KEY",
@@ -33,81 +41,78 @@ android {
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        getByName("release") {
+            // 1. 난독화 및 코드 축소 활성화
+            isMinifyEnabled = true
+            // 2. 리소스 축소 (사용하지 않는 이미지 등 제거)
+            isShrinkResources = true
+
+            // 3. ProGuard 규칙 파일 설정
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
-    viewBinding {
-        enabled true
+        jvmTarget = "1.8"
     }
 
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
-
-
 }
 
-def bomVersion = "2024.09.00" // 2024년 9월 기준 최신 안정화 버전
+val bomVersion = "2024.09.00" // 2024년 9월 기준 최신 안정화 버전
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.android.support:support-v4:30.0.3'
-    implementation 'androidx.navigation:navigation-compose-android:2.9.3'
-    implementation 'androidx.work:work-runtime-ktx:2.10.4'
-    implementation 'androidx.compose.runtime:runtime-livedata:1.9.1'
-    implementation 'com.google.androidbrowserhelper:billing:1.1.0'
-    implementation 'androidx.compose.foundation:foundation-layout-android:1.7.2'
-
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation "com.google.truth:truth:1.0"
-    testImplementation 'org.mockito:mockito-inline:3.4.0'
-    testImplementation "android.arch.core:core-testing:1.1.1"
-
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
+    implementation ("androidx.core:core-ktx:1.3.2")
+    implementation ("androidx.appcompat:appcompat:1.2.0")
+    implementation ("com.google.android.material:material:1.3.0")
+    implementation ("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation ("com.android.support:support-v4:30.0.3")
+    implementation ("androidx.navigation:navigation-compose-android:2.9.3")
+    implementation ("androidx.work:work-runtime-ktx:2.10.4")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.9.1")
+    implementation ("com.google.androidbrowserhelper:billing:1.1.0")
+    implementation ("androidx.compose.foundation:foundation-layout-android:1.7.2")
+    implementation ("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
 
     // koin DI
-    implementation "io.insert-koin:koin-android:3.5.0"
+    implementation ("io.insert-koin:koin-android:3.5.0")
 //    implementation "org.koin:koin-android-scope:2.1.5"
 //    implementation "org.koin:koin-android-viewmodel:2.1.5"
 //    implementation "org.koin:koin-android-ext:2.1.5"
 //    testImplementation "org.koin:koin-test:2.1.5"
 
     // KTX
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.21"
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.4.21")
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3'
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3")
 
     // Room library
 
-    implementation "androidx.room:room-runtime:2.6.1"
-    ksp "androidx.room:room-compiler:2.6.1"
+    implementation ("androidx.room:room-runtime:2.6.1")
+    ksp ("androidx.room:room-compiler:2.6.1")
 //    kapt "androidx.room:room-compiler:2.2.6"
-    implementation "androidx.room:room-ktx:2.6.1"
+    implementation ("androidx.room:room-ktx:2.6.1")
 
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0")
+    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0")
 
     implementation(platform("androidx.compose:compose-bom:2024.09.00"))
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.00"))
@@ -163,13 +168,21 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // 보안키패드 라이브러리
-    implementation 'io.github.chaosleung:pinview:1.4.4'
+    implementation ("io.github.chaosleung:pinview:1.4.4")
 
     // OkHttp (HTTP 요청 처리)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     // Moshi (JSON 직렬화/역직렬화)
     implementation("com.squareup.moshi:moshi:1.15.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("com.google.truth:truth:1.0")
+    testImplementation ("org.mockito:mockito-inline:3.4.0")
+    testImplementation ("android.arch.core:core-testing:1.1.1")
+
+    androidTestImplementation ("androidx.test.ext:junit:1.1.2")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.3.0")
 
     // 토스페이먼츠 SDK 연동
 //    implementation("com.tosspayments.android:paymentsdk:3.5.1")

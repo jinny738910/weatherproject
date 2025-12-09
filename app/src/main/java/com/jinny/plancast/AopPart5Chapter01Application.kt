@@ -2,14 +2,10 @@ package com.jinny.plancast
 
 import android.app.Application
 import com.google.android.libraries.places.api.Places
-import com.jinny.plancast.di.appModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
-import com.jinny.plancast.BuildConfig
-import com.jinny.plancast.data.api.networkModule
 
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
 class AopPart5Chapter01Application: Application() {
 
     override fun onCreate() {
@@ -25,12 +21,12 @@ class AopPart5Chapter01Application: Application() {
             Places.initialize(applicationContext, apiKey)
         }
 
-        startKoin {
-            androidLogger(Level.ERROR)
-            androidContext(this@AopPart5Chapter01Application)
-            modules(appModule, networkModule)
-
-        }
+//        startKoin {
+//            androidLogger(Level.ERROR)
+//            androidContext(this@AopPart5Chapter01Application)
+//            modules(appModule, networkModule)
+//
+//        }
 
     }
 }

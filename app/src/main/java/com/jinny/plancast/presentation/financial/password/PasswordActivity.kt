@@ -7,18 +7,19 @@ import android.widget.Toast
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 
 
 import com.chaos.view.PinView
 import com.jinny.plancast.R
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.presentation.todo.list.ListViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class PasswordActivity : BaseActivity<ListViewModel>() {
 
-    override val viewModel: ListViewModel by viewModel()
+    override val viewModel: ListViewModel by viewModels()
 
     private val listLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

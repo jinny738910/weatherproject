@@ -7,13 +7,14 @@ import com.jinny.plancast.data.model.Product
 import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.domain.repository.ProductRepository
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * ProductRepository의 구현체
  * @param apiService Retrofit으로 생성된 API 서비스
  * @param apiKey 기상청 API 인증키
  */
-class ProductRepositoryImpl (
+class ProductRepositoryImpl @Inject constructor(
     private val productapiService: ProductApiService
 ) : ProductRepository {
 

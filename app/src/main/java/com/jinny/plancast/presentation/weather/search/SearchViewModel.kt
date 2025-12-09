@@ -3,22 +3,30 @@ package com.jinny.plancast.presentation.weather.search
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.domain.model.PlacePrediction
 import com.jinny.plancast.domain.repository.PlaceRepository
+import com.jinny.plancast.domain.usecase.weatherUseCase.GetShortTermForecastUseCase
 
 import com.jinny.plancast.presentation.BaseViewModel
 import com.jinny.plancast.presentation.weather.weatherView.WeatherMode
 import com.jinny.plancast.presentation.weather.weatherView.WeatherState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchViewModel(
-    var weatherMode: WeatherMode?,
-    var id: Long = -1,
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+//    private val getShortTermForecastUseCase: GetShortTermForecastUseCase,
     private val placeRepository: PlaceRepository
 ) : BaseViewModel() {
+
+    val id: Long = savedStateHandle.get<Long>("id") ?: -1L
+    val weatherMode: WeatherMode = savedStateHandle.get<WeatherMode>("detailMode") ?: WeatherMode.DETAIL
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()

@@ -10,11 +10,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven { url = uri("https://jitpack.io") }
         maven { url = uri("https://maven.tosspayments.com/repository/releases") }
     }
 }
 
 
-include ':app'
+include (":app")
 rootProject.name = "aop-part5-chapter01"

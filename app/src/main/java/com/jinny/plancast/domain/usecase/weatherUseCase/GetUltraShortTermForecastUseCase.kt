@@ -1,12 +1,13 @@
 package com.jinny.plancast.domain.usecase.weatherUseCase
 
 import com.jinny.plancast.domain.repository.WeatherRepository
+import javax.inject.Inject
 
 /**
  * 초단기 예보 정보를 가져오는 Usecase
  * @param weatherRepository WeatherRepository 의존성 주입
  */
-open class GetUltraShortTermForecastUseCase(
+open class GetUltraShortTermForecastUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) {
     open suspend operator fun invoke(

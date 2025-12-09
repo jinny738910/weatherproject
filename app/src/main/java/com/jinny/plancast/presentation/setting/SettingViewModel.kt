@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.data.local.entity.ToDoEntity
 import com.jinny.plancast.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class SettingViewModel(
+@HiltViewModel
+class SettingViewModel @Inject constructor(
 ): BaseViewModel() {
 
     private var _toDoListLiveData = MutableLiveData<SettingListState>(SettingListState.UnInitialized)

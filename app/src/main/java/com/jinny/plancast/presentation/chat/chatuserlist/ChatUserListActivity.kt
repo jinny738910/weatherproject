@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -18,10 +19,12 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class ChatUserListActivity : BaseActivity<ChatUserListViewModel>(), CoroutineScope{
 
     override val coroutineContext: CoroutineContext
@@ -34,7 +37,7 @@ class ChatUserListActivity : BaseActivity<ChatUserListViewModel>(), CoroutineSco
     private val chatUserListAdapter = ChatUserListAdapter()
     private val chatUserListItems = mutableListOf<ChatUserListItem>()
 
-    override val viewModel: ChatUserListViewModel by viewModel()
+    override val viewModel: ChatUserListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

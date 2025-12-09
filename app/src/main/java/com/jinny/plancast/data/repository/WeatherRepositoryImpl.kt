@@ -5,15 +5,17 @@ import com.jinny.plancast.domain.model.WeatherInfo
 import com.jinny.plancast.domain.repository.WeatherRepository
 import com.jinny.plancast.data.api.WeatherApiService
 import com.jinny.plancast.data.model.toDomain
+import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * WeatherRepository의 구현체
  * @param apiService Retrofit으로 생성된 API 서비스
  * @param apiKey 기상청 API 인증키
  */
-class WeatherRepositoryImpl (
+class WeatherRepositoryImpl @Inject constructor(
     private val apiService: WeatherApiService,
-    private val apiKey: String // BuildConfig 등 안전한 곳에 보관하는 것을 권장
+    @Named("ApiKey") private val apiKey: String // BuildConfig 등 안전한 곳에 보관하는 것을 권장
 ) : WeatherRepository {
 
     override suspend fun getShortTermForecast(

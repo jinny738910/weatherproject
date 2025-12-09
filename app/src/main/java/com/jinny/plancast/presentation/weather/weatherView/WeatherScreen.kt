@@ -380,8 +380,7 @@ fun DefaultPreview() {
 
     // 2. Create an instance of the ViewModel using the fake UseCases
     val fakeViewModel = WeatherViewModel(
-        weatherMode = WeatherMode.WRITE,
-        id = -1L,
+        savedStateHandle = androidx.lifecycle.SavedStateHandle(),
         getShortTermForecastUseCase = FakeShortTermUseCase(),
         getUltraShortTermForecastUseCase = FakeUltraTermUseCase()
     )

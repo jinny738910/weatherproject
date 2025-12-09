@@ -2,12 +2,15 @@ package com.jinny.plancast.data.repository
 
 import com.jinny.plancast.data.local.db.dao.ToDoDao
 import com.jinny.plancast.data.local.entity.ToDoEntity
+import com.jinny.plancast.di.AppModule
+import com.jinny.plancast.di.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class DefaultToDoRepository(
+class DefaultToDoRepository @Inject constructor(
     private val toDoDao: ToDoDao,
-    private val ioDispatcher: CoroutineDispatcher
+    @DispatcherIO private val ioDispatcher: CoroutineDispatcher
 ): ToDoRepository {
 
     override suspend fun getToDoList(): List<ToDoEntity> = withContext(ioDispatcher) {

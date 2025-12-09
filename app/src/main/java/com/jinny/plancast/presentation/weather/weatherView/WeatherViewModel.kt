@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.domain.model.WeatherInfo
 import com.jinny.plancast.domain.usecase.weatherUseCase.GetShortTermForecastUseCase
 import com.jinny.plancast.domain.usecase.weatherUseCase.GetUltraShortTermForecastUseCase
 import com.jinny.plancast.presentation.BaseViewModel
 import com.jinny.plancast.presentation.todo.detail.ToDoDetailState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -19,14 +21,17 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.ZoneId
+import javax.inject.Inject
 
-
-class WeatherViewModel(
-    var weatherMode: WeatherMode?,
-    var id: Long = -1,
-    private val getShortTermForecastUseCase: com.jinny.plancast.domain.usecase.weatherUseCase.GetShortTermForecastUseCase,
-    private val getUltraShortTermForecastUseCase: com.jinny.plancast.domain.usecase.weatherUseCase.GetUltraShortTermForecastUseCase
+@HiltViewModel
+class WeatherViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getShortTermForecastUseCase: GetShortTermForecastUseCase,
+    private val getUltraShortTermForecastUseCase: GetUltraShortTermForecastUseCase
 ) : BaseViewModel() {
+
+    val id: Long = savedStateHandle.get<Long>("id") ?: -1L
+    val weatherMode: WeatherMode = savedStateHandle.get<WeatherMode>("detailMode") ?: WeatherMode.DETAIL
 
     private val _weatherState = MutableStateFlow<List<WeatherInfo>>(emptyList())
     val weatherState = _weatherState.asStateFlow()

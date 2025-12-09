@@ -12,11 +12,14 @@ import com.jinny.plancast.domain.usecase.productUseCase.GetProductsUseCase
 import com.jinny.plancast.domain.usecase.productUseCase.UpdateProductsUseCase
 import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TransactionViewModel(
+@HiltViewModel
+class TransactionViewModel @Inject constructor(
     private val backendRepository: BackendRepository,
     private val createProductUsecase: CreateProductsUseCase,
     private val deleteProductsUseCase: DeleteProductsUseCase,

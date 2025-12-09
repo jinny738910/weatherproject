@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -34,13 +35,14 @@ import com.jinny.plancast.presentation.todo.detail.DetailActivity
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.view.ToDoAdapter
 import com.jinny.plancast.presentation.weather.weatherView.WeatherActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.suspendCancellableCoroutine
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.Executor
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 
+@AndroidEntryPoint
 class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
 
     override val coroutineContext: CoroutineContext
@@ -50,7 +52,7 @@ class ListActivity : BaseActivity<ListViewModel>(), CoroutineScope{
 
     private val adapter = ToDoAdapter()
 
-    override val viewModel: ListViewModel by viewModel()
+    override val viewModel: ListViewModel by viewModels()
 
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var userDB: DatabaseReference = Firebase.database.reference.child("users")

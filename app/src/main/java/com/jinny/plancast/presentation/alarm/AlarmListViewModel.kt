@@ -8,9 +8,12 @@ import com.jinny.plancast.domain.usecase.todoUseCase.DeleteAllToDoItemUseCase
 import com.jinny.plancast.domain.usecase.todoUseCase.GetToDoListUseCase
 import com.jinny.plancast.domain.usecase.todoUseCase.UpdateToDoUseCase
 import com.jinny.plancast.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class AlarmListViewModel(
+@HiltViewModel
+class AlarmListViewModel @Inject constructor(
 //    private val getToDoListUseCase: GetToDoListUseCase,
 //    private val updateToDoUseCase: UpdateToDoUseCase,
 //    private val deleteAllToDoItemUseCase: DeleteAllToDoItemUseCase

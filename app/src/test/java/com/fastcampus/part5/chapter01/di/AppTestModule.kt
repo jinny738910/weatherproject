@@ -2,7 +2,6 @@ package com.fastcampus.part5.chapter01.di
 
 import com.jinny.plancast.data.repository.ToDoRepository
 import com.fastcampus.part5.chapter01.data.repository.TestToDoRepository
-import com.jinny.plancast.domain.todoUseCase.*
 import com.jinny.plancast.presentation.todo.detail.DetailMode
 import com.jinny.plancast.presentation.todo.list.ListViewModel
 import com.jinny.plancast.presentation.todo.detail.DetailViewModel

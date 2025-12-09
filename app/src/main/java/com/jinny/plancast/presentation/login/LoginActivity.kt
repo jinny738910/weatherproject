@@ -17,11 +17,12 @@ import androidx.lifecycle.lifecycleScope
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.presentation.login.SignUpState.Success
 import com.jinny.plancast.presentation.todo.list.ListActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.Executor
 
-
+@AndroidEntryPoint
 class LoginActivity : BaseActivity<LoginViewModel>() {
 
     override val viewModel: LoginViewModel by viewModel()

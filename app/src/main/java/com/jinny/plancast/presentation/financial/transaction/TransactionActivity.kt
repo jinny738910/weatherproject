@@ -8,9 +8,8 @@ import android.util.Log
 import android.widget.Toast
 
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.wallet.AutoResolveHelper
 import com.google.android.gms.wallet.IsReadyToPayRequest
@@ -21,16 +20,15 @@ import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
 import com.jinny.plancast.data.model.Product
 import com.jinny.plancast.presentation.BaseActivity
-import com.jinny.plancast.presentation.login.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 import org.json.JSONArray
 import org.json.JSONObject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
+@AndroidEntryPoint
 class TransactionActivity : BaseActivity<TransactionViewModel>() {
 
-    override val viewModel: TransactionViewModel by viewModel()
+    override val viewModel: TransactionViewModel by viewModels()
 //    override val viewModel: LoginViewModel by viewModel()
 
     private lateinit var paymentsClient: PaymentsClient

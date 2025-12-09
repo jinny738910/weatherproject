@@ -6,14 +6,17 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.jinny.plancast.domain.model.PlacePrediction
 import com.jinny.plancast.domain.repository.PlaceRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 /**
  * PlaceRepository의 구현체
  * @param apiService Retrofit으로 생성된 API 서비스
  * @param apiKey 기상청 API 인증키
  */
-class PlaceRepositoryImpl (context: Context
+class PlaceRepositoryImpl @Inject constructor (
+    @ApplicationContext private val context: Context
 ) : PlaceRepository {
 
     // Places SDK의 메인 클라이언트

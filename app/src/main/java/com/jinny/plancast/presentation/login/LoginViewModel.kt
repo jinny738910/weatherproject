@@ -4,6 +4,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.jinny.plancast.presentation.BaseViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,15 +15,19 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.jinny.plancast.presentation.todo.list.ListActivity
 import com.jinny.plancast.presentation.todo.list.ToDoListState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-
-class LoginViewModel(
-    var id: Long = -1,
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel() {
+
+    val id: Long = savedStateHandle.get<Long>("id") ?: -1L
 
     private var auth: FirebaseAuth = Firebase.auth
 

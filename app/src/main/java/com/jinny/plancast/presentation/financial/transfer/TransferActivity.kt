@@ -8,18 +8,20 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.lifecycle.lifecycleScope
 
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.presentation.financial.password.PasswordActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
+@AndroidEntryPoint
 class TransferActivity : BaseActivity<TransferViewModel>() {
 
-    override val viewModel: TransferViewModel by viewModel()
+    override val viewModel: TransferViewModel by viewModels()
 
     private val passwordLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

@@ -1,6 +1,7 @@
 package com.jinny.plancast.presentation.webView
 
 
+import android.os.Build
 import android.os.Bundle
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
@@ -22,6 +23,7 @@ class WebViewActivity : AppCompatActivity() {
         binding = ActivityWebviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // ✨ 4. 'binding.webView'를 통해 뷰에 직접 접근합니다.
         binding.webView.apply {
             // 웹뷰 클라이언트 설정
@@ -33,15 +35,18 @@ class WebViewActivity : AppCompatActivity() {
             // 웹과 통신할 인터페이스 추가
             addJavascriptInterface(WebAppInterface(), "Android")
 
-            // 디버깅 활성화
-            if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) {
-                WebView.setWebContentsDebuggingEnabled(true)
-            }
+            WebView.setWebContentsDebuggingEnabled(true)
+
+//            // 디버깅 활성화
+//            if (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0) {
+//                WebView.setWebContentsDebuggingEnabled(true)
+//            }
         }
 
         // 웹페이지 로드
 //        binding.webView.loadUrl("file:///android_asset/index.html")
-        binding.webView.loadUrl("https://www.kma.go.kr/m/index.jsp")
+//        binding.webView.loadUrl("https://www.kma.go.kr/m/index.jsp")
+        binding.webView.loadUrl("http://10.0.2.2:5173")
 
         // 뒤로 가기 콜백 설정
         setupOnBackPressed()

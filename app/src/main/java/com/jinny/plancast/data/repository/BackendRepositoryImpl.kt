@@ -10,13 +10,14 @@ import com.jinny.plancast.domain.repository.BackendRepository
 import com.jinny.plancast.domain.repository.PlaceRepository
 import kotlinx.coroutines.tasks.await
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * BackendRepository의 구현체
  * @param apiService Retrofit으로 생성된 API 서비스
  * @param apiKey 기상청 API 인증키
  */
-class BackendRepositoryImpl (
+class BackendRepositoryImpl @Inject constructor(
     private val apiService: BackendApiService
 ) : BackendRepository {
 

@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.ContextCompat
@@ -21,7 +22,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.database
-import com.google.firebase.database.ktx.database
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import com.jinny.plancast.R
@@ -33,12 +33,12 @@ import com.jinny.plancast.presentation.chat.chatroom.ChatRoomActivity
 import com.jinny.plancast.presentation.chat.chatroom.ChatRoomInfo
 import com.jinny.plancast.presentation.financial.payment.PaymentActivity
 import com.jinny.plancast.presentation.financial.transfer.TransferActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 
+@AndroidEntryPoint
 class DetailActivity : BaseActivity<DetailViewModel>() {
 
     private lateinit var binding: ActivityDetailBinding
@@ -56,12 +56,7 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         Firebase.database.reference.child("chats")
     }
 
-    override val viewModel: DetailViewModel by viewModel {
-        parametersOf(
-            intent.getSerializableExtra(DETAIL_MODE_KEY),
-            intent.getLongExtra(TODO_ID_KEY, -1)
-        )
-    }
+    override val viewModel: DetailViewModel by viewModels()
 
     private val paymentLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -257,7 +252,6 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
                     // 권한 요청
                     requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 100)
                 }
-
             }
         }
 

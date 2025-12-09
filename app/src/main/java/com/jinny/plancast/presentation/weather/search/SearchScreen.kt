@@ -152,8 +152,7 @@ fun SearchScreenPreview() {
 
     // 2. Create an instance of the ViewModel using the fake UseCases
     val fakeViewModel = SearchViewModel(
-        weatherMode = WeatherMode.WRITE,
-        id = -1L,
+        savedStateHandle = androidx.lifecycle.SavedStateHandle(),
         placeRepository = FakeItemRepository()
     )
 

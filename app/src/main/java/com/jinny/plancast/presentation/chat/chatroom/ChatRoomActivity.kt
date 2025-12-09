@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,10 +20,11 @@ import com.google.firebase.ktx.Firebase
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
 import com.jinny.plancast.presentation.chat.chatview.ChatViewItem
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class ChatRoomActivity : BaseActivity<ChatRoomViewModel>(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext
@@ -52,7 +54,7 @@ class ChatRoomActivity : BaseActivity<ChatRoomViewModel>(), CoroutineScope {
         override fun onCancelled(error: DatabaseError) {}
     }
 
-    override val viewModel: ChatRoomViewModel by viewModel()
+    override val viewModel: ChatRoomViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

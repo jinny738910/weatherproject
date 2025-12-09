@@ -6,15 +6,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
 import com.jinny.plancast.presentation.todo.view.ToDoAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class AlarmListActivity : BaseActivity<AlarmListViewModel>(), CoroutineScope{
 
     override val coroutineContext: CoroutineContext
@@ -24,7 +26,7 @@ class AlarmListActivity : BaseActivity<AlarmListViewModel>(), CoroutineScope{
 
     private val adapter = ToDoAdapter()
 
-    override val viewModel: AlarmListViewModel by viewModel()
+    override val viewModel: AlarmListViewModel by viewModels()
 
 //    ActivityResultLauncher를 생성하고 결과를 처리할 콜백을 정의합니다.
     private val detailLauncher: ActivityResultLauncher<Intent> =

@@ -4,8 +4,9 @@ import com.jinny.plancast.data.repository.ToDoRepository
 import com.jinny.plancast.domain.usecase.UseCase
 
 import com.jinny.plancast.data.local.entity.ToDoEntity
+import javax.inject.Inject
 
-class GetToDoListUseCase(
+class GetToDoListUseCase @Inject constructor(
     private val toDoRepository: ToDoRepository
 ): UseCase {
 

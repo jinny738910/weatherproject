@@ -6,9 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.jinny.plancast.presentation.BaseViewModel
 import com.jinny.plancast.presentation.chat.chatview.ChatViewItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class ChatUserListViewModel(
+@HiltViewModel
+class ChatUserListViewModel @Inject constructor(
 //    private val getToDoListUseCase: GetToDoListUseCase,
 //    private val updateToDoUseCase: UpdateToDoUseCase,
 //    private val deleteAllToDoItemUseCase: DeleteAllToDoItemUseCase

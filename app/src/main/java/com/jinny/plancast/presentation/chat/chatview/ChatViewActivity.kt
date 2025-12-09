@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -23,12 +24,11 @@ import com.google.firebase.ktx.Firebase
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.databinding.ActivityListBinding
 import com.jinny.plancast.presentation.chat.chatroom.ChatRoomActivity
-import com.jinny.plancast.presentation.chat.chatuserlist.ChatUserListItem
-import com.jinny.plancast.presentation.financial.password.PasswordActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class ChatViewActivity : BaseActivity<ChatViewViewModel>(), CoroutineScope{
 
     override val coroutineContext: CoroutineContext
@@ -75,7 +75,7 @@ class ChatViewActivity : BaseActivity<ChatViewViewModel>(), CoroutineScope{
         override fun onCancelled(error: DatabaseError) {}
     }
 
-    override val viewModel: ChatViewViewModel by viewModel()
+    override val viewModel: ChatViewViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

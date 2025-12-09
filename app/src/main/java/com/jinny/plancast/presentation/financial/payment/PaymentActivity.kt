@@ -24,12 +24,13 @@ import com.jinny.plancast.data.model.Product
 import com.jinny.plancast.presentation.BaseActivity
 import com.jinny.plancast.presentation.todo.detail.DetailActivity.Companion.DETAIL_MODE_KEY
 import com.jinny.plancast.presentation.todo.detail.DetailActivity.Companion.TODO_ID_KEY
+import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-
+@AndroidEntryPoint
 class PaymentActivity : BaseActivity<PaymentViewModel>() {
 
     override val viewModel: PaymentViewModel by viewModel()

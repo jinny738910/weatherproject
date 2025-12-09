@@ -7,13 +7,16 @@ import com.jinny.plancast.domain.usecase.transferUseCase.ExecuteTransferUseCase
 import com.jinny.plancast.domain.usecase.transferUseCase.RegisterBillingKeyUseCase
 import com.jinny.plancast.presentation.BaseViewModel
 import com.jinny.plancast.presentation.todo.detail.ToDoDetailState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TransferViewModel(
-    private val executeTransferUseCase: com.jinny.plancast.domain.usecase.transferUseCase.ExecuteTransferUseCase,
-    private val registerBillingKeyUseCase: com.jinny.plancast.domain.usecase.transferUseCase.RegisterBillingKeyUseCase
+@HiltViewModel
+class TransferViewModel @Inject constructor(
+    private val executeTransferUseCase: ExecuteTransferUseCase,
+    private val registerBillingKeyUseCase: RegisterBillingKeyUseCase
 ) : BaseViewModel() {
 
     private val _transferResult = MutableLiveData<String>()
